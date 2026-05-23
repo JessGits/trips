@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Day 1 · Arrival · NYC 2026</title>
+
+<!-- PWA -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="June 3 · Arrival">
+<meta name="theme-color" content="#1B3A5C">
+<link rel="apple-touch-icon" href="../icon.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Leaflet for maps -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<style>
+  :root {
+    --navy: #1B3A5C;
+    --navy-mid: #2C4E72;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-pale: #FDF6E3;
+    --cream: #FAF7F2;
+    --white: #FFFFFF;
+    --slate: #4A5568;
+    --light-slate: #718096;
+    --border: #E2D9CC;
+    --red: #C0392B;
+    --green: #1E6B3C;
+    --blue: #2C5282;
+    --blue-bg: #EEF2F7;
+    --blue-border: #C3D4F0;
+    --bourdain-bg: #F5F0E8;
+    --bourdain-border: #B8966B;
+    --bourdain-text: #6B4F2F;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--cream);
+    color: #2D3748;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* STICKY NAV */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(27, 58, 92, 0.96);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+    padding: 10px 16px;
+    padding-top: max(10px, env(safe-area-inset-top, 10px));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .nav-link {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 6px 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: opacity 0.15s ease;
+  }
+  .nav-link:hover { opacity: 0.7; }
+  .nav-link.disabled { color: rgba(201, 168, 76, 0.3); pointer-events: none; }
+  .nav-center {
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    padding: 36px 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 280px; height: 280px; border-radius: 50%; background: rgba(201,168,76,0.07); pointer-events: none; }
+  .hero-inner { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 300;
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+  .glance-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pill {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 100px;
+    padding: 6px 12px;
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.85);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .pill span { font-size: 13px; }
+
+  /* MAIN */
+  .main { padding: 32px 20px 40px; max-width: 900px; margin: 0 auto; }
+
+  /* DAY BANNER */
+  .day-banner {
+    background: white;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+  }
+  .day-banner-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .day-banner p {
+    font-size: 14.5px;
+    color: var(--slate);
+    line-height: 1.65;
+  }
+  .day-banner p strong { color: var(--navy); }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: center; gap: 12px; margin: 32px 0 16px; }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+    letter-spacing: -0.3px;
+  }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 12px;
+    bottom: 12px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), var(--gold-light));
+  }
+
+  .stop-card {
+    position: relative;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(27,58,92,0.04);
+  }
+  .stop-card::before {
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 22px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 3px var(--cream), 0 0 0 4px var(--gold);
+  }
+  .stop-header {
+    background: var(--navy);
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .stop-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .stop-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    flex: 1;
+  }
+  .stop-body { padding: 14px 16px 16px; }
+  .stop-body p {
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .stop-body p:last-child { margin-bottom: 0; }
+  .stop-body strong { color: var(--navy); }
+  .stop-address {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: var(--light-slate);
+    margin-bottom: 12px;
+  }
+
+  /* TRANSIT CARD (for movement between stops, no gold dot) */
+  .transit-card {
+    background: var(--blue-bg);
+    border: 1px solid var(--blue-border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: -4px 0 16px 0;
+    font-size: 12.5px;
+    color: var(--slate);
+    line-height: 1.55;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .transit-card-icon { font-size: 16px; flex: 0 0 20px; }
+  .transit-card strong { color: var(--blue); }
+
+  /* MAPS BUTTON */
+  .maps-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--navy);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+  }
+  .maps-button:hover { background: var(--navy-mid); }
+  .maps-button:active { transform: scale(0.98); }
+  .maps-button-icon { font-size: 14px; }
+
+  /* BOURDAIN CALLOUT */
+  .bourdain-callout {
+    background: var(--bourdain-bg);
+    border: 1px solid var(--bourdain-border);
+    border-left: 4px solid var(--bourdain-border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    position: relative;
+  }
+  .bourdain-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--bourdain-text);
+    margin-bottom: 8px;
+  }
+  .bourdain-callout p {
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+  .bourdain-callout p strong { color: var(--bourdain-text); }
+  .bourdain-callout em { font-style: italic; color: var(--bourdain-text); }
+
+  /* MAP */
+  .map-wrap {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(27,58,92,0.04);
+  }
+  .map-container {
+    width: 100%;
+    height: 340px;
+    background: var(--cream);
+  }
+  .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 18px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11.5px;
+    color: var(--slate);
+    background: white;
+  }
+  .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+  .legend-dot.home { background: var(--navy); border: 2px solid var(--gold); box-shadow: 0 0 0 2px white; }
+  .legend-dot.stop { background: var(--gold); border: 2px solid white; box-shadow: 0 0 0 1px var(--gold); }
+  .legend-line {
+    width: 22px;
+    height: 0;
+    border-top: 3px dashed var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* Custom Leaflet marker styles */
+  .home-marker {
+    background: var(--navy);
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    width: 28px !important;
+    height: 28px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(27,58,92,0.3);
+  }
+  .stop-marker {
+    background: var(--gold);
+    border: 3px solid white;
+    border-radius: 50%;
+    width: 26px !important;
+    height: 26px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(201,168,76,0.4);
+  }
+  /* Override default Leaflet popup styling to match design */
+  .leaflet-popup-content-wrapper {
+    border-radius: 6px;
+    padding: 2px 4px;
+  }
+  .leaflet-popup-content {
+    margin: 8px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .leaflet-popup-content strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: var(--navy);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* BEFORE BED BOX */
+  .before-bed {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 18px 22px;
+    color: white;
+    margin-top: 8px;
+  }
+  .before-bed-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .before-bed p {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .before-bed p:last-child { margin-bottom: 0; }
+  .before-bed strong { color: white; font-weight: 600; }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 48px;
+    padding: 22px 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 11px;
+    color: var(--light-slate);
+    font-style: italic;
+    line-height: 1.8;
+    padding-bottom: max(22px, env(safe-area-inset-bottom));
+  }
+  .footer a {
+    color: var(--navy);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* MOBILE */
+  @media (max-width: 720px) {
+    .hero { padding: 28px 18px 22px; }
+    .hero h1 { font-size: 34px; }
+    .hero-sub { font-size: 13px; margin-bottom: 18px; }
+    .main { padding: 24px 14px 32px; }
+    .section-header h2 { font-size: 19px; }
+    .timeline { padding-left: 24px; }
+    .timeline::before { left: 6px; }
+    .stop-card::before { left: -22px; top: 20px; width: 12px; height: 12px; }
+    .stop-name { font-size: 15px; }
+    .day-banner { padding: 16px 18px; }
+    .map-container { height: 280px; }
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: white; font-size: 11px; color: #000; }
+    .sticky-nav { display: none; }
+    .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 20px 24px; }
+    .main { padding: 16px 24px; }
+    .stop-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .before-bed { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .bourdain-callout { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .stop-card, .map-wrap, .before-bed { page-break-inside: avoid; }
+    .maps-button { display: none; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<div class="sticky-nav">
+  <a class="nav-link" href="../">&larr; NYC 2026</a>
+  <div class="nav-center">Day 1 of 9</div>
+  <a class="nav-link" href="../june-4-met-cote/">Day 2 &rarr;</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Day 1 &nbsp;·&nbsp; Wednesday, June 3, 2026</div>
+    <h1><em>Arrival</em></h1>
+    <div class="hero-sub">Land at LaGuardia &nbsp;·&nbsp; Settle into The Wallace &nbsp;·&nbsp; The city's welcome ritual</div>
+    <div class="glance-row">
+      <div class="pill"><span>🛬</span>LGA 9:27pm</div>
+      <div class="pill"><span>🏨</span>Check in · The Wallace</div>
+      <div class="pill"><span>🌭</span>Gray's Papaya</div>
+      <div class="pill"><span>🌙</span>Easy night</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- DAY BANNER -->
+  <div class="day-banner">
+    <div class="day-banner-label">The Tone for Today</div>
+    <p>Tonight is short and sweet. The plane lands at <strong>9:27pm</strong>, the rideshare gets us to <strong>The Wallace</strong>, and four blocks south on Broadway there's a hot dog and a papaya drink with our name on it. Don't try to do more than this. New York will be here in the morning.</p>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section-header">
+    <h2>The Evening</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- STOP 1: Land -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">9:27 PM</span>
+        <span class="stop-name">Land at LaGuardia</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">AA4470 · OKC → LGA · Terminal B</div>
+        <p>Three of us land at 9:27pm on AA4470. Michele's flight from California lands separately &mdash; coordinate at the hotel rather than at the airport unless timing lines up. Pull up Uber or Lyft <strong>while still on the jet bridge</strong>; surge pricing at LGA arrivals at night is real, but the wait time matters more than the price.</p>
+        <p><strong>Heads up:</strong> LaGuardia is the most congestion-prone airport in the country. Expect 20&ndash;25 minutes to The Wallace if traffic's clean, longer if it's not. Roughly $35&ndash;50 with tip. Driver doesn't need help &mdash; they navigate it.</p>
+      </div>
+    </div>
+
+    <!-- TRANSIT -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚕</div>
+      <div><strong>Rideshare to The Wallace</strong> &mdash; 20&ndash;25 min · ~$35&ndash;50 · skip the subway tonight, the bags aren't worth it</div>
+    </div>
+
+    <!-- STOP 2: Check in -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~10:00 PM</span>
+        <span class="stop-name">Check in · The Wallace</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">242 W 76th St · between Broadway &amp; West End Ave</div>
+        <p>Front desk is 24-hour. Check in, get the room keys, drop the bags. The Wallace lobby has a small bar and lounge if anyone wants to peek &mdash; live music runs Thursday through Sunday, so tonight it'll be quiet.</p>
+        <p>Take ten minutes. Bathroom break, splash of water, swap into walking shoes. <strong>Don't unpack tonight.</strong> Down to the lobby, out the door, four blocks south.</p>
+        <a class="maps-button" href="maps://?q=The+Wallace+Hotel+242+W+76th+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- TRANSIT -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Walk south on Broadway</strong> &mdash; 4 blocks · about 8 minutes · Broadway becomes more lit and alive as you head toward 72nd</div>
+    </div>
+
+    <!-- STOP 3: Gray's Papaya -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~10:30 PM</span>
+        <span class="stop-name">Gray's Papaya</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">2090 Broadway at W 72nd · open until 11pm</div>
+        <p>Open since 1973. Two hot dogs and a papaya drink &mdash; the <strong>"Recession Special"</strong> &mdash; runs about $7.50. Cash works, cards work, doesn't matter. There's no seating, just a counter facing the window. You eat standing up like a New Yorker.</p>
+        <p>Standard order: <strong>two dogs with mustard, sauerkraut, and onions; one papaya drink to share or one each.</strong> If anyone wants to go wild, the banana daiquiri and the piña colada are also fruit drinks (non-alcoholic), and chili-cheese is on the menu. Whatever &mdash; the point is the ritual, not the optimization.</p>
+        <a class="maps-button" href="maps://?q=Gray%27s+Papaya+2090+Broadway+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <!-- BOURDAIN CALLOUT -->
+        <div class="bourdain-callout">
+          <div class="bourdain-tag">🍴 Bourdain</div>
+          <p>Gray's Papaya and Papaya King are cousins &mdash; <strong>Nicholas Gray opened Gray's in 1973 after splitting from Papaya King</strong>, taking the formula uptown. Anthony Bourdain hit Papaya King for the same combo on <em>The Layover</em> and called the hot-dog-and-tropical-drink pairing one of the city's quintessential rituals. Walking off an airport rideshare and going straight to the papaya stand for two dogs at 10:30pm <em>is</em> the move. He'd approve.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSIT -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Walk back to The Wallace</strong> &mdash; 4 blocks north on Broadway · stop on the corner of 72nd and look around for a beat. You're here.</div>
+    </div>
+
+  </div>
+
+  <!-- MAP -->
+  <div class="section-header">
+    <h2>The Neighborhood</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="map-wrap">
+    <div id="day-map" class="map-container"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot home"></div>Home Base · The Wallace</div>
+      <div class="legend-item"><div class="legend-dot stop"></div>Stop 1 · Gray's Papaya</div>
+      <div class="legend-item"><div class="legend-line"></div>Walking route · 4 blocks · ~8 min</div>
+    </div>
+  </div>
+  </div>
+
+  <!-- BEFORE BED -->
+  <div class="section-header">
+    <h2>Before Bed</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="before-bed">
+    <div class="before-bed-title">One thing before sleep</div>
+    <p>Tomorrow is <strong>the Met and Cote</strong>. Slow Upper West Side morning &mdash; pastry, Riverside Park, Zabar's &mdash; then the museum from late morning. <strong>Cote dinner at 5:00 PM</strong>, party of 4. Anthony's first big Michelin dinner of the trip.</p>
+    <p>Pull tomorrow's outfit out before crashing. Walking shoes by the door. Phones on the chargers. <strong>You're in New York.</strong></p>
+  </div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  <strong><a href="../">&larr; Back to NYC 2026 overview</a></strong><br>
+  Day 1 of 9 &nbsp;·&nbsp; Wednesday, June 3, 2026 &nbsp;·&nbsp; Anthony's 21st Birthday Trip
+</div>
+
+<script>
+  // Initialize the Leaflet map
+  document.addEventListener('DOMContentLoaded', function() {
+    // Coordinates
+    const wallace = [40.7820, -73.9818];   // The Wallace, 242 W 76th St
+    const graysPapaya = [40.7784, -73.9816]; // Gray's Papaya, 2090 Broadway
+
+    // Center on midpoint between the two
+    const center = [(wallace[0] + graysPapaya[0]) / 2, (wallace[1] + graysPapaya[1]) / 2];
+
+    const map = L.map('day-map', {
+      center: center,
+      zoom: 16,
+      zoomControl: true,
+      scrollWheelZoom: false,
+      attributionControl: true
+    });
+
+    // CartoDB Positron tiles — light, minimal, matches our cream palette
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Walking route — dashed gold line between Wallace and Gray's Papaya
+    L.polyline([wallace, graysPapaya], {
+      color: '#C9A84C',
+      weight: 4,
+      opacity: 0.9,
+      dashArray: '8, 6',
+      lineCap: 'round'
+    }).addTo(map);
+
+    // Home base marker — The Wallace
+    const homeIcon = L.divIcon({
+      className: 'home-marker',
+      html: '★',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14]
+    });
+    L.marker(wallace, { icon: homeIcon })
+      .addTo(map)
+      .bindPopup('<strong>The Wallace</strong>Home base<br>242 W 76th St');
+
+    // Stop 1 marker — Gray's Papaya
+    const stopIcon = L.divIcon({
+      className: 'stop-marker',
+      html: '1',
+      iconSize: [26, 26],
+      iconAnchor: [13, 13]
+    });
+    L.marker(graysPapaya, { icon: stopIcon })
+      .addTo(map)
+      .bindPopup('<strong>Gray\'s Papaya</strong>Stop 1<br>2090 Broadway at W 72nd');
+
+    // Fit bounds with padding so both markers are nicely framed
+    const bounds = L.latLngBounds([wallace, graysPapaya]);
+    map.fitBounds(bounds, { padding: [40, 40] });
+  });
+</script>
+
+</body>
+</html>
