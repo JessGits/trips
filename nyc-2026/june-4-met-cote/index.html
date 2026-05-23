@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Day 2 · Met &amp; Cote · NYC 2026</title>
+
+<!-- PWA -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="June 4 · Met &amp; Cote">
+<meta name="theme-color" content="#1B3A5C">
+<link rel="apple-touch-icon" href="../icon.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<style>
+  :root {
+    --navy: #1B3A5C;
+    --navy-mid: #2C4E72;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-pale: #FDF6E3;
+    --cream: #FAF7F2;
+    --white: #FFFFFF;
+    --slate: #4A5568;
+    --light-slate: #718096;
+    --border: #E2D9CC;
+    --red: #C0392B;
+    --green: #1E6B3C;
+    --blue: #2C5282;
+    --blue-bg: #EEF2F7;
+    --blue-border: #C3D4F0;
+    --bourdain-bg: #F5F0E8;
+    --bourdain-border: #B8966B;
+    --bourdain-text: #6B4F2F;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--cream);
+    color: #2D3748;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* STICKY NAV */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(27, 58, 92, 0.96);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+    padding: 10px 16px;
+    padding-top: max(10px, env(safe-area-inset-top, 10px));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .nav-link {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 6px 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: opacity 0.15s ease;
+  }
+  .nav-link:hover { opacity: 0.7; }
+  .nav-center {
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    padding: 36px 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 280px; height: 280px; border-radius: 50%; background: rgba(201,168,76,0.07); pointer-events: none; }
+  .hero-inner { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 300;
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+  .glance-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pill {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 100px;
+    padding: 6px 12px;
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.85);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .pill span { font-size: 13px; }
+
+  /* MAIN */
+  .main { padding: 32px 20px 40px; max-width: 900px; margin: 0 auto; }
+
+  /* DAY BANNER */
+  .day-banner {
+    background: white;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+  }
+  .day-banner-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .day-banner p {
+    font-size: 14.5px;
+    color: var(--slate);
+    line-height: 1.65;
+  }
+  .day-banner p strong { color: var(--navy); }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: center; gap: 12px; margin: 32px 0 16px; }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+    letter-spacing: -0.3px;
+  }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 12px;
+    bottom: 12px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), var(--gold-light));
+  }
+
+  .stop-card {
+    position: relative;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(27,58,92,0.04);
+  }
+  .stop-card::before {
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 22px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 3px var(--cream), 0 0 0 4px var(--gold);
+  }
+  .stop-header {
+    background: var(--navy);
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .stop-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .stop-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    flex: 1;
+  }
+  .stop-body { padding: 14px 16px 16px; }
+  .stop-body p {
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .stop-body p:last-child { margin-bottom: 0; }
+  .stop-body strong { color: var(--navy); }
+  .stop-address {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: var(--light-slate);
+    margin-bottom: 12px;
+  }
+
+  /* TRANSIT CARD */
+  .transit-card {
+    background: var(--blue-bg);
+    border: 1px solid var(--blue-border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: -4px 0 16px 0;
+    font-size: 12.5px;
+    color: var(--slate);
+    line-height: 1.55;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .transit-card-icon { font-size: 16px; flex: 0 0 20px; }
+  .transit-card strong { color: var(--blue); }
+
+  /* MAPS BUTTON */
+  .maps-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--navy);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+  }
+  .maps-button:hover { background: var(--navy-mid); }
+  .maps-button:active { transform: scale(0.98); }
+  .maps-button-icon { font-size: 14px; }
+
+  /* GROUP SPLIT CALLOUT (special — for the Met Raphael split) */
+  .split-callout {
+    background: var(--gold-pale);
+    border: 1px solid var(--gold-light);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-top: 12px;
+  }
+  .split-callout-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .split-callout-title::before {
+    content: '✦';
+    color: var(--gold);
+    font-size: 16px;
+  }
+  .split-callout p {
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .split-callout p:last-child { margin-bottom: 0; }
+  .split-callout strong { color: var(--navy); }
+
+  /* MAP */
+  .map-wrap {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(27,58,92,0.04);
+  }
+  .map-container {
+    width: 100%;
+    height: 380px;
+    background: var(--cream);
+  }
+  .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 18px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11.5px;
+    color: var(--slate);
+    background: white;
+  }
+  .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+  .legend-dot.home { background: var(--navy); border: 2px solid var(--gold); box-shadow: 0 0 0 2px white; }
+  .legend-dot.stop { background: var(--gold); border: 2px solid white; box-shadow: 0 0 0 1px var(--gold); }
+  .legend-line {
+    width: 22px;
+    height: 0;
+    border-top: 3px dashed var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* Custom Leaflet markers */
+  .home-marker {
+    background: var(--navy);
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    width: 28px !important;
+    height: 28px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(27,58,92,0.3);
+  }
+  .stop-marker {
+    background: var(--gold);
+    border: 3px solid white;
+    border-radius: 50%;
+    width: 26px !important;
+    height: 26px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(201,168,76,0.4);
+  }
+  .leaflet-popup-content-wrapper {
+    border-radius: 6px;
+    padding: 2px 4px;
+  }
+  .leaflet-popup-content {
+    margin: 8px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .leaflet-popup-content strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: var(--navy);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* BEFORE BED BOX */
+  .before-bed {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 18px 22px;
+    color: white;
+    margin-top: 8px;
+  }
+  .before-bed-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .before-bed p {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .before-bed p:last-child { margin-bottom: 0; }
+  .before-bed strong { color: white; font-weight: 600; }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 48px;
+    padding: 22px 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 11px;
+    color: var(--light-slate);
+    font-style: italic;
+    line-height: 1.8;
+    padding-bottom: max(22px, env(safe-area-inset-bottom));
+  }
+  .footer a {
+    color: var(--navy);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* MOBILE */
+  @media (max-width: 720px) {
+    .hero { padding: 28px 18px 22px; }
+    .hero h1 { font-size: 34px; }
+    .hero-sub { font-size: 13px; margin-bottom: 18px; }
+    .main { padding: 24px 14px 32px; }
+    .section-header h2 { font-size: 19px; }
+    .timeline { padding-left: 24px; }
+    .timeline::before { left: 6px; }
+    .stop-card::before { left: -22px; top: 20px; width: 12px; height: 12px; }
+    .stop-name { font-size: 15px; }
+    .day-banner { padding: 16px 18px; }
+    .map-container { height: 320px; }
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: white; font-size: 11px; color: #000; }
+    .sticky-nav { display: none; }
+    .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 20px 24px; }
+    .main { padding: 16px 24px; }
+    .stop-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .before-bed { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .split-callout { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .stop-card, .map-wrap, .before-bed { page-break-inside: avoid; }
+    .maps-button { display: none; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<div class="sticky-nav">
+  <a class="nav-link" href="../june-3-arrival/">&larr; Day 1</a>
+  <div class="nav-center">Day 2 of 9</div>
+  <a class="nav-link" href="../june-5-les-dogday/">Day 3 &rarr;</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Day 2 &nbsp;·&nbsp; Thursday, June 4, 2026</div>
+    <h1>The Met &amp; <em>Cote</em></h1>
+    <div class="hero-sub">A slow UWS morning &nbsp;·&nbsp; The Met from late morning &nbsp;·&nbsp; Korean BBQ Michelin at five</div>
+    <div class="glance-row">
+      <div class="pill"><span>🥐</span>Daily Provisions</div>
+      <div class="pill"><span>🏛️</span>The Met</div>
+      <div class="pill"><span>🌭</span>Met steps dog</div>
+      <div class="pill"><span>🥩</span>Cote · 5pm</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- DAY BANNER -->
+  <div class="day-banner">
+    <div class="day-banner-label">The Tone for Today</div>
+    <p>The first real day in the city. Take it slow this morning &mdash; pastry, the river, the appetizing shop everyone walks past. Then cross the park to <strong>the Met</strong>, the largest art museum in the Western Hemisphere, and spend two and a half hours inside three of its best wings. Out on the steps with a hot dog after, the way generations of New Yorkers have done it. Back uptown to freshen up. <strong>Cote at five</strong> &mdash; an early Michelin dinner, the first big one of the trip, and a smarter slot than peak.</p>
+  </div>
+
+  <!-- MORNING -->
+  <div class="section-header">
+    <h2>The Morning</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- Daily Provisions -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">8:30 AM</span>
+        <span class="stop-name">Daily Provisions</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">375 Amsterdam Ave at W 78th · 2 blocks from The Wallace</div>
+        <p>Danny Meyer's neighborhood bakery. The <strong>maple cinnamon cruller</strong> is the move &mdash; it's the kind of pastry that ends arguments. Coffee is great, sandwiches don't matter yet, leave room for the Met steps. Sit at the counter or grab and walk to the river.</p>
+        <a class="maps-button" href="maps://?q=Daily+Provisions+375+Amsterdam+Ave+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- Transit -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Walk west to the river</strong> &mdash; 3 blocks · about 6 minutes · cross West End Ave and Riverside Drive</div>
+    </div>
+
+    <!-- Riverside Park -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">9:15 AM</span>
+        <span class="stop-name">Riverside Park</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Riverside Drive at W 79th · the Hudson, no tourists</div>
+        <p>Twenty minutes of just walking. The path along the Hudson is one of the most underrated stretches in Manhattan &mdash; locals running, dogs being walked, the New Jersey skyline across the water. Walk south to about W 72nd, then cut east through the park back toward Broadway. <strong>This is the only true breathing-room moment of the morning.</strong> Use it.</p>
+        <a class="maps-button" href="maps://?q=Riverside+Park+79th+Street+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- Transit -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Walk east to Zabar's</strong> &mdash; cut through to Broadway and head north · about 8 minutes</div>
+    </div>
+
+    <!-- Zabar's -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">10:00 AM</span>
+        <span class="stop-name">Zabar's</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">2245 Broadway at W 80th · open since 1934</div>
+        <p>An institution. New York's most legendary "appetizing" shop &mdash; smoked fish, bagels, babka, cheeses, coffee, kitchen gadgets upstairs. <strong>Don't eat here</strong> (the food tour is tomorrow, and Cote is tonight). Just walk through. Look at the lox counter. Get a babka or a Zabar's tote as a souvenir if anything calls to you. <strong>Out by 10:20.</strong></p>
+        <a class="maps-button" href="maps://?q=Zabar%27s+2245+Broadway+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <!-- Bourdain callout -->
+        <div class="split-callout" style="background: var(--bourdain-bg); border-color: var(--bourdain-border); border-left-color: var(--bourdain-border);">
+          <div class="split-callout-title" style="color: var(--bourdain-text);">🍴 Bourdain · A neighborhood note</div>
+          <p>Anthony Bourdain's actual neighborhood breakfast spot &mdash; <strong>Barney Greengrass, the Sturgeon King</strong> &mdash; is six blocks north on Amsterdam at 86th. He called it "the best breakfast in the universe" and ate there nearly every Sunday he was home. We're saving it for another morning. Just know it's there.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AFTERNOON: THE MET -->
+  <div class="section-header">
+    <h2>The Met</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- Transit -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚌</div>
+      <div><strong>Cross the park to the Met</strong> &mdash; M79 crosstown bus from Broadway &amp; 79th to 5th Ave &amp; 79th · 15 min · or a 25-min walk across Central Park if the weather is gorgeous</div>
+    </div>
+
+    <!-- The Met -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">10:30 AM &mdash; 1:30 PM</span>
+        <span class="stop-name">The Metropolitan Museum of Art</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">1000 5th Avenue at E 82nd · timed entry, 4 General Admission · ~$30/adult</div>
+        <p>The biggest museum in the Western Hemisphere has two million objects and you can't see them. Don't try. <strong>Three wings, two and a half hours, then out for a hot dog on the steps.</strong> The order matters &mdash; do it like this:</p>
+        <p><strong>1. Egyptian Wing</strong> (45 min). The Temple of Dendur is the headliner &mdash; a real Egyptian temple reassembled inside the museum, with a reflecting pool and a wall of windows facing Central Park. Walk through it.</p>
+        <p><strong>2. Arms &amp; Armor</strong> (30 min). Down the hall. Mounted knights, samurai armor, parade armor for Renaissance princes. <strong>Keith's highlight</strong> &mdash; this is genuinely one of the best rooms in any museum in the world.</p>
+        <p><strong>3. American Wing</strong> (45 min). Washington Crossing the Delaware is the painting that's bigger than you think. The American period rooms &mdash; entire 1700s living rooms transplanted into the museum &mdash; are also here.</p>
+        <p><strong>Rooftop:</strong> the Cantor Roof Garden if it's open in early June &mdash; views over Central Park, a small bar. Worth checking on the way out.</p>
+        <a class="maps-button" href="maps://?q=Metropolitan+Museum+of+Art+1000+5th+Avenue+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <!-- Group split for Raphael -->
+        <div class="split-callout">
+          <div class="split-callout-title">A natural split for Raphael</div>
+          <p><strong>Raphael: Sublime Poetry</strong> &mdash; the first-ever U.S. retrospective of the Renaissance master &mdash; closes June 28. It's the once-in-a-lifetime kind of exhibition. Keith heads to Arms &amp; Armor. <strong>Jess and Anthony</strong> peel off to Raphael for ~45 minutes. Michele chooses whichever room calls.</p>
+          <p>Reconvene at the <strong>American Wing</strong> around 12:15. Phones on, keep loose contact. The Met is enormous but the wings are well-signed.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Met Steps hot dog -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">1:30 PM</span>
+        <span class="stop-name">Hot Dog on the Steps</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">The Met steps · 5th Ave · between 80th and 84th</div>
+        <p>The steps in front of the Met are wide enough to seat half a neighborhood. The hot dog carts at the bottom have been there forever. <strong>Get the dog, sit on the steps, eat it.</strong> This is a small ritual that costs nothing and means something. Eight bucks. Take twenty minutes. Watch the city.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AFTERNOON DRIFT -->
+  <div class="section-header">
+    <h2>The Drift Back</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">2:00 &mdash; 3:30 PM</span>
+        <span class="stop-name">Central Park &amp; Madison Drift</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Loose path · Central Park east side · Madison Avenue south</div>
+        <p>Cross into Central Park behind the Met. Walk thirty minutes &mdash; the Great Lawn, the Reservoir if anyone's up for it, the east-side paths. <strong>No agenda.</strong> When energy starts to flag, exit at 79th or 72nd onto Madison Ave and drift south, peering into shop windows. Madison between 65th and 80th is where the city goes to spend money quietly. You don't have to buy anything.</p>
+        <p><strong>Subway home:</strong> grab the 6 train from any Lexington Ave stop in the 70s and transfer at 59th-Columbus Circle to the 1, or just rideshare back if anyone's wiped. ~$15 cab to The Wallace.</p>
+      </div>
+    </div>
+
+    <div class="transit-card">
+      <div class="transit-card-icon">🏨</div>
+      <div><strong>Back at The Wallace by 3:30 &mdash; 4:00 PM</strong> · freshen up · change for dinner · roughly 4:30 to head downtown</div>
+    </div>
+
+  </div>
+
+  <!-- EVENING: COTE -->
+  <div class="section-header">
+    <h2>The Evening</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <div class="transit-card">
+      <div class="transit-card-icon">🚇</div>
+      <div><strong>1 train from 72nd to 23rd St</strong> · 6 stops · about 15 min · or rideshare ~$20 if running late</div>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">5:00 PM</span>
+        <span class="stop-name">Cote</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">16 W 22nd St · Flatiron · Michelin · party of 4 · Resy ✅</div>
+        <p>The first big dinner of the trip and one of the most fun rooms in New York. Cote is a Korean steakhouse that won a Michelin star for treating Korean BBQ as fine dining &mdash; the grill is set into the table, the cuts of meat are prime dry-aged American beef, and the service is theatrical without being precious. The dining room is dim, low ceilings, leather booths, glowing grills throwing flickering light. Loud-ish but in a good way. <strong>Order the Butcher's Feast</strong> ($72/person) &mdash; four cuts of beef cooked at your table, a stew, egg soufflé, sides, and soft-serve to finish. It's the move. Zero decisions. No foam, no tweezers, just exceptional food at the right pace.</p>
+        <p>Anthony's first real Michelin dinner. He'll remember it.</p>
+        <a class="maps-button" href="maps://?q=Cote+Korean+Steakhouse+16+W+22nd+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MAP -->
+  <div class="section-header">
+    <h2>The Day on a Map</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="map-wrap">
+    <div id="day-map" class="map-container"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot home"></div>The Wallace</div>
+      <div class="legend-item"><div class="legend-dot stop"></div>Stops 1&ndash;5</div>
+      <div class="legend-item"><div class="legend-line"></div>The day's path</div>
+    </div>
+  </div>
+
+  <!-- BEFORE BED -->
+  <div class="section-header">
+    <h2>Before Bed</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="before-bed">
+    <div class="before-bed-title">One thing before sleep</div>
+    <p>Tomorrow is <strong>the Lower East Side food tour</strong> &mdash; Nice Guy Tours, <strong>meeting at 10:30am</strong>. Address goes out from the company morning of; check email before bed. About 3 hours of walking and eating: Katz's, Russ &amp; Daughters, Kossar's, Pickle Guys, Doughnut Plant.</p>
+    <p>Evening is <strong>Dog Day Afternoon on Broadway at 7pm</strong> &mdash; August Wilson Theatre, 245 W 52nd St. Jon Bernthal and Ebon Moss-Bachrach.</p>
+    <p>Comfortable shoes are non-negotiable tomorrow. <strong>Good night.</strong></p>
+  </div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  <strong><a href="../">&larr; Back to NYC 2026 overview</a></strong><br>
+  Day 2 of 9 &nbsp;·&nbsp; Thursday, June 4, 2026 &nbsp;·&nbsp; Anthony's 21st Birthday Trip
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Coordinates for the day
+    const wallace      = [40.7820, -73.9818];   // Home base
+    const dailyProv    = [40.7822, -73.9786];   // Stop 1
+    const riverside    = [40.7850, -73.9856];   // Stop 2 (Riverside Park near 79th)
+    const zabars       = [40.7849, -73.9796];   // Stop 3
+    const theMet       = [40.7794, -73.9632];   // Stop 4
+    const cote         = [40.7413, -73.9913];   // Stop 5
+
+    const map = L.map('day-map', {
+      zoom: 13,
+      zoomControl: true,
+      scrollWheelZoom: false,
+      attributionControl: true
+    });
+
+    // CartoDB Positron — light, minimal
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Walking/route line connecting the day in order
+    const route = [wallace, dailyProv, riverside, zabars, theMet, cote];
+    L.polyline(route, {
+      color: '#C9A84C',
+      weight: 4,
+      opacity: 0.85,
+      dashArray: '8, 6',
+      lineCap: 'round'
+    }).addTo(map);
+
+    // Home base
+    const homeIcon = L.divIcon({
+      className: 'home-marker',
+      html: '★',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14]
+    });
+    L.marker(wallace, { icon: homeIcon }).addTo(map)
+      .bindPopup('<strong>The Wallace</strong>Home base<br>242 W 76th St');
+
+    // Numbered stops
+    const stops = [
+      { coords: dailyProv, num: '1', name: "Daily Provisions",       addr: '375 Amsterdam Ave' },
+      { coords: riverside, num: '2', name: 'Riverside Park',         addr: 'Riverside Dr at W 79th' },
+      { coords: zabars,    num: '3', name: "Zabar's",                addr: '2245 Broadway' },
+      { coords: theMet,    num: '4', name: 'The Met',                addr: '1000 5th Avenue' },
+      { coords: cote,      num: '5', name: 'Cote',                   addr: '16 W 22nd St · 5:00 PM' }
+    ];
+    stops.forEach(s => {
+      const icon = L.divIcon({
+        className: 'stop-marker',
+        html: s.num,
+        iconSize: [26, 26],
+        iconAnchor: [13, 13]
+      });
+      L.marker(s.coords, { icon: icon }).addTo(map)
+        .bindPopup('<strong>' + s.name + '</strong>Stop ' + s.num + '<br>' + s.addr);
+    });
+
+    // Frame all points
+    const bounds = L.latLngBounds(route);
+    map.fitBounds(bounds, { padding: [40, 40] });
+  });
+</script>
+
+</body>
+</html>
