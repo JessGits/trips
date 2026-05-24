@@ -41,6 +41,9 @@
     --turk-bg: #F3EFFB;
     --turk-border: #8B6FC9;
     --turk-text: #5B3F99;
+    --film-bg: #EEF4FF;
+    --film-border: #5B8DEF;
+    --film-text: #2C5282;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -343,6 +346,52 @@
   .split-callout p:last-child { margin-bottom: 0; }
   .split-callout strong { color: var(--navy); }
 
+  /* FILM CALLOUT */
+  .film-callout {
+    background: var(--film-bg);
+    border: 1px solid var(--film-border);
+    border-left: 4px solid var(--film-border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-top: 12px;
+  }
+  .film-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--film-text);
+    margin-bottom: 8px;
+  }
+  .film-callout p {
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .film-callout p:last-child { margin-bottom: 0; }
+  .film-callout p strong { color: var(--film-text); }
+
+  /* ON-SCREEN PILL — inline blue chip for transit-card film moments */
+  .onscreen-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(91, 141, 239, 0.14);
+    color: var(--film-text);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-right: 4px;
+    vertical-align: 1px;
+  }
+
   /* MAP */
   .map-wrap {
     background: white;
@@ -495,6 +544,7 @@
     .stop-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .before-bed { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .split-callout { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .film-callout { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .stop-card, .map-wrap, .before-bed { page-break-inside: avoid; }
     .maps-button { display: none; }
     a { color: inherit; text-decoration: none; }
@@ -518,8 +568,8 @@
     <div class="hero-sub">A slow UWS morning &nbsp;·&nbsp; The Met from late morning &nbsp;·&nbsp; Korean BBQ Michelin at five</div>
     <div class="glance-row">
       <div class="pill"><span>🥐</span>Daily Provisions</div>
+      <div class="pill"><span>🌳</span>Central Park walk</div>
       <div class="pill"><span>🏛️</span>The Met</div>
-      <div class="pill"><span>🌭</span>Met steps dog</div>
       <div class="pill"><span>🥩</span>Cote · 5pm</div>
     </div>
   </div>
@@ -530,7 +580,7 @@
   <!-- DAY BANNER -->
   <div class="day-banner">
     <div class="day-banner-label">The Tone for Today</div>
-    <p>The first real day in the city. Take it slow this morning &mdash; pastry, the river, the appetizing shop everyone walks past. Then cross the park to <strong>the Met</strong>, the largest art museum in the Western Hemisphere, and spend a few hours inside. Hot dog on the steps after if anyone's hungry. Back uptown to freshen up. <strong>Cote at five</strong> &mdash; Korean BBQ done as fine dining, the kind of room that makes a memorable first dinner.</p>
+    <p>The first real day in the city. <strong>Pastry to start, then a slow walk through Central Park</strong> &mdash; Strawberry Fields, Bethesda Fountain, Bow Bridge &mdash; ending at the steps of <strong>the Met</strong>. A few hours inside. Hot dog on the steps if anyone's hungry. Back uptown to freshen up. <strong>Cote at five</strong> &mdash; Korean BBQ done as fine dining, the kind of room that makes a memorable first dinner.</p>
   </div>
 
   <!-- MORNING -->
@@ -556,52 +606,105 @@
       </div>
     </div>
 
-    <!-- Transit -->
+    <!-- Transit to Central Park -->
     <div class="transit-card">
       <div class="transit-card-icon">🚶</div>
-      <div><strong>Walk west to the river</strong> &mdash; 3 blocks · about 6 minutes · cross West End Ave and Riverside Drive</div>
+      <div><strong>Walk south on Amsterdam to 72nd, cross to Central Park West, enter the park.</strong> About 10 minutes from Daily Provisions to the 72nd Street park entrance.</div>
     </div>
 
-    <!-- Riverside Park -->
+    <!-- Strawberry Fields -->
     <div class="stop-card">
       <div class="stop-header">
-        <span class="stop-time">9:15 AM</span>
-        <span class="stop-name">Riverside Park</span>
+        <span class="stop-time">~9:15 AM</span>
+        <span class="stop-name">Strawberry Fields</span>
       </div>
       <div class="stop-body">
-        <div class="stop-address">Riverside Drive at W 79th · the Hudson, no tourists</div>
-        <p>Twenty minutes of just walking. The path along the Hudson is one of the most underrated stretches in Manhattan &mdash; locals running, dogs being walked, the New Jersey skyline across the water. Walk south to about W 72nd, then cut east through the park back toward Broadway. The rest of the day is dense; this is the quiet stretch.</p>
-        <a class="maps-button" href="maps://?q=Riverside+Park+79th+Street+New+York+NY">
-          <span class="maps-button-icon">📍</span>Open in Maps
-        </a>
-      </div>
-    </div>
-
-    <!-- Transit -->
-    <div class="transit-card">
-      <div class="transit-card-icon">🚶</div>
-      <div><strong>Walk east to Zabar's</strong> &mdash; cut through to Broadway and head north · about 8 minutes</div>
-    </div>
-
-    <!-- Zabar's -->
-    <div class="stop-card">
-      <div class="stop-header">
-        <span class="stop-time">10:00 AM</span>
-        <span class="stop-name">Zabar's</span>
-      </div>
-      <div class="stop-body">
-        <div class="stop-address">2245 Broadway at W 80th · open since 1934</div>
-        <p>An institution. New York's most legendary "appetizing" shop &mdash; smoked fish, bagels, babka, cheeses, coffee, kitchen gadgets upstairs. Walk through, look at the lox counter, see what calls to you. Coffee and a bite at the cafe is fair game if anyone wants &mdash; just remember the food tour is tomorrow and Cote is tonight. A babka or a Zabar's tote makes a good souvenir.</p>
-        <a class="maps-button" href="maps://?q=Zabar%27s+2245+Broadway+New+York+NY">
+        <div class="stop-address">72nd St entrance · west side of Central Park · the John Lennon memorial</div>
+        <p>The first thing inside the park. The black-and-white <strong>Imagine mosaic</strong> set into the path, surrounded by quiet trees. Lennon lived across the street at the Dakota and was shot in front of it in 1980 &mdash; the city dedicated this stretch of the park to him a few years later. There's almost always a musician here playing Beatles songs. A two-minute pause, sometimes longer if the music's good.</p>
+        <a class="maps-button" href="maps://?q=Strawberry+Fields+Central+Park+New+York+NY">
           <span class="maps-button-icon">📍</span>Open in Maps
         </a>
 
-        <!-- Bourdain callout -->
-        <div class="split-callout" style="background: var(--bourdain-bg); border-color: var(--bourdain-border); border-left-color: var(--bourdain-border);">
-          <div class="split-callout-title" style="color: var(--bourdain-text);">🍴 Bourdain · A neighborhood note</div>
-          <p>Anthony Bourdain's actual neighborhood breakfast spot &mdash; <strong>Barney Greengrass, the Sturgeon King</strong> &mdash; is six blocks north on Amsterdam at 86th. He called it "the best breakfast in the universe" and ate there nearly every Sunday he was home. We're saving it for another morning. Just know it's there.</p>
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>The Dakota</strong> &mdash; directly across Central Park West from the memorial &mdash; is the apartment building from <em>Rosemary's Baby</em> (1968), and the place John Lennon was returning home to when he was shot in 1980. Anyone reading about the building's haunted reputation knows this view.</p>
         </div>
       </div>
+    </div>
+
+    <!-- The Mall -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~9:30 AM</span>
+        <span class="stop-name">The Mall &amp; Literary Walk</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">central spine of the park · cathedral canopy of American elms</div>
+        <p>The only straight path in Central Park. A quarter-mile-long promenade lined with American elm trees that arch overhead into a cathedral canopy &mdash; one of the largest remaining stands of elms in North America. Statues of writers (Shakespeare, Burns, Scott, Halleck) line the way. <strong>Walk the full length south to north.</strong> It opens onto Bethesda Terrace at the end.</p>
+        <a class="maps-button" href="maps://?q=The+Mall+Central+Park+Literary+Walk+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p>The Mall has shown up in <em>Breakfast at Tiffany's, Kramer vs. Kramer, Serendipity, Enchanted, Vanilla Sky, Maid in Manhattan.</em> It's the path filmmakers reach for when they want "Central Park" to feel iconic in one shot.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bethesda Fountain -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~9:50 AM</span>
+        <span class="stop-name">Bethesda Terrace &amp; Fountain</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">the heart of Central Park · arrive from the Mall for the full reveal</div>
+        <p>One of the most filmed outdoor locations in New York. The <strong>Angel of the Waters</strong> bronze fountain at the center, set in front of a grand terrace with arched colonnades and a ceiling of 15,000 hand-painted tiles (the only Minton tile ceiling in the world). Often there's a busker singing under the arches with the acoustics doing the work. Walk down the stairs from the Mall for the full reveal &mdash; that's the shot every movie uses.</p>
+        <a class="maps-button" href="maps://?q=Bethesda+Terrace+Central+Park+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>The Avengers (2012)</strong> &mdash; Thor takes Loki here at the end of the film.</p>
+          <p><strong>Home Alone 2 (1992)</strong> &mdash; Kevin is chased by the Wet Bandits through this terrace, jumps into a horse carriage to escape.</p>
+          <p><strong>Elf (2003)</strong> &mdash; Buddy and Santa's sleigh nearly crash into the fountain in the finale.</p>
+          <p><strong>John Wick: Chapter 2 (2017)</strong> &mdash; John meets Winston at the fountain.</p>
+          <p><strong>When Harry Met Sally (1989)</strong> &mdash; Harry and Sally walk and talk along the terrace.</p>
+          <p><strong>Gossip Girl</strong> &mdash; Blair and Chuck's wedding finale (Season 6).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bow Bridge -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~10:05 AM</span>
+        <span class="stop-name">Bow Bridge</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">a short walk west from Bethesda · cast-iron bridge across the Lake</div>
+        <p>An elegant cast-iron bridge arching over the Lake, with the Ramble rising on the far side. From Bethesda, walk along the lakeshore to your west and it's right there. Stand in the middle for the photograph the whole world has taken &mdash; midtown towers framed by trees, water below, the bridge curving under your feet. Two minutes if you keep moving, ten if you want to linger.</p>
+        <a class="maps-button" href="maps://?q=Bow+Bridge+Central+Park+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Spider-Man 3 (2007)</strong> &mdash; Peter and Mary Jane share a moment on the bridge.</p>
+          <p><strong>Enchanted (2007)</strong> &mdash; Giselle and Robert dance across it during "That's How You Know."</p>
+          <p><strong>The Way We Were (1973)</strong> &mdash; Hubbell and Katie cross the bridge in the New York chapter of their love story.</p>
+          <p><strong>Autumn in New York (2000)</strong> &mdash; Will and Charlotte walk it in the film's most romantic sequence.</p>
+          <p><strong>Manhattan (1979)</strong> &mdash; the iconic Woody Allen / Diane Keaton silhouette shot.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transit to the Met -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Northeast through the park to the Met.</strong> From Bow Bridge, walk back east past Bethesda, then north on the East Drive. Exit the park at 79th-80th &amp; 5th Avenue &mdash; the Met is directly across the street. About 15 minutes of walking.</div>
     </div>
 
   </div>
@@ -613,12 +716,6 @@
   </div>
 
   <div class="timeline">
-
-    <!-- Transit -->
-    <div class="transit-card">
-      <div class="transit-card-icon">🚌</div>
-      <div><strong>Cross the park to the Met</strong> &mdash; M79 crosstown bus from Broadway &amp; 79th to 5th Ave &amp; 79th · 15 min · or a 25-min walk across Central Park if the weather is gorgeous</div>
-    </div>
 
     <!-- The Met -->
     <div class="stop-card">
@@ -642,6 +739,14 @@
         <div class="split-callout">
           <div class="split-callout-title">A natural split for Raphael</div>
           <p><strong>Raphael: Sublime Poetry</strong> &mdash; the first-ever U.S. retrospective of the Renaissance master &mdash; closes June 28. It's the once-in-a-lifetime kind of exhibition, and it's a deep-cut. If it calls to you, peel off for ~45 minutes; everyone else can drift toward Arms &amp; Armor. Reconvene at the <strong>American Wing</strong> around 12:15. Phones on, keep loose contact. The Met is enormous but the wings are well-signed.</p>
+        </div>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Ocean's Eight (2018)</strong> &mdash; the Met Gala heist; Debbie Ocean's crew lifts a Cartier necklace from Daphne Kluger in the bathroom. The great hall, the Egyptian Wing, and the front steps all feature.</p>
+          <p><strong>Gossip Girl</strong> &mdash; the Met steps are the show's most-filmed exterior; Blair Waldorf holds court here daily.</p>
+          <p><strong>When Harry Met Sally (1989)</strong> &mdash; Harry and Sally walk the Temple of Dendur, mid-friendship, talking about their lives.</p>
+          <p>Also <em>I Am Legend</em> (the steps, deserted) and many more &mdash; the Met has been New York shorthand on film since the 1950s.</p>
         </div>
       </div>
     </div>
@@ -671,19 +776,60 @@
 
     <div class="stop-card">
       <div class="stop-header">
-        <span class="stop-time">2:00 &mdash; 3:30 PM</span>
-        <span class="stop-name">Central Park &amp; Madison Drift</span>
+        <span class="stop-time">2:00 &mdash; 2:30 PM</span>
+        <span class="stop-name">East-Side Decompress</span>
       </div>
       <div class="stop-body">
-        <div class="stop-address">Loose path · Central Park east side · Madison Avenue south</div>
-        <p>Cross into Central Park behind the Met. Walk thirty minutes &mdash; the Great Lawn, the Reservoir if anyone's up for it, the east-side paths. <strong>No agenda.</strong> When energy starts to flag, exit at 79th or 72nd onto Madison Ave and drift south, peering into shop windows. Madison between 65th and 80th is where the city goes to spend money quietly. You don't have to buy anything.</p>
-        <p><strong>Subway home:</strong> grab the 6 train from any Lexington Ave stop in the 70s and transfer at 59th-Columbus Circle to the 1, or just rideshare back if anyone's wiped. ~$15 cab to The Wallace.</p>
+        <div class="stop-address">Cross into Central Park behind the Met &middot; loose path south on the east side</div>
+        <p>Cross into Central Park directly behind the Met and walk south along the east-side paths. Thirty minutes, no agenda &mdash; the Great Lawn, the Reservoir if anyone's curious, benches if anyone needs to sit. The east-side paths are quieter than the famous middle of the park. The point is to let the museum settle.</p>
+      </div>
+    </div>
+
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Drift south toward the Zoo.</strong> About 15&ndash;20 minutes from the Met along the east-side paths &mdash; the Zoo sits at 5th Ave and 64th St, near the southeast corner of the park.</div>
+    </div>
+
+    <!-- Central Park Zoo (optional Madagascar stop) -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~2:45 PM</span>
+        <span class="stop-name">Central Park Zoo &middot; if it calls</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">5th Ave at 64th St &middot; ~$20/adult at the gate &middot; small, walkable</div>
+        <p>Small by zoo standards &mdash; a sea lion pool you can walk around in five minutes, a snow leopard exhibit, the Tropic Zone rainforest, the penguin house. <strong>30&ndash;45 minutes</strong> is plenty. This is a "we're passing it anyway" stop, not a destination. Skip without guilt if energy's flagging; Cote at 5 is still the anchor.</p>
+        <a class="maps-button" href="maps://?q=Central+Park+Zoo+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Madagascar (2005)</strong> &mdash; Alex, Marty, Gloria, and Melman live here in the opening of the film. The whole story starts in this zoo before they end up shipped off in crates and shipwrecked. The penguin habitat is where Skipper, Kowalski, Rico, and Private hatch their escape.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Exit the park at 60th or 59th onto 5th Ave.</strong> Madison Ave is one block east &mdash; drift north through the shop windows, or jump on the subway home from 59th-Lex.</div>
+    </div>
+
+    <!-- Madison Drift -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">3:15 &mdash; 4:00 PM</span>
+        <span class="stop-name">Madison Avenue Drift</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Madison Ave between 60th and 80th &middot; eyes-only window shopping</div>
+        <p>Madison between 65th and 80th is where the city goes to spend money quietly. <strong>You don't have to buy anything.</strong> Peer into the windows, point at things, talk about what you'd buy if money were no object, exit at 72nd or 79th and grab the 6 train home (transfer at 59th-Columbus Circle to the 1), or rideshare ~$15 back to The Wallace.</p>
       </div>
     </div>
 
     <div class="transit-card">
       <div class="transit-card-icon">🏨</div>
-      <div><strong>Back at The Wallace by 3:30 &mdash; 4:00 PM</strong> · freshen up · change for dinner · roughly 4:30 to head downtown</div>
+      <div><strong>Back at The Wallace by 4:00 PM</strong> · freshen up · change for dinner · roughly 4:30 to head downtown</div>
     </div>
 
   </div>
@@ -729,7 +875,7 @@
     <div id="day-map" class="map-container"></div>
     <div class="map-legend">
       <div class="legend-item"><div class="legend-dot home"></div>The Wallace</div>
-      <div class="legend-item"><div class="legend-dot stop"></div>Stops 1&ndash;5</div>
+      <div class="legend-item"><div class="legend-dot stop"></div>Stops 1&ndash;8</div>
       <div class="legend-item"><div class="legend-line"></div>The day's path</div>
     </div>
   </div>
@@ -743,7 +889,7 @@
     <div class="before-bed-title">One thing before sleep</div>
     <p>Tomorrow is <strong>the Lower East Side food tour</strong> &mdash; Nice Guy Tours, <strong>meeting at 10:30am</strong>. Address goes out from the company morning of; check email before bed. About 3 hours of walking and eating: Katz's, Russ &amp; Daughters, Kossar's, Pickle Guys, Doughnut Plant.</p>
     <p>Evening is <strong>Dog Day Afternoon on Broadway at 7pm</strong> &mdash; August Wilson Theatre, 245 W 52nd St. Jon Bernthal and Ebon Moss-Bachrach.</p>
-    <p>Comfortable shoes are non-negotiable tomorrow. <strong>Good night.</strong></p>
+    <p>Comfortable shoes tomorrow. <strong>Good night.</strong></p>
   </div>
 
 </div><!-- end main -->
@@ -756,12 +902,15 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Coordinates for the day
-    const wallace      = [40.7820, -73.9818];   // Home base
-    const dailyProv    = [40.7822, -73.9786];   // Stop 1
-    const riverside    = [40.7850, -73.9856];   // Stop 2 (Riverside Park near 79th)
-    const zabars       = [40.7849, -73.9796];   // Stop 3
-    const theMet       = [40.7794, -73.9632];   // Stop 4
-    const cote         = [40.7413, -73.9913];   // Stop 5
+    const wallace         = [40.7820, -73.9818];   // Home base
+    const dailyProv       = [40.7822, -73.9786];   // Stop 1
+    const strawberryFlds  = [40.7757, -73.9752];   // Stop 2
+    const theMall         = [40.7724, -73.9716];   // Stop 3
+    const bethesda        = [40.7740, -73.9710];   // Stop 4
+    const bowBridge       = [40.7758, -73.9718];   // Stop 5
+    const theMet          = [40.7794, -73.9632];   // Stop 6
+    const centralParkZoo  = [40.7681, -73.9719];   // Stop 7 (optional · Madagascar)
+    const cote            = [40.7413, -73.9913];   // Stop 8
 
     const map = L.map('day-map', {
       zoom: 13,
@@ -778,7 +927,7 @@
     }).addTo(map);
 
     // Walking/route line connecting the day in order
-    const route = [wallace, dailyProv, riverside, zabars, theMet, cote];
+    const route = [wallace, dailyProv, strawberryFlds, theMall, bethesda, bowBridge, theMet, centralParkZoo, cote];
     L.polyline(route, {
       color: '#C9A84C',
       weight: 4,
@@ -799,11 +948,14 @@
 
     // Numbered stops
     const stops = [
-      { coords: dailyProv, num: '1', name: "Daily Provisions",       addr: '375 Amsterdam Ave' },
-      { coords: riverside, num: '2', name: 'Riverside Park',         addr: 'Riverside Dr at W 79th' },
-      { coords: zabars,    num: '3', name: "Zabar's",                addr: '2245 Broadway' },
-      { coords: theMet,    num: '4', name: 'The Met',                addr: '1000 5th Avenue' },
-      { coords: cote,      num: '5', name: 'Cote',                   addr: '16 W 22nd St · 5:00 PM' }
+      { coords: dailyProv,       num: '1', name: "Daily Provisions",      addr: '375 Amsterdam Ave · ~8:30 AM' },
+      { coords: strawberryFlds,  num: '2', name: 'Strawberry Fields',     addr: '72nd St & CPW · ~9:15 AM' },
+      { coords: theMall,         num: '3', name: 'The Mall',              addr: 'central spine of the park' },
+      { coords: bethesda,        num: '4', name: 'Bethesda Fountain',     addr: 'heart of Central Park' },
+      { coords: bowBridge,       num: '5', name: 'Bow Bridge',            addr: 'across the Lake' },
+      { coords: theMet,          num: '6', name: 'The Met',               addr: '1000 5th Avenue · 10:30 AM' },
+      { coords: centralParkZoo,  num: '7', name: 'Central Park Zoo (optional)', addr: '5th Ave at 64th St · ~2:45 PM' },
+      { coords: cote,            num: '8', name: 'Cote',                  addr: '16 W 22nd St · 5:00 PM' }
     ];
     stops.forEach(s => {
       const icon = L.divIcon({

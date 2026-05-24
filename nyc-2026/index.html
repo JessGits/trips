@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>NYC 2026 · Anthony's 21st</title>
 
-<!-- PWA / Add to Home Screen -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="NYC 2026">
@@ -44,7 +43,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* HERO */
   .hero {
     background: var(--navy);
     padding: 56px 28px 36px;
@@ -55,353 +53,91 @@
   .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 340px; height: 340px; border-radius: 50%; background: rgba(201,168,76,0.07); pointer-events: none; }
   .hero::after { content: ''; position: absolute; bottom: -60px; left: 100px; width: 220px; height: 220px; border-radius: 50%; background: rgba(201,168,76,0.04); pointer-events: none; }
   .hero-inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; }
-  .hero-eyebrow {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 14px;
-  }
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 44px;
-    font-weight: 900;
-    color: #fff;
-    line-height: 1.05;
-    margin-bottom: 10px;
-    letter-spacing: -0.5px;
-  }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 900; color: #fff; line-height: 1.05; margin-bottom: 10px; letter-spacing: -0.5px; }
   .hero h1 em { font-style: italic; color: var(--gold); }
-  .hero-sub {
-    font-size: 14px;
-    color: rgba(255,255,255,0.6);
-    font-weight: 300;
-    margin-bottom: 28px;
-    line-height: 1.5;
-  }
-  .glance-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-  }
-  .glance-card {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(201,168,76,0.22);
-    border-radius: 8px;
-    padding: 12px 14px;
-  }
-  .gc-label {
-    font-size: 9.5px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 6px;
-  }
-  .gc-value {
-    font-size: 12px;
-    color: rgba(255,255,255,0.88);
-    line-height: 1.5;
-    font-weight: 400;
-  }
+  .hero-sub { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 300; margin-bottom: 28px; line-height: 1.5; }
+  .glance-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .glance-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(201,168,76,0.22); border-radius: 8px; padding: 12px 14px; }
+  .gc-label { font-size: 9.5px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .gc-value { font-size: 12px; color: rgba(255,255,255,0.88); line-height: 1.5; font-weight: 400; }
   .gc-value strong { color: #fff; font-weight: 600; }
 
-  /* MAIN */
   .main { padding: 36px 24px 48px; max-width: 1100px; margin: 0 auto; }
 
-  /* SECTION HEADER */
   .section-header { display: flex; align-items: center; gap: 12px; margin: 36px 0 16px; }
   .section-header:first-child { margin-top: 0; }
-  .section-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--navy);
-    white-space: nowrap;
-    letter-spacing: -0.3px;
-  }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--navy); white-space: nowrap; letter-spacing: -0.3px; }
   .section-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
 
-  /* INTRO */
-  .intro-text {
-    font-size: 15px;
-    color: var(--slate);
-    line-height: 1.7;
-    margin-bottom: 12px;
-    max-width: 760px;
-  }
+  .intro-text { font-size: 15px; color: var(--slate); line-height: 1.7; margin-bottom: 12px; max-width: 760px; }
   .intro-text strong { color: var(--navy); }
   .intro-text em { color: var(--gold); font-style: italic; font-weight: 500; }
-  .intro-text a {
-    color: var(--navy);
-    text-decoration: none;
-    border-bottom: 1.5px solid var(--gold);
-    font-weight: 600;
-    transition: color 0.15s ease, border-color 0.15s ease;
-  }
+  .intro-text a { color: var(--navy); text-decoration: none; border-bottom: 1.5px solid var(--gold); font-weight: 600; transition: color 0.15s ease, border-color 0.15s ease; }
   .intro-text a:hover { color: var(--gold); border-bottom-color: var(--navy); }
 
-  /* DAY TABLE */
-  .day-table-wrap {
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    background: white;
-    box-shadow: 0 1px 3px rgba(27,58,92,0.04);
-  }
-  .day-table-header {
-    background: var(--navy);
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .dth-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: white;
-  }
-  .dth-meta {
-    font-size: 10.5px;
-    color: rgba(255,255,255,0.55);
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.5px;
-  }
+  .day-table-wrap { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: white; box-shadow: 0 1px 3px rgba(27,58,92,0.04); }
+  .day-table-header { background: var(--navy); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+  .dth-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: white; }
+  .dth-meta { font-size: 10.5px; color: rgba(255,255,255,0.55); font-family: 'DM Mono', monospace; letter-spacing: 0.5px; }
   table.day-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  table.day-table thead th {
-    background: var(--navy-mid);
-    color: rgba(255,255,255,0.85);
-    padding: 10px 16px;
-    text-align: left;
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  table.day-table tbody tr {
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-  }
+  table.day-table thead th { background: var(--navy-mid); color: rgba(255,255,255,0.85); padding: 10px 16px; text-align: left; font-size: 10.5px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+  table.day-table tbody tr { cursor: pointer; transition: background-color 0.15s ease; }
   table.day-table tbody tr:nth-child(even) td { background: #F9F7F4; }
   table.day-table tbody tr:nth-child(odd) td { background: white; }
   table.day-table tbody tr:hover td { background: var(--gold-pale); }
   table.day-table tbody tr:active td { background: var(--gold-light); }
-  table.day-table td {
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-    line-height: 1.55;
-  }
+  table.day-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; }
   table.day-table tr:last-child td { border-bottom: none; }
-  .td-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 11.5px;
-    font-weight: 500;
-    color: var(--navy);
-    white-space: nowrap;
-    width: 110px;
-  }
-  .td-anchor {
-    font-weight: 700;
-    color: var(--navy);
-    width: 200px;
-    font-size: 13.5px;
-    font-family: 'Playfair Display', serif;
-    letter-spacing: 0.1px;
-  }
-  .td-summary {
-    color: var(--slate);
-    font-size: 12.5px;
-    line-height: 1.55;
-  }
-  .td-evening {
-    width: 200px;
-    font-size: 12px;
-    color: var(--slate);
-  }
-  .td-evening strong { color: var(--navy); font-weight: 600; display: block; font-size: 12.5px; margin-bottom: 1px; }
+  .td-date { font-family: 'DM Mono', monospace; font-size: 11.5px; font-weight: 500; color: var(--navy); white-space: nowrap; width: 110px; }
+  .td-anchor { font-weight: 700; color: var(--navy); font-size: 13.5px; font-family: 'Playfair Display', serif; letter-spacing: 0.1px; margin-bottom: 4px; }
+  .td-summary { color: var(--slate); font-size: 12.5px; line-height: 1.55; }
+  .td-booked { width: 220px; font-size: 12px; color: var(--slate); }
+  .td-booked .booking { padding: 4px 0; }
+  .td-booked .booking + .booking { border-top: 1px dashed var(--border); margin-top: 4px; padding-top: 8px; }
+  .td-booked strong { color: var(--navy); font-weight: 600; display: block; font-size: 12.5px; margin-bottom: 1px; }
+  .td-booked .sub { color: var(--light-slate); font-size: 11px; }
+  .td-booked .empty { color: var(--light-slate); font-style: italic; font-size: 11.5px; }
   .birthday-row td { background: var(--gold-pale) !important; }
   .birthday-row:hover td { background: var(--gold-light) !important; }
   .birthday-row .td-anchor { color: #8B6914; }
-  .arrow {
-    display: inline-block;
-    margin-left: 6px;
-    color: var(--gold);
-    font-weight: 700;
-    opacity: 0.5;
-    transition: opacity 0.15s ease, transform 0.15s ease;
-  }
+  .arrow { display: inline-block; margin-left: 6px; color: var(--gold); font-weight: 700; opacity: 0.5; transition: opacity 0.15s ease, transform 0.15s ease; }
   table.day-table tbody tr:hover .arrow { opacity: 1; transform: translateX(3px); }
 
-  /* PANEL */
-  .panel {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 22px 24px;
-    box-shadow: 0 1px 3px rgba(27,58,92,0.04);
-  }
-  .panel h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--gold-light);
-    letter-spacing: -0.2px;
-  }
-  .panel-row {
-    display: flex;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid #F0EBE3;
-    font-size: 13px;
-    line-height: 1.55;
-    color: var(--slate);
-  }
+  .panel { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; box-shadow: 0 1px 3px rgba(27,58,92,0.04); }
+  .panel h3 { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--gold-light); letter-spacing: -0.2px; }
+  .panel-row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F0EBE3; font-size: 13px; line-height: 1.55; color: var(--slate); }
   .panel-row:last-child { border-bottom: none; }
   .panel-row:first-child { padding-top: 4px; }
-  .panel-row-icon {
-    flex: 0 0 24px;
-    font-size: 16px;
-    line-height: 1.4;
-  }
+  .panel-row-icon { flex: 0 0 24px; font-size: 16px; line-height: 1.4; }
   .panel-row-body { flex: 1; }
   .panel-row-body strong { color: var(--navy); font-weight: 600; }
-  .panel-row-body .sub {
-    display: block;
-    font-size: 11.5px;
-    color: var(--light-slate);
-    margin-top: 2px;
-    line-height: 1.5;
-  }
+  .panel-row-body .sub { display: block; font-size: 11.5px; color: var(--light-slate); margin-top: 2px; line-height: 1.5; }
 
-  /* TWO COL */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
-  /* NYC BASICS LINK CARD */
-  .basics-card {
-    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-    border-radius: 12px;
-    padding: 28px 28px;
-    color: white;
-    text-decoration: none;
-    display: block;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.15s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 8px rgba(27,58,92,0.08);
-  }
-  .basics-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(27,58,92,0.15);
-  }
+  .basics-card { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: 12px; padding: 28px 28px; color: white; text-decoration: none; display: block; position: relative; overflow: hidden; transition: transform 0.15s ease, box-shadow 0.2s ease; box-shadow: 0 2px 8px rgba(27,58,92,0.08); }
+  .basics-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(27,58,92,0.15); }
   .basics-card:active { transform: translateY(0); }
-  .basics-card::after {
-    content: '';
-    position: absolute;
-    top: -40px;
-    right: -40px;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: rgba(201,168,76,0.08);
-    pointer-events: none;
-  }
-  .basics-eyebrow {
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 10px;
-    position: relative;
-    z-index: 2;
-  }
-  .basics-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: white;
-    line-height: 1.2;
-    margin-bottom: 8px;
-    position: relative;
-    z-index: 2;
-    letter-spacing: -0.3px;
-  }
+  .basics-card::after { content: ''; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(201,168,76,0.08); pointer-events: none; }
+  .basics-eyebrow { font-size: 10.5px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; position: relative; z-index: 2; }
+  .basics-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: white; line-height: 1.2; margin-bottom: 8px; position: relative; z-index: 2; letter-spacing: -0.3px; }
   .basics-title em { font-style: italic; color: var(--gold); }
-  .basics-sub {
-    font-size: 13.5px;
-    color: rgba(255,255,255,0.7);
-    line-height: 1.5;
-    margin-bottom: 14px;
-    position: relative;
-    z-index: 2;
-    max-width: 560px;
-  }
-  .basics-cta {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--gold);
-    position: relative;
-    z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .basics-sub { font-size: 13.5px; color: rgba(255,255,255,0.7); line-height: 1.5; margin-bottom: 14px; position: relative; z-index: 2; max-width: 560px; }
+  .basics-cta { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 6px; }
   .basics-card.coming-soon { cursor: default; opacity: 0.92; }
   .basics-card.coming-soon:hover { transform: none; box-shadow: 0 2px 8px rgba(27,58,92,0.08); }
   .basics-card.coming-soon .basics-cta { color: rgba(201,168,76,0.55); }
 
-  /* CHECKLIST PANEL */
-  .checklist-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px 24px;
-  }
-  .checklist-item {
-    display: flex;
-    gap: 10px;
-    padding: 10px 0;
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--slate);
-    border-bottom: 1px solid #F0EBE3;
-  }
-  .checklist-icon {
-    flex: 0 0 22px;
-    font-size: 15px;
-  }
+  .checklist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; }
+  .checklist-item { display: flex; gap: 10px; padding: 10px 0; font-size: 13px; line-height: 1.5; color: var(--slate); border-bottom: 1px solid #F0EBE3; }
+  .checklist-icon { flex: 0 0 22px; font-size: 15px; }
   .checklist-body strong { color: var(--navy); font-weight: 600; }
-  .checklist-body .sub {
-    display: block;
-    font-size: 11.5px;
-    color: var(--light-slate);
-    margin-top: 1px;
-  }
+  .checklist-body .sub { display: block; font-size: 11.5px; color: var(--light-slate); margin-top: 1px; }
 
-  /* FOOTER */
-  .footer {
-    margin-top: 56px;
-    padding: 24px 24px;
-    border-top: 1px solid var(--border);
-    text-align: center;
-    font-size: 11px;
-    color: var(--light-slate);
-    font-style: italic;
-    line-height: 1.8;
-    padding-bottom: max(24px, env(safe-area-inset-bottom));
-  }
+  .footer { margin-top: 56px; padding: 24px 24px; border-top: 1px solid var(--border); text-align: center; font-size: 11px; color: var(--light-slate); font-style: italic; line-height: 1.8; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
   .footer strong { color: var(--navy); font-style: normal; font-weight: 600; }
 
-  /* MOBILE */
   @media (max-width: 720px) {
     .hero { padding: 44px 20px 28px; padding-top: max(44px, env(safe-area-inset-top, 44px)); }
     .hero h1 { font-size: 32px; }
@@ -416,42 +152,20 @@
     .basics-card { padding: 24px 22px; }
     .basics-title { font-size: 22px; }
 
-    /* Day table reflow on mobile — stack cells as cards */
     table.day-table thead { display: none; }
     table.day-table, table.day-table tbody { display: block; }
-    table.day-table tbody tr {
-      display: block;
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--border);
-    }
+    table.day-table tbody tr { display: block; padding: 16px 18px; border-bottom: 1px solid var(--border); }
     table.day-table tbody tr:last-child { border-bottom: none; }
     table.day-table tbody tr:nth-child(even) { background: #F9F7F4; }
     table.day-table tbody tr:nth-child(odd) { background: white; }
     table.day-table tbody tr.birthday-row { background: var(--gold-pale); }
-    table.day-table td {
-      display: block;
-      width: 100% !important;
-      padding: 0 !important;
-      border-bottom: none;
-      background: transparent !important;
-    }
-    .td-date {
-      font-size: 10.5px;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 4px;
-    }
-    .td-anchor { font-size: 18px; margin-bottom: 8px; }
+    table.day-table td { display: block; width: 100% !important; padding: 0 !important; border-bottom: none; background: transparent !important; }
+    .td-date { font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+    .td-anchor { font-size: 18px; margin-bottom: 6px; }
     .td-summary { font-size: 13px; margin-bottom: 10px; }
-    .td-evening {
-      font-size: 12px;
-      padding-top: 10px !important;
-      border-top: 1px dashed var(--border);
-    }
+    .td-booked { font-size: 12px; padding-top: 10px !important; border-top: 1px dashed var(--border); }
   }
 
-  /* PRINT */
   @media print {
     body { background: white; font-size: 11px; color: #000; }
     .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 24px 32px; }
@@ -467,28 +181,27 @@
 </head>
 <body>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow">June 3–11, 2026 &nbsp;·&nbsp; New York City &nbsp;·&nbsp; 8 Nights</div>
+    <div class="hero-eyebrow">June 3&ndash;11, 2026 &nbsp;&middot;&nbsp; New York City &nbsp;&middot;&nbsp; 8 Nights</div>
     <h1>Anthony's <em>21st</em> Birthday Trip</h1>
-    <div class="hero-sub">The Wallace · Upper West Side &nbsp;·&nbsp; Jess · Keith · Anthony · Michele</div>
+    <div class="hero-sub">The Wallace &middot; Upper West Side &nbsp;&middot;&nbsp; Jess &middot; Keith &middot; Anthony &middot; Michele</div>
     <div class="glance-row">
       <div class="glance-card">
         <div class="gc-label">Outbound</div>
-        <div class="gc-value"><strong>AA4470</strong> · June 3<br>OKC 4:56pm → LGA 9:27pm</div>
+        <div class="gc-value"><strong>AA4470</strong> &middot; June 3<br>OKC 4:56pm &rarr; LGA 9:27pm</div>
       </div>
       <div class="glance-card">
         <div class="gc-label">Return</div>
-        <div class="gc-value"><strong>AA4526</strong> · June 11<br>LGA 6:59pm → OKC 9:54pm</div>
+        <div class="gc-value"><strong>AA4526</strong> &middot; June 11<br>LGA 6:59pm &rarr; OKC 9:54pm</div>
       </div>
       <div class="glance-card">
         <div class="gc-label">Hotel</div>
-        <div class="gc-value"><strong>The Wallace</strong><br>242 W 76th St · UWS</div>
+        <div class="gc-value"><strong>The Wallace</strong><br>242 W 76th St &middot; UWS</div>
       </div>
       <div class="glance-card">
         <div class="gc-label">The Group</div>
-        <div class="gc-value"><strong>Four travelers</strong><br>Jess · Keith · Anthony · Michele</div>
+        <div class="gc-value"><strong>Four travelers</strong><br>Jess &middot; Keith &middot; Anthony &middot; Michele</div>
       </div>
     </div>
   </div>
@@ -496,7 +209,6 @@
 
 <div class="main">
 
-  <!-- INTRO -->
   <div class="section-header">
     <h2>The Trip</h2>
     <div class="section-line"></div>
@@ -508,95 +220,168 @@
     There's a reason people fall in love with this city. Tap any day below to see our week of exploring one of the greatest cities in the world.
   </p>
 
-  <!-- DAY TABLE -->
   <div class="section-header">
     <h2>The Itinerary</h2>
     <div class="section-line"></div>
   </div>
   <div class="day-table-wrap">
     <div class="day-table-header">
-      <div class="dth-title">Day by Day · June 3&ndash;11</div>
+      <div class="dth-title">Day by Day &middot; June 3&ndash;11</div>
       <div class="dth-meta">Tap any day for details</div>
     </div>
     <table class="day-table">
       <thead>
         <tr>
           <th>Date</th>
-          <th>The Day</th>
-          <th>What Happens</th>
-          <th>Evening</th>
+          <th>Plans for the Day</th>
+          <th>Booked</th>
         </tr>
       </thead>
       <tbody>
 
         <tr onclick="window.location='june-3-arrival/'">
-          <td class="td-date">Wed · June 3</td>
-          <td class="td-anchor">Arrival<span class="arrow">&rarr;</span></td>
-          <td class="td-summary">Land at LaGuardia 9:27pm, rideshare to The Wallace, check in. Walk four blocks down Broadway to Gray's Papaya for the first official meal of the trip &mdash; two hot dogs and a papaya drink, the city's welcome ritual.</td>
-          <td class="td-evening"><strong>Gray's Papaya</strong>2090 Broadway · open late</td>
+          <td class="td-date">Wed &middot; June 3</td>
+          <td>
+            <div class="td-anchor">Arrival<span class="arrow">&rarr;</span></div>
+            <div class="td-summary">Land at LGA in the evening, rideshare to The Wallace, Gray's Papaya before bed.</div>
+          </td>
+          <td class="td-booked">
+            <div class="booking">
+              <strong>AA4470</strong>
+              <span class="sub">LGA 9:27 PM</span>
+            </div>
+          </td>
         </tr>
 
         <tr onclick="window.location='june-4-met-cote/'">
-          <td class="td-date">Thu · June 4</td>
-          <td class="td-anchor">Met &amp; Cote<span class="arrow">&rarr;</span></td>
-          <td class="td-summary">A slow Upper West Side morning &mdash; Daily Provisions for pastry, a Riverside Park walk, Zabar's. Then the Met from late morning: Egyptian Wing, Arms &amp; Armor, the American Wing, and the rooftop. A hot dog on the steps after. Cote at five for the first big dinner.</td>
-          <td class="td-evening"><strong>Cote · 5:00 PM</strong>Korean BBQ · Michelin · Resy ✅</td>
+          <td class="td-date">Thu &middot; June 4</td>
+          <td>
+            <div class="td-anchor">Met &amp; Cote<span class="arrow">&rarr;</span></div>
+            <div class="td-summary">Slow Upper West Side morning, the Met from late morning, Cote at five.</div>
+          </td>
+          <td class="td-booked">
+            <div class="booking">
+              <strong>The Met</strong>
+              <span class="sub">10:30 AM &middot; timed entry</span>
+            </div>
+            <div class="booking">
+              <strong>Cote</strong>
+              <span class="sub">5:00 PM &middot; Resy &#9989;</span>
+            </div>
+          </td>
         </tr>
 
         <tr onclick="window.location='june-5-les-dogday/'">
-          <td class="td-date">Fri · June 5</td>
-          <td class="td-anchor">Food Tour &amp; Broadway<span class="arrow">&rarr;</span></td>
-          <td class="td-summary">Nice Guy Tours Lower East Side at 10:30am &mdash; Katz's Deli, Russ &amp; Daughters, Kossar's Bagels, Pickle Guys, Doughnut Plant. Afternoon drift through SoHo, Nolita, and Tribeca. Freshen up at the hotel before the show.</td>
-          <td class="td-evening"><strong>Dog Day Afternoon · 7:00 PM</strong>August Wilson Theatre · 245 W 52nd</td>
+          <td class="td-date">Fri &middot; June 5</td>
+          <td>
+            <div class="td-anchor">Food Tour &amp; Broadway<span class="arrow">&rarr;</span></div>
+            <div class="td-summary">Nice Guy Tours Lower East Side at 10:30, afternoon drift downtown, show at seven.</div>
+          </td>
+          <td class="td-booked">
+            <div class="booking">
+              <strong>Nice Guy Tours</strong>
+              <span class="sub">10:30 AM &middot; LES</span>
+            </div>
+            <div class="booking">
+              <strong>Dog Day Afternoon</strong>
+              <span class="sub">7:00 PM &middot; August Wilson</span>
+            </div>
+          </td>
         </tr>
 
         <tr class="birthday-row" onclick="window.location='june-6-birthday/'">
-          <td class="td-date">Sat · June 6 🎂</td>
-          <td class="td-anchor">Anthony's 21st<span class="arrow">&rarr;</span></td>
-          <td class="td-summary">The birthday. Carbone at noon for the lunch of the trip &mdash; rigatoni vodka, veal parm, the whole production. Rest at The Wallace through the afternoon. Top of the Rock at 7pm with the All-Inclusive Pass: Observation Deck, the Beam, the Skylift, and the Weather Room for the first legal champagne toast.</td>
-          <td class="td-evening"><strong>Top of the Rock · 7:00 PM</strong>Weather Room toast · 21+ ID required</td>
+          <td class="td-date">Sat &middot; June 6 &#127874;</td>
+          <td>
+            <div class="td-anchor">Anthony's 21st<span class="arrow">&rarr;</span></div>
+            <div class="td-summary">Carbone at noon, afternoon at our own pace, Top of the Rock at seven.</div>
+          </td>
+          <td class="td-booked">
+            <div class="booking">
+              <strong>Carbone</strong>
+              <span class="sub">12:00 PM &middot; Resy &#9989;</span>
+            </div>
+            <div class="booking">
+              <strong>Top of the Rock</strong>
+              <span class="sub">7:00 PM &middot; 21+ ID</span>
+            </div>
+          </td>
         </tr>
 
         <tr onclick="window.location='june-7-village/'">
-          <td class="td-date">Sun · June 7</td>
-          <td class="td-anchor">A Day in the Village<span class="arrow">&rarr;</span></td>
-          <td class="td-summary">A free day downtown to wander &mdash; SoHo, the West Village, Washington Square in the afternoon, the chess corner if anyone's playing. Tony Awards red carpet on the east side of Sixth Avenue near Radio City if there's energy on the way home. Casual UWS dinner.</td>
-          <td class="td-evening"><strong>Casual UWS dinner</strong>Slow recovery evening</td>
+          <td class="td-date">Sun &middot; June 7</td>
+          <td>
+            <div class="td-anchor">A Day in the Village<span class="arrow">&rarr;</span></div>
+            <div class="td-summary">A free day downtown. Wander, eat, see what the day brings.</div>
+          </td>
+          <td class="td-booked">
+            <span class="empty">No bookings &mdash; your pace</span>
+          </td>
         </tr>
 
         <tr onclick="window.location='june-8-brooklyn-cellar/'">
-          <td class="td-date">Mon · June 8</td>
-          <td class="td-anchor">Brooklyn Day<span class="arrow">&rarr;</span></td>
-          <td class="td-summary">Pastry and coffee at The Wallace, subway to City Hall, walk across the Brooklyn Bridge into DUMBO. Juliana's pizza in the late morning. VITAL Williamsburg in the afternoon &mdash; Anthony climbs, others wander Smorgasburg and Domino Park. Return uptown to change, then the late show.</td>
-          <td class="td-evening"><strong>Comedy Cellar · 9:30 PM</strong>117 MacDougal · MacDougal room</td>
+          <td class="td-date">Mon &middot; June 8</td>
+          <td>
+            <div class="td-anchor">Brooklyn Day<span class="arrow">&rarr;</span></div>
+            <div class="td-summary">Brooklyn Bridge into DUMBO, Juliana's, VITAL in Williamsburg. Late show uptown.</div>
+          </td>
+          <td class="td-booked">
+            <div class="booking">
+              <strong>Comedy Cellar</strong>
+              <span class="sub">9:30 PM &middot; MacDougal room</span>
+            </div>
+          </td>
         </tr>
 
         <tr onclick="window.location='june-9-circleline-intrepid/'">
-          <td class="td-date">Tue · June 9</td>
-          <td class="td-anchor">On the Water<span class="arrow">&rarr;</span></td>
-          <td class="td-summary">The easy day. Circle Line Best of New York from Pier 83 at 10am &mdash; two and a half hours around Manhattan, Statue of Liberty close up. Lunch on the pier, then the Intrepid in the afternoon for the aircraft carrier and the Space Shuttle Enterprise. Recovery evening uptown.</td>
-          <td class="td-evening"><strong>Recovery evening</strong>Casual dinner, early to bed</td>
+          <td class="td-date">Tue &middot; June 9</td>
+          <td>
+            <div class="td-anchor">On the Water<span class="arrow">&rarr;</span></div>
+            <div class="td-summary">Circle Line at ten, the Intrepid in the afternoon, quiet evening.</div>
+          </td>
+          <td class="td-booked">
+            <div class="booking">
+              <strong>Circle Line</strong>
+              <span class="sub">10:00 AM &middot; Pier 83</span>
+            </div>
+          </td>
         </tr>
 
         <tr onclick="window.location='june-10-911/'">
-          <td class="td-date">Wed · June 10</td>
-          <td class="td-anchor">9/11 Memorial<span class="arrow">&rarr;</span></td>
-          <td class="td-summary">A protected day. Subway down to Cortlandt St for the Memorial pools at street level, then the Museum at 9am with fresh attention. The Oculus after. A slow walk north through Tribeca &mdash; Ghostbusters Firehouse on the way &mdash; then Charging Bull and the Financial District. Train home for a quiet dinner.</td>
-          <td class="td-evening"><strong>Charles Pan-Fried Chicken</strong>146 W 72nd · 5 min from Wallace</td>
+          <td class="td-date">Wed &middot; June 10</td>
+          <td>
+            <div class="td-anchor">9/11 Memorial<span class="arrow">&rarr;</span></div>
+            <div class="td-summary">A protected day downtown. Quiet dinner uptown.</div>
+          </td>
+          <td class="td-booked">
+            <div class="booking">
+              <strong>9/11 Museum</strong>
+              <span class="sub">9:00 AM</span>
+            </div>
+          </td>
         </tr>
 
         <tr onclick="window.location='june-11-amnh-depart/'">
-          <td class="td-date">Thu · June 11</td>
-          <td class="td-anchor">AMNH &amp; Home<span class="arrow">&rarr;</span></td>
-          <td class="td-summary">Pastry at The Wallace, walk five blocks to the Natural History Museum for a 10am entry &mdash; Ocean Life, Fossil Halls, African Mammals, and the Hayden Planetarium at noon for the Milky Way show. Back to the hotel for bags, rideshare to LaGuardia at 3pm. Home by 10.</td>
-          <td class="td-evening"><strong>AA4526 · 6:59 PM</strong>LGA → OKC · home 9:54pm</td>
+          <td class="td-date">Thu &middot; June 11</td>
+          <td>
+            <div class="td-anchor">AMNH &amp; Home<span class="arrow">&rarr;</span></div>
+            <div class="td-summary">Natural History Museum in the morning, rideshare to LGA at three.</div>
+          </td>
+          <td class="td-booked">
+            <div class="booking">
+              <strong>AMNH</strong>
+              <span class="sub">10:00 AM &middot; timed entry</span>
+            </div>
+            <div class="booking">
+              <strong>AA4526</strong>
+              <span class="sub">LGA 6:59 PM</span>
+            </div>
+          </td>
         </tr>
 
       </tbody>
     </table>
   </div>
 
-  <!-- NYC BASICS CARD -->
   <div class="section-header">
     <h2>Before You Go</h2>
     <div class="section-line"></div>
@@ -610,40 +395,39 @@
     <div class="basics-cta">Coming soon &rarr;</div>
   </div>
 
-  <!-- THE WALLACE + GETTING AROUND -->
   <div class="section-header">
     <h2>The Wallace &amp; Getting Around</h2>
     <div class="section-line"></div>
   </div>
   <div class="two-col">
     <div class="panel">
-      <h3>The Wallace · Home Base</h3>
+      <h3>The Wallace &middot; Home Base</h3>
       <div class="panel-row">
-        <div class="panel-row-icon">📍</div>
+        <div class="panel-row-icon">&#128205;</div>
         <div class="panel-row-body">
           <strong>242 W 76th St</strong>
-          <span class="sub">Between Broadway and West End Ave · Upper West Side</span>
+          <span class="sub">Between Broadway and West End Ave &middot; Upper West Side</span>
         </div>
       </div>
       <div class="panel-row">
-        <div class="panel-row-icon">🛏️</div>
+        <div class="panel-row-icon">&#128719;&#65039;</div>
         <div class="panel-row-body">
           <strong>One Bedroom Double Queen Suite</strong>
-          <span class="sub">Jess, Keith, Anthony · plus Superior Queen for Michele</span>
+          <span class="sub">Jess, Keith, Anthony &middot; plus Superior Queen for Michele</span>
         </div>
       </div>
       <div class="panel-row">
-        <div class="panel-row-icon">🛬</div>
+        <div class="panel-row-icon">&#128748;</div>
         <div class="panel-row-body">
           <strong>LGA to The Wallace</strong>
-          <span class="sub">Rideshare 20&ndash;25 min · roughly $35&ndash;50 · skip the subway with luggage</span>
+          <span class="sub">Rideshare 20&ndash;25 min &middot; roughly $35&ndash;50 &middot; skip the subway with luggage</span>
         </div>
       </div>
       <div class="panel-row">
-        <div class="panel-row-icon">🧳</div>
+        <div class="panel-row-icon">&#129523;</div>
         <div class="panel-row-body">
           <strong>Departure day bag hold</strong>
-          <span class="sub">Bags with the front desk after checkout · museum free until 3pm rideshare</span>
+          <span class="sub">Bags with the front desk after checkout &middot; museum free until 3pm rideshare</span>
         </div>
       </div>
     </div>
@@ -651,37 +435,36 @@
     <div class="panel">
       <h3>Getting Around</h3>
       <div class="panel-row">
-        <div class="panel-row-icon">🚇</div>
+        <div class="panel-row-icon">&#128647;</div>
         <div class="panel-row-body">
           <strong>Home subway: 1/2/3 at 72nd &amp; Broadway</strong>
-          <span class="sub">Five-minute walk · the daily line · downtown with no transfers</span>
+          <span class="sub">Five-minute walk &middot; the daily line &middot; downtown with no transfers</span>
         </div>
       </div>
       <div class="panel-row">
-        <div class="panel-row-icon">📱</div>
+        <div class="panel-row-icon">&#128241;</div>
         <div class="panel-row-body">
           <strong>OMNY tap-to-pay</strong>
-          <span class="sub">$2.90/ride · tap your phone at the turnstile · no card needed</span>
+          <span class="sub">$2.90/ride &middot; tap your phone at the turnstile &middot; no card needed</span>
         </div>
       </div>
       <div class="panel-row">
-        <div class="panel-row-icon">🚕</div>
+        <div class="panel-row-icon">&#128661;</div>
         <div class="panel-row-body">
           <strong>Yellow cabs &amp; rideshare</strong>
-          <span class="sub">Yellow cabs often faster than Uber in Manhattan traffic · Uber for airport runs</span>
+          <span class="sub">Yellow cabs often faster than Uber in Manhattan traffic &middot; Uber for airport runs</span>
         </div>
       </div>
       <div class="panel-row">
-        <div class="panel-row-icon">⛴️</div>
+        <div class="panel-row-icon">&#9970;&#65039;</div>
         <div class="panel-row-body">
           <strong>East River Ferry &mdash; June 8</strong>
-          <span class="sub">Brooklyn return after VITAL · scenic route back to Manhattan</span>
+          <span class="sub">Brooklyn return after VITAL &middot; scenic route back to Manhattan</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- PRE-TRIP CHECKLIST -->
   <div class="section-header">
     <h2>Pre-Trip Checklist</h2>
     <div class="section-line"></div>
@@ -689,69 +472,69 @@
   <div class="panel">
     <div class="checklist-grid">
       <div class="checklist-item">
-        <div class="checklist-icon">📱</div>
+        <div class="checklist-icon">&#128241;</div>
         <div class="checklist-body">
           <strong>Install before you leave</strong>
-          <span class="sub">Uber or Lyft · MTA TrainTime · Apple Wallet ready for OMNY</span>
+          <span class="sub">Uber or Lyft &middot; MTA TrainTime &middot; Apple Wallet ready for OMNY</span>
         </div>
       </div>
       <div class="checklist-item">
-        <div class="checklist-icon">🆔</div>
+        <div class="checklist-icon">&#127380;</div>
         <div class="checklist-body">
           <strong>Photo IDs &mdash; everyone</strong>
-          <span class="sub">Anthony especially · Weather Room toast requires 21+ ID</span>
+          <span class="sub">Anthony especially &middot; 21+ ID required at Top of the Rock</span>
         </div>
       </div>
       <div class="checklist-item">
-        <div class="checklist-icon">👟</div>
+        <div class="checklist-icon">&#128094;</div>
         <div class="checklist-body">
           <strong>Broken-in walking shoes</strong>
-          <span class="sub">Several days exceed 15,000 steps · not the trip for new shoes</span>
+          <span class="sub">Several days exceed 15,000 steps &middot; not the trip for new shoes</span>
         </div>
       </div>
       <div class="checklist-item">
-        <div class="checklist-icon">🔋</div>
+        <div class="checklist-icon">&#128267;</div>
         <div class="checklist-body">
           <strong>Portable battery per person</strong>
-          <span class="sub">Google Maps drains phones fast · everyone carries their own</span>
+          <span class="sub">Google Maps drains phones fast &middot; everyone carries their own</span>
         </div>
       </div>
       <div class="checklist-item">
-        <div class="checklist-icon">🧥</div>
+        <div class="checklist-icon">&#129509;</div>
         <div class="checklist-body">
           <strong>One layer at all times</strong>
-          <span class="sub">June evenings drop to high 50s · AC is brutal indoors · Top of the Rock is windy</span>
+          <span class="sub">June evenings drop to high 50s &middot; AC is brutal indoors &middot; Top of the Rock is windy</span>
         </div>
       </div>
       <div class="checklist-item">
-        <div class="checklist-icon">🪙</div>
+        <div class="checklist-icon">&#129689;</div>
         <div class="checklist-body">
           <strong>Roll of quarters (~$5&ndash;10)</strong>
           <span class="sub">For the coin-op Tower Optical binoculars at Top of the Rock</span>
         </div>
       </div>
       <div class="checklist-item">
-        <div class="checklist-icon">🧗</div>
+        <div class="checklist-icon">&#129495;</div>
         <div class="checklist-body">
-          <strong>Anthony · VITAL waiver online</strong>
-          <span class="sub">vitalclimbinggym.com SmartWaiver · 5 minutes · required for June 8 day pass</span>
+          <strong>Anthony &middot; VITAL waiver online</strong>
+          <span class="sub">vitalclimbinggym.com SmartWaiver &middot; 5 minutes &middot; required for June 8 day pass</span>
         </div>
       </div>
       <div class="checklist-item">
-        <div class="checklist-icon">💵</div>
+        <div class="checklist-icon">&#128181;</div>
         <div class="checklist-body">
           <strong>~$60 cash in small bills</strong>
-          <span class="sub">Mamoun's, the rare cash-only spot · most everything else is card</span>
+          <span class="sub">For the rare cash-only spot &middot; most everything else is card</span>
         </div>
       </div>
     </div>
   </div>
 
-</div><!-- end main -->
+</div>
 
 <div class="footer">
-  <strong>NYC 2026</strong> · Anthony's 21st Birthday · June 3&ndash;11<br>
-  Tap any day above for the detailed guide · Save to home screen for quick access
+  <strong>NYC 2026</strong> &middot; Anthony's 21st Birthday &middot; June 3&ndash;11<br>
+  Tap any day above for the detailed guide &middot; Save to home screen for quick access
 </div>
 
 </body>
