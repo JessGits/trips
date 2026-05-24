@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Day 2 · Met &amp; Cote · NYC 2026</title>
+<title>Day 4 · Anthony's 21st · NYC 2026</title>
 
 <!-- PWA -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="June 4 · Met &amp; Cote">
+<meta name="apple-mobile-web-app-title" content="June 6 · The Birthday">
 <meta name="theme-color" content="#1B3A5C">
 <link rel="apple-touch-icon" href="../icon.png">
 
@@ -38,12 +38,14 @@
     --bourdain-bg: #F5F0E8;
     --bourdain-border: #B8966B;
     --bourdain-text: #6B4F2F;
-    --turk-bg: #F3EFFB;
-    --turk-border: #8B6FC9;
-    --turk-text: #5B3F99;
     --film-bg: #EEF4FF;
     --film-border: #5B8DEF;
     --film-text: #2C5282;
+    --turk-bg: #F3EFFB;
+    --turk-border: #8B6FC9;
+    --turk-text: #5B3F99;
+    --birthday-bg: #FFF9F0;
+    --birthday-border: #D4A93C;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -83,7 +85,6 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    transition: opacity 0.15s ease;
   }
   .nav-link:hover { opacity: 0.7; }
   .nav-center {
@@ -94,14 +95,15 @@
     text-transform: uppercase;
   }
 
-  /* HERO */
+  /* HERO — birthday treatment with gold accent */
   .hero {
     background: var(--navy);
     padding: 36px 24px 28px;
     position: relative;
     overflow: hidden;
   }
-  .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 280px; height: 280px; border-radius: 50%; background: rgba(201,168,76,0.07); pointer-events: none; }
+  .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 320px; height: 320px; border-radius: 50%; background: rgba(201,168,76,0.12); pointer-events: none; }
+  .hero::after { content: ''; position: absolute; bottom: -100px; left: -60px; width: 240px; height: 240px; border-radius: 50%; background: rgba(201,168,76,0.06); pointer-events: none; }
   .hero-inner { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
   .hero-eyebrow {
     font-size: 11px;
@@ -113,7 +115,7 @@
   }
   .hero h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 44px;
+    font-size: 48px;
     font-weight: 900;
     color: #fff;
     line-height: 1.05;
@@ -149,7 +151,7 @@
   /* MAIN */
   .main { padding: 32px 20px 40px; max-width: 900px; margin: 0 auto; }
 
-  /* DAY BANNER */
+  /* DAY BANNER — birthday variant */
   .day-banner {
     background: white;
     border: 1px solid var(--border);
@@ -157,6 +159,11 @@
     border-radius: 8px;
     padding: 18px 22px;
     margin-bottom: 28px;
+  }
+  .day-banner.birthday {
+    background: var(--birthday-bg);
+    border-color: var(--birthday-border);
+    border-left-color: var(--birthday-border);
   }
   .day-banner-label {
     font-size: 10px;
@@ -170,7 +177,9 @@
     font-size: 14.5px;
     color: var(--slate);
     line-height: 1.65;
+    margin-bottom: 8px;
   }
+  .day-banner p:last-child { margin-bottom: 0; }
   .day-banner p strong { color: var(--navy); }
 
   /* SECTION HEADER */
@@ -256,7 +265,7 @@
     margin-bottom: 12px;
   }
 
-  /* TRANSIT CARD */
+  /* TRANSIT */
   .transit-card {
     background: var(--blue-bg);
     border: 1px solid var(--blue-border);
@@ -292,7 +301,7 @@
   .maps-button:active { transform: scale(0.98); }
   .maps-button-icon { font-size: 14px; }
 
-  /* NYTurk inline tag — small endorsement pill */
+  /* NYTurk inline tag */
   .turk-tag {
     display: inline-flex;
     align-items: center;
@@ -313,38 +322,35 @@
     color: var(--turk-border);
   }
 
-  /* GROUP SPLIT CALLOUT (special — for the Met Raphael split) */
-  .split-callout {
-    background: var(--gold-pale);
-    border: 1px solid var(--gold-light);
-    border-left: 4px solid var(--gold);
+  /* BOURDAIN CALLOUT */
+  .bourdain-callout {
+    background: var(--bourdain-bg);
+    border: 1px solid var(--bourdain-border);
+    border-left: 4px solid var(--bourdain-border);
     border-radius: 8px;
     padding: 14px 18px;
     margin-top: 12px;
   }
-  .split-callout-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 8px;
-    display: flex;
+  .bourdain-tag {
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--bourdain-text);
+    margin-bottom: 8px;
   }
-  .split-callout-title::before {
-    content: '✦';
-    color: var(--gold);
-    font-size: 16px;
-  }
-  .split-callout p {
+  .bourdain-callout p {
     font-size: 13px;
     color: var(--slate);
     line-height: 1.6;
     margin-bottom: 6px;
   }
-  .split-callout p:last-child { margin-bottom: 0; }
-  .split-callout strong { color: var(--navy); }
+  .bourdain-callout p:last-child { margin-bottom: 0; }
+  .bourdain-callout p strong { color: var(--bourdain-text); }
+  .bourdain-callout em { font-style: italic; color: var(--bourdain-text); }
 
   /* FILM CALLOUT */
   .film-callout {
@@ -425,8 +431,6 @@
     border-top: 3px dashed var(--gold);
     flex-shrink: 0;
   }
-
-  /* Custom Leaflet markers */
   .home-marker {
     background: var(--navy);
     border: 3px solid var(--gold);
@@ -457,10 +461,7 @@
     font-weight: 700;
     box-shadow: 0 2px 6px rgba(201,168,76,0.4);
   }
-  .leaflet-popup-content-wrapper {
-    border-radius: 6px;
-    padding: 2px 4px;
-  }
+  .leaflet-popup-content-wrapper { border-radius: 6px; padding: 2px 4px; }
   .leaflet-popup-content {
     margin: 8px 12px;
     font-family: 'DM Sans', sans-serif;
@@ -475,7 +476,7 @@
     margin-bottom: 2px;
   }
 
-  /* BEFORE BED BOX */
+  /* BEFORE BED */
   .before-bed {
     background: var(--navy);
     border-radius: 10px;
@@ -523,7 +524,7 @@
   /* MOBILE */
   @media (max-width: 720px) {
     .hero { padding: 28px 18px 22px; }
-    .hero h1 { font-size: 34px; }
+    .hero h1 { font-size: 36px; }
     .hero-sub { font-size: 13px; margin-bottom: 18px; }
     .main { padding: 24px 14px 32px; }
     .section-header h2 { font-size: 19px; }
@@ -543,8 +544,7 @@
     .main { padding: 16px 24px; }
     .stop-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .before-bed { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .split-callout { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .film-callout { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .bourdain-callout, .film-callout { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .stop-card, .map-wrap, .before-bed { page-break-inside: avoid; }
     .maps-button { display: none; }
     a { color: inherit; text-decoration: none; }
@@ -556,21 +556,21 @@
 <!-- STICKY NAV -->
 <div class="sticky-nav">
   <a class="nav-link" href="../">&larr; NYC 2026</a>
-  <div class="nav-center">Day 2 of 9</div>
-  <a class="nav-link" href="../june-5-les-dogday/">Day 3 &rarr;</a>
+  <div class="nav-center">Day 4 of 9 · The Birthday</div>
+  <a class="nav-link" href="../june-7-village/">Day 5 &rarr;</a>
 </div>
 
 <!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow">Day 2 &nbsp;·&nbsp; Thursday, June 4, 2026</div>
-    <h1>The Met &amp; <em>Cote</em></h1>
-    <div class="hero-sub">A slow UWS morning &nbsp;·&nbsp; The Met from late morning &nbsp;·&nbsp; Korean BBQ Michelin at five</div>
+    <div class="hero-eyebrow">Day 4 &nbsp;·&nbsp; Saturday, June 6, 2026 &nbsp;·&nbsp; 🎂</div>
+    <h1>Anthony's <em>21st</em></h1>
+    <div class="hero-sub">Carbone at noon &nbsp;·&nbsp; Village film walk &nbsp;·&nbsp; Top of the Rock at sundown</div>
     <div class="glance-row">
-      <div class="pill"><span>🥐</span>Daily Provisions</div>
-      <div class="pill"><span>🌳</span>Central Park walk</div>
-      <div class="pill"><span>🏛️</span>The Met</div>
-      <div class="pill"><span>🥩</span>Cote · 5pm</div>
+      <div class="pill"><span>🍝</span>Carbone · 12:00 PM</div>
+      <div class="pill"><span>🎬</span>Washington Square + Bleecker</div>
+      <div class="pill"><span>🎁</span>Afternoon · Anthony's call</div>
+      <div class="pill"><span>🥂</span>Top of the Rock · 7:00 PM</div>
     </div>
   </div>
 </div>
@@ -578,260 +578,243 @@
 <div class="main">
 
   <!-- DAY BANNER -->
-  <div class="day-banner">
-    <div class="day-banner-label">The Tone for Today</div>
-    <p>The first real day in the city. <strong>Pastry to start, then a slow walk through Central Park</strong> &mdash; Strawberry Fields, Bethesda Fountain, Bow Bridge &mdash; ending at the steps of <strong>the Met</strong>. A few hours inside. Hot dog on the steps if anyone's hungry. Back uptown to freshen up. <strong>Cote at five.</strong></p>
+  <div class="day-banner birthday">
+    <div class="day-banner-label">🎂 The Day</div>
+    <p>Anthony turns 21. <strong>Carbone at noon</strong>, a Village walk, rest back at The Wallace, <strong>Top of the Rock at 7pm</strong>.</p>
   </div>
 
   <!-- MORNING -->
   <div class="section-header">
-    <h2>The Morning</h2>
+    <h2>The Slow Morning</h2>
     <div class="section-line"></div>
   </div>
 
   <div class="timeline">
 
-    <!-- Daily Provisions -->
     <div class="stop-card">
       <div class="stop-header">
-        <span class="stop-time">8:30 AM</span>
-        <span class="stop-name">Daily Provisions</span>
+        <span class="stop-time">UNTIL 11:00 AM</span>
+        <span class="stop-name">Slow Morning · UWS Coffee</span>
       </div>
       <div class="stop-body">
-        <div class="stop-address">375 Amsterdam Ave at W 78th · 2 blocks from The Wallace</div>
-        <p>Danny Meyer's neighborhood bakery. The <strong>maple cinnamon cruller</strong> is the move &mdash; it's the kind of pastry that ends arguments. Coffee is great, sandwiches don't matter yet, leave room for the Met steps.</p>
-        <a class="maps-button" href="maps://?q=Daily+Provisions+375+Amsterdam+Ave+New+York+NY">
-          <span class="maps-button-icon">📍</span>Open in Maps
-        </a>
+        <div class="stop-address">The Wallace · 242 W 76th St</div>
+        <p><strong>Light breakfast only</strong> &mdash; Carbone is a four-course Italian-American lunch at noon.</p>
       </div>
-    </div>
-
-    <!-- Transit to Central Park -->
-    <div class="transit-card">
-      <div class="transit-card-icon">🚶</div>
-      <div><strong>Walk south on Amsterdam to 72nd, cross to Central Park West, enter the park.</strong> About 10 minutes from Daily Provisions to the 72nd Street park entrance.</div>
-    </div>
-
-    <!-- Strawberry Fields -->
-    <div class="stop-card">
-      <div class="stop-header">
-        <span class="stop-time">~9:15 AM</span>
-        <span class="stop-name">Strawberry Fields</span>
-      </div>
-      <div class="stop-body">
-        <div class="stop-address">72nd St entrance · west side of Central Park · the John Lennon memorial</div>
-        <p>The first thing inside the park. The black-and-white <strong>Imagine mosaic</strong> set into the path, surrounded by quiet trees. Lennon lived across the street at the Dakota and was shot in front of it in 1980 &mdash; the city dedicated this stretch of the park to him a few years later. There's almost always a musician here playing Beatles songs. A two-minute pause, sometimes longer if the music's good.</p>
-        <a class="maps-button" href="maps://?q=Strawberry+Fields+Central+Park+New+York+NY">
-          <span class="maps-button-icon">📍</span>Open in Maps
-        </a>
-
-        <div class="film-callout">
-          <div class="film-tag">🎬 On screen</div>
-          <p><strong>The Dakota</strong> &mdash; directly across Central Park West from the memorial &mdash; is the apartment building from <em>Rosemary's Baby</em> (1968), and the place John Lennon was returning home to when he was shot in 1980. Anyone reading about the building's haunted reputation knows this view.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- The Mall -->
-    <div class="stop-card">
-      <div class="stop-header">
-        <span class="stop-time">~9:30 AM</span>
-        <span class="stop-name">The Mall &amp; Literary Walk</span>
-      </div>
-      <div class="stop-body">
-        <div class="stop-address">central spine of the park · cathedral canopy of American elms</div>
-        <p>The only straight path in Central Park. A quarter-mile-long promenade lined with American elm trees that arch overhead into a cathedral canopy &mdash; one of the largest remaining stands of elms in North America. Statues of writers (Shakespeare, Burns, Scott, Halleck) line the way. It opens onto Bethesda Terrace at the end.</p>
-        <a class="maps-button" href="maps://?q=The+Mall+Central+Park+Literary+Walk+New+York+NY">
-          <span class="maps-button-icon">📍</span>Open in Maps
-        </a>
-
-        <div class="film-callout">
-          <div class="film-tag">🎬 On screen</div>
-          <p>The Mall has shown up in <em>Breakfast at Tiffany's, Kramer vs. Kramer, Serendipity, Enchanted, Vanilla Sky, Maid in Manhattan.</em> It's the path filmmakers reach for when they want "Central Park" to feel iconic in one shot.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bethesda Fountain -->
-    <div class="stop-card">
-      <div class="stop-header">
-        <span class="stop-time">~9:50 AM</span>
-        <span class="stop-name">Bethesda Terrace &amp; Fountain</span>
-      </div>
-      <div class="stop-body">
-        <div class="stop-address">the heart of Central Park · arriving from the Mall</div>
-        <p>One of the most filmed outdoor locations in New York. The <strong>Angel of the Waters</strong> bronze fountain at the center, set in front of a grand terrace with arched colonnades. Often there's a busker singing under the arches with the acoustics doing the work.</p>
-        <p><strong>Look up</strong> &mdash; the terrace ceiling is 15,000 hand-painted Minton tiles, the only tile ceiling of its kind in the world. Most people walk under it without ever noticing.</p>
-        <a class="maps-button" href="maps://?q=Bethesda+Terrace+Central+Park+New+York+NY">
-          <span class="maps-button-icon">📍</span>Open in Maps
-        </a>
-
-        <div class="film-callout">
-          <div class="film-tag">🎬 On screen</div>
-          <p><strong>The Avengers (2012)</strong> &mdash; Thor takes Loki here at the end of the film.</p>
-          <p><strong>Home Alone 2 (1992)</strong> &mdash; Kevin is chased by the Wet Bandits through this terrace, jumps into a horse carriage to escape.</p>
-          <p><strong>Elf (2003)</strong> &mdash; Buddy and Santa's sleigh nearly crash into the fountain in the finale.</p>
-          <p><strong>John Wick: Chapter 2 (2017)</strong> &mdash; John meets Winston at the fountain.</p>
-          <p><strong>When Harry Met Sally (1989)</strong> &mdash; Harry and Sally walk and talk along the terrace.</p>
-          <p><strong>Gossip Girl</strong> &mdash; Blair and Chuck's wedding finale (Season 6).</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bow Bridge -->
-    <div class="stop-card">
-      <div class="stop-header">
-        <span class="stop-time">~10:05 AM</span>
-        <span class="stop-name">Bow Bridge</span>
-      </div>
-      <div class="stop-body">
-        <div class="stop-address">a short walk west from Bethesda · cast-iron bridge across the Lake</div>
-        <p>An elegant cast-iron bridge arching over the Lake, with the Ramble rising on the far side. From Bethesda, walk along the lakeshore to your west and it's right there.</p>
-        <a class="maps-button" href="maps://?q=Bow+Bridge+Central+Park+New+York+NY">
-          <span class="maps-button-icon">📍</span>Open in Maps
-        </a>
-
-        <div class="film-callout">
-          <div class="film-tag">🎬 On screen</div>
-          <p><strong>Spider-Man 3 (2007)</strong> &mdash; Peter and Mary Jane share a moment on the bridge.</p>
-          <p><strong>Enchanted (2007)</strong> &mdash; Giselle and Robert dance across it during "That's How You Know."</p>
-          <p><strong>The Way We Were (1973)</strong> &mdash; Hubbell and Katie cross the bridge in the New York chapter of their love story.</p>
-          <p><strong>Autumn in New York (2000)</strong> &mdash; Will and Charlotte walk it in the film's most romantic sequence.</p>
-          <p><strong>Manhattan (1979)</strong> &mdash; the iconic Woody Allen / Diane Keaton silhouette shot.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Transit to the Met -->
-    <div class="transit-card">
-      <div class="transit-card-icon">🚶</div>
-      <div><strong>Northeast through the park to the Met.</strong> From Bow Bridge, walk back east past Bethesda, then north on the East Drive. Exit the park at 79th-80th &amp; 5th Avenue &mdash; the Met is directly across the street. About 15 minutes of walking.</div>
     </div>
 
   </div>
 
-  <!-- AFTERNOON: THE MET -->
+  <!-- LUNCH: CARBONE -->
   <div class="section-header">
-    <h2>The Met</h2>
+    <h2>The Lunch</h2>
     <div class="section-line"></div>
   </div>
 
   <div class="timeline">
 
-    <!-- The Met -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚇</div>
+      <div><strong>Subway down to Carbone</strong> &mdash; 1 train from 72nd to Houston St (~25 min) · then walk 4 blocks east to Thompson · or rideshare ~$30 if anyone wants the easy ride · leave by 11:15 AM to arrive 10 minutes early</div>
+    </div>
+
     <div class="stop-card">
       <div class="stop-header">
-        <span class="stop-time">10:30 AM</span>
-        <span class="stop-name">The Metropolitan Museum of Art</span>
+        <span class="stop-time">12:00 PM</span>
+        <span class="stop-name">Carbone</span>
       </div>
       <div class="stop-body">
-        <div class="stop-address">1000 5th Avenue at E 82nd · timed entry, 4 General Admission · ~$30/adult</div>
-        <p>The biggest museum in the Western Hemisphere has two million objects. You can't see them. Pick a few rooms, let the rest go. Plan on roughly two and a half to three hours, but if anyone wants to keep going, the Met will keep going with you &mdash; just remember Cote at five.</p>
-        <p><strong>One good arc:</strong> Egyptian Wing &rarr; Arms &amp; Armor &rarr; American Wing &rarr; the rooftop (Cantor Roof Garden) on the way out if it's open.</p>
-        <a class="maps-button" href="maps://?q=Metropolitan+Museum+of+Art+1000+5th+Avenue+New+York+NY">
+        <div class="stop-address">181 Thompson St · Greenwich Village · party of 4 · Resy ✅ · birthday note attached</div>
+        <p><strong>Fan favorites:</strong> Caesar alla ZZ (tableside), Spicy Rigatoni Vodka, Veal Parmesan to share, Lemon Cheesecake for dessert. Captains will guide — trust them. Order family-style.</p>
+        <p><strong>Birthday note attached</strong> &mdash; the kitchen knows.</p>
+        <a class="maps-button" href="maps://?q=Carbone+181+Thompson+St+New+York+NY">
           <span class="maps-button-icon">📍</span>Open in Maps
         </a>
 
-        <!-- Group split for Raphael -->
-        <div class="split-callout">
-          <div class="split-callout-title">A natural split for Raphael</div>
-          <p><strong>Raphael: Sublime Poetry</strong> &mdash; the first-ever U.S. retrospective of the Renaissance master &mdash; closes June 28. It's the once-in-a-lifetime kind of exhibition, and it's a deep-cut. If it calls to you, peel off for ~45 minutes; everyone else can drift toward Arms &amp; Armor. Reconvene at the <strong>American Wing</strong> around 12:15. Phones on, keep loose contact. The Met is enormous but the wings are well-signed.</p>
-        </div>
-
         <div class="film-callout">
           <div class="film-tag">🎬 On screen</div>
-          <p><strong>Ocean's Eight (2018)</strong> &mdash; the Met Gala heist; Debbie Ocean's crew lifts a Cartier necklace from Daphne Kluger in the bathroom. The great hall, the Egyptian Wing, and the front steps all feature.</p>
-          <p><strong>Gossip Girl</strong> &mdash; the Met steps are the show's most-filmed exterior; Blair Waldorf holds court here daily.</p>
-          <p><strong>When Harry Met Sally (1989)</strong> &mdash; Harry and Sally walk the Temple of Dendur, mid-friendship, talking about their lives.</p>
-          <p>Also <em>I Am Legend</em> (the steps, deserted) and many more &mdash; the Met has been New York shorthand on film since the 1950s.</p>
+          <p>Not a film location, but the closest real-world equivalent to the supper club aesthetic of <em>Goodfellas, The Godfather, A Bronx Tale</em>.</p>
         </div>
-      </div>
-    </div>
-
-    <!-- Met Steps hot dog -->
-    <div class="stop-card">
-      <div class="stop-header">
-        <span class="stop-time">After the Met</span>
-        <span class="stop-name">Hot Dog on the Steps</span>
-      </div>
-      <div class="stop-body">
-        <div class="stop-address">The Met steps · 5th Ave · between 80th and 84th</div>
-        <p>If anyone's hungry coming out, the hot dog carts at the bottom of the steps are a small ritual. About $8. Twenty minutes on the steps watching the city.</p>
-        <p>Skip without worry if everyone's still full from breakfast.</p>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- AFTERNOON DRIFT -->
-  <div class="section-header">
-    <h2>The Drift Back</h2>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="timeline">
-
-    <div class="stop-card">
-      <div class="stop-header">
-        <span class="stop-time">2:00 &mdash; 2:30 PM</span>
-        <span class="stop-name">East-Side Decompress</span>
-      </div>
-      <div class="stop-body">
-        <div class="stop-address">Cross into Central Park behind the Met &middot; loose path south on the east side</div>
-        <p>Cross into Central Park directly behind the Met and walk south along the east-side paths. Thirty minutes, no agenda &mdash; the Great Lawn, the Reservoir if anyone's curious, benches if anyone needs to sit.</p>
       </div>
     </div>
 
     <div class="transit-card">
-      <div class="transit-card-icon">🚶</div>
-      <div><strong>Drift south toward the Zoo.</strong> About 15&ndash;20 minutes from the Met along the east-side paths &mdash; the Zoo sits at 5th Ave and 64th St, near the southeast corner of the park.</div>
+      <div class="transit-card-icon">⏱️</div>
+      <div><strong>Plan 2 to 2.5 hours at the table.</strong> Exit around 2:30 PM.</div>
     </div>
 
-    <!-- Central Park Zoo (optional Madagascar stop) -->
+  </div>
+
+  <!-- AFTERNOON: VILLAGE FILM WALK -->
+  <div class="section-header">
+    <h2>The Village Walk</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>From Carbone, walk west</strong> &mdash; Washington Square Park is 3 blocks north on Thompson, then the West Village opens up beyond it · the whole walk is under a mile · plan ~2 hours including stops</div>
+    </div>
+
+    <!-- Washington Square Park -->
     <div class="stop-card">
       <div class="stop-header">
         <span class="stop-time">~2:45 PM</span>
-        <span class="stop-name">Central Park Zoo &middot; if it calls</span>
+        <span class="stop-name">Washington Square Park</span>
       </div>
       <div class="stop-body">
-        <div class="stop-address">5th Ave at 64th St &middot; ~$20/adult at the gate &middot; small, walkable</div>
-        <p>Small by zoo standards &mdash; a sea lion pool you can walk around in five minutes, a snow leopard exhibit, the Tropic Zone rainforest, the penguin house. <strong>30&ndash;45 minutes</strong> is plenty. Skip if it doesn't call.</p>
-        <a class="maps-button" href="maps://?q=Central+Park+Zoo+New+York+NY">
+        <div class="stop-address">5th Ave at Waverly Place · 3 blocks north of Carbone</div>
+        <p>Stay as long as it calls — the park rewards both a quick pass-through and a longer linger.</p>
+        <p><strong>Chess tables</strong> &mdash; southwest corner of the park, near the Garibaldi statue. Permanent stone boards. Peak action 1–9 PM. Hustlers will offer a game for $5 if anyone wants to play.</p>
+        <p><strong>Live jazz</strong> &mdash; informal musicians play around the fountain most afternoons in good weather.</p>
+        <p>Wander the paths, sit under the arch, watch NYU spill across the lawns.</p>
+        <a class="maps-button" href="maps://?q=Washington+Square+Park+New+York+NY">
           <span class="maps-button-icon">📍</span>Open in Maps
         </a>
 
         <div class="film-callout">
           <div class="film-tag">🎬 On screen</div>
-          <p><strong>Madagascar (2005)</strong> &mdash; Alex, Marty, Gloria, and Melman live here in the opening of the film. The whole story starts in this zoo before they end up shipped off in crates and shipwrecked. The penguin habitat is where Skipper, Kowalski, Rico, and Private hatch their escape.</p>
+          <p><strong>Avengers: Infinity War (2018)</strong> &mdash; Bruce Banner tries (and fails) to Hulk out under the arch.</p>
+          <p><strong>Across the Spider-Verse (2023)</strong> &mdash; Miles Morales swings through; the arch and fountain feature in multiple sequences.</p>
+          <p><strong>I Am Legend (2007)</strong> &mdash; Will Smith drives through the deserted park in the opening sequence.</p>
+          <p><strong>When Harry Met Sally (1989)</strong> &mdash; the arch is the first shot of the film.</p>
+          <p><strong>Enchanted (2007)</strong> &mdash; the "That's How You Know" musical number unfolds across the park.</p>
+          <p><strong>Friends</strong> &mdash; the famous fountain shot in the opening credits was filmed in LA, but the real fountain it was modeled on is this one.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sanctum Sanctorum -->
+    <!-- Sanctum Sanctorum -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~3:30 PM</span>
+        <span class="stop-name">Sanctum Sanctorum</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">177A Bleecker St · 4 blocks west of Washington Square</div>
+        <p>The Marvel canon address for Doctor Strange's home. <strong>Note:</strong> actual filming of many exterior shots used 319 W 4th St, two blocks away.</p>
+        <a class="maps-button" href="maps://?q=177A+Bleecker+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Doctor Strange (2016)</strong> &mdash; first appearance of the Sanctum.</p>
+          <p><strong>Doctor Strange in the Multiverse of Madness (2022)</strong> &mdash; the Sanctum is invaded; major action sequences inside and on the front steps.</p>
+          <p><strong>Spider-Man: No Way Home (2021)</strong> &mdash; Peter goes to Strange for the spell that breaks the multiverse open.</p>
+          <p><strong>Avengers: Infinity War &amp; Endgame</strong> &mdash; key MCU location across both films.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generation Records -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~3:45 PM</span>
+        <span class="stop-name">Generation Records</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">210 Thompson St · 2 blocks from Sanctum · open till 8 PM</div>
+        <p>20–30 minutes. <strong>The used-vinyl basement</strong> is the hidden gem &mdash; easy to miss if you only browse the main floor.</p>
+        <a class="maps-button" href="maps://?q=Generation+Records+210+Thompson+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- Joe's Pizza walk-by -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~4:00 PM</span>
+        <span class="stop-name">Joe's Pizza</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">7 Carmine St · corner of Bleecker · cash only</div>
+        <p>The Bleecker/Carmine corner is the one that made it onto screen.</p>
+        <a class="maps-button" href="maps://?q=Joe%27s+Pizza+7+Carmine+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Spider-Man 2 (2004)</strong> &mdash; Peter Parker's job before he gets fired. "Pizza Time." The address on his delivery helmet reads "Joe's Pizza, Bleeker Street" (misspelled).</p>
+          <p><strong>Seinfeld, Sex and the City, Along Came Polly</strong> &mdash; the corner storefront has had a long second life in NYC-set TV and film.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Magnolia walk-by -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~4:15 PM</span>
+        <span class="stop-name">Magnolia Bakery</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">401 Bleecker at W 11th · walk-by, no stop required</div>
+        <p><strong>Banana pudding</strong> is the order, not the cupcakes.</p>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Sex and the City (2000)</strong> &mdash; Season 3 "No Ifs, Ands, or Butts" &mdash; the cupcake scene that built the brand.</p>
+          <p><strong>SNL Lazy Sunday (2005)</strong> &mdash; the digital short namechecks Magnolia.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 90 Bedford St — Friends apartment exterior -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~4:25 PM</span>
+        <span class="stop-name">90 Bedford St · Friends apartment</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Corner of Bedford &amp; Grove · 5 blocks from Magnolia</div>
+        <p>The exterior used as Monica's apartment building. Walk-by.</p>
+        <a class="maps-button" href="maps://?q=90+Bedford+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Friends (1994–2004)</strong> &mdash; the exterior establishing shot used throughout all 10 seasons. The Little Owl restaurant on the ground floor wasn't there during filming, but the building is otherwise unchanged.</p>
         </div>
       </div>
     </div>
 
     <div class="transit-card">
-      <div class="transit-card-icon">🚶</div>
-      <div><strong>Exit the park at 60th or 59th onto 5th Ave.</strong> Madison Ave is one block east &mdash; drift north through the shop windows, or jump on the subway home from 59th-Lex.</div>
-    </div>
-
-    <!-- Madison Drift -->
-    <div class="stop-card">
-      <div class="stop-header">
-        <span class="stop-time">3:15 &mdash; 4:00 PM</span>
-        <span class="stop-name">Madison Avenue Drift</span>
-      </div>
-      <div class="stop-body">
-        <div class="stop-address">Madison Ave between 60th and 80th &middot; eyes-only window shopping</div>
-        <p>Madison between 65th and 80th is where the city goes to spend money quietly. Exit at 72nd or 79th and grab the 6 train home (transfer at 59th-Columbus Circle to the 1), or rideshare ~$15 back to The Wallace.</p>
-      </div>
-    </div>
-
-    <div class="transit-card">
-      <div class="transit-card-icon">🏨</div>
-      <div><strong>Back at The Wallace by 4:00 PM</strong> · freshen up · change for dinner · roughly 4:30 to head downtown</div>
+      <div class="transit-card-icon">🚇</div>
+      <div><strong>Back to The Wallace by 4:45 PM</strong> &mdash; 1 train from Christopher St-Sheridan Sq to 72nd · ~15 min · or rideshare ~$25</div>
     </div>
 
   </div>
 
-  <!-- EVENING: COTE -->
+  <!-- AFTERNOON REST -->
+  <div class="section-header">
+    <h2>Before Top of the Rock</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">4:30 — 6:40 PM</span>
+        <span class="stop-name">Anthony's Choice</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">birthday boy picks the pre-show vibe</div>
+        <p>Two ways to spend the window before going up. Anthony's call.</p>
+        <p><strong>Option 1 · Back to The Wallace.</strong> Rest, shower, change. Leave the hotel by 6:40 PM and head straight to Rockefeller for the 7:00 entry.</p>
+        <p><strong>Option 2 · Head straight to the Rockefeller area.</strong> Subway down around 5:30, wander 5th Avenue and the Rockefeller plaza before going up. The flagship stores on 5th between 49th and 59th — Saks, Tiffany's, the Apple Cube — are walking distance, and Radio City Music Hall is one block from the entrance. The Tony Awards air the next night, so red carpet setup may already be visible around Radio City.</p>
+        <p><strong>Either way</strong> &mdash; it's windy at the top, dress accordingly.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EVENING: TOP OF THE ROCK -->
   <div class="section-header">
     <h2>The Evening</h2>
     <div class="section-line"></div>
@@ -841,24 +824,35 @@
 
     <div class="transit-card">
       <div class="transit-card-icon">🚇</div>
-      <div><strong>1 train from 72nd to 23rd St</strong> · 6 stops · about 15 min · or rideshare ~$20 if running late</div>
+      <div><strong>Getting there.</strong> From The Wallace: 1 train from 72nd to 50th St (~12 min) then walk 3 blocks east · or rideshare ~$25. If you're already in the Rockefeller area, doors open at 6:30 &mdash; head over by 6:50.</div>
     </div>
 
     <div class="stop-card">
       <div class="stop-header">
-        <span class="stop-time">5:00 PM</span>
-        <span class="stop-name">Cote</span>
+        <span class="stop-time">7:00 PM</span>
+        <span class="stop-name">Top of the Rock · All-Inclusive Pass</span>
       </div>
       <div class="stop-body">
-        <div class="stop-address">16 W 22nd St · Flatiron · Michelin · party of 4 · Resy ✅</div>
-        <p>One of the most fun rooms in New York. Cote is a Korean steakhouse that won a Michelin star for treating Korean BBQ as fine dining &mdash; the grill is set into the table, the cuts of meat are prime dry-aged American beef, and the service is theatrical without being precious. The dining room is dim, low ceilings, leather booths, glowing grills throwing flickering light.</p>
-        <p>The <strong>Butcher's Feast</strong> is the fan favorite if it helps the table decide &mdash; four cuts of beef cooked at your table, a stew, egg soufflé, sides. The 5pm slot is the early seating, with the room filling around you as you eat.</p>
-        <p><strong>One thing to know:</strong> the meal ends with soft-serve. It's the surprise nobody talks about, and people who pace badly miss it. Save a little room.</p>
-        <a class="maps-button" href="maps://?q=Cote+Korean+Steakhouse+16+W+22nd+St+New+York+NY">
+        <div class="stop-address">30 Rockefeller Plaza · entrance at 50th St between 5th and 6th · 4 passes ✅ · sunset ~8:30 PM</div>
+        <p><strong>Bring photo IDs for everyone</strong> &mdash; Weather Room is 21+, they will check.</p>
+        <a class="maps-button" href="maps://?q=Top+of+the+Rock+30+Rockefeller+Plaza+New+York+NY">
           <span class="maps-button-icon">📍</span>Open in Maps
         </a>
-        <div><span class="turk-tag">@NewYorkTurk approved</span></div>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Avengers (2012)</strong> &mdash; the Battle of New York unfolds against this midtown skyline.</p>
+          <p><strong>Spider-Man: No Way Home (2021)</strong> &mdash; the climactic Statue of Liberty fight intercuts with Manhattan rooftop sequences.</p>
+          <p><strong>Elf (2003)</strong> &mdash; the Rockefeller tree is the film's emotional centerpiece.</p>
+          <p><strong>Home Alone 2: Lost in New York (1992)</strong> &mdash; the Christmas tree reunion scene.</p>
+          <p><strong>30 Rock &amp; SNL</strong> &mdash; this is the building. SNL still tapes here every Saturday night.</p>
+        </div>
       </div>
+    </div>
+
+    <div class="transit-card">
+      <div class="transit-card-icon">🚕</div>
+      <div><strong>Back to The Wallace · roughly 10:00 PM</strong> &mdash; rideshare ~$25 · or 1 train from 50th to 72nd</div>
     </div>
 
   </div>
@@ -885,30 +879,28 @@
   </div>
   <div class="before-bed">
     <div class="before-bed-title">One thing before sleep</div>
-    <p>Tomorrow is <strong>the Lower East Side food tour</strong> &mdash; Nice Guy Tours, <strong>meeting at 10:30am</strong>. Address goes out from the company morning of; check email before bed. About 3 hours of walking and eating: Katz's, Russ &amp; Daughters, Kossar's, Pickle Guys, Doughnut Plant.</p>
-    <p>Evening is <strong>Dog Day Afternoon on Broadway at 7pm</strong> &mdash; August Wilson Theatre, 245 W 52nd St. Jon Bernthal and Ebon Moss-Bachrach.</p>
-    <p>Comfortable shoes tomorrow. <strong>Good night.</strong></p>
+    <p>Tomorrow is a slow Sunday in the Village. No early start.</p>
+    <p><strong>Happy 21st birthday, Anthony.</strong> 🥂</p>
   </div>
 
 </div><!-- end main -->
 
 <div class="footer">
   <strong><a href="../">&larr; Back to NYC 2026 overview</a></strong><br>
-  Day 2 of 9 &nbsp;·&nbsp; Thursday, June 4, 2026 &nbsp;·&nbsp; Anthony's 21st Birthday Trip
+  Day 4 of 9 &nbsp;·&nbsp; Saturday, June 6, 2026 &nbsp;·&nbsp; Anthony's 21st Birthday Trip
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Coordinates for the day
-    const wallace         = [40.7820, -73.9818];   // Home base
-    const dailyProv       = [40.7822, -73.9786];   // Stop 1
-    const strawberryFlds  = [40.7757, -73.9752];   // Stop 2
-    const theMall         = [40.7724, -73.9716];   // Stop 3
-    const bethesda        = [40.7740, -73.9710];   // Stop 4
-    const bowBridge       = [40.7758, -73.9718];   // Stop 5
-    const theMet          = [40.7794, -73.9632];   // Stop 6
-    const centralParkZoo  = [40.7681, -73.9719];   // Stop 7 (optional · Madagascar)
-    const cote            = [40.7413, -73.9913];   // Stop 8
+    const wallace      = [40.7820, -73.9818];
+    const carbone      = [40.7280, -74.0002];
+    const wsp          = [40.7308, -73.9974];
+    const sanctum      = [40.7291, -74.0006];
+    const generation   = [40.7288, -73.9991];
+    const joes         = [40.7307, -74.0022];
+    const magnolia     = [40.7359, -74.0049];
+    const ninetyBed    = [40.7314, -74.0049];
+    const topOfTheRock = [40.7593, -73.9794];
 
     const map = L.map('day-map', {
       zoom: 13,
@@ -917,15 +909,14 @@
       attributionControl: true
     });
 
-    // CartoDB Positron — light, minimal
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
       subdomains: 'abcd',
       maxZoom: 19
     }).addTo(map);
 
-    // Walking/route line connecting the day in order
-    const route = [wallace, dailyProv, strawberryFlds, theMall, bethesda, bowBridge, theMet, centralParkZoo, cote];
+    // Route line — Wallace down to Carbone, walking arc through Village, back to Wallace, up to Top of the Rock
+    const route = [wallace, carbone, wsp, sanctum, generation, joes, magnolia, ninetyBed, wallace, topOfTheRock];
     L.polyline(route, {
       color: '#C9A84C',
       weight: 4,
@@ -934,7 +925,6 @@
       lineCap: 'round'
     }).addTo(map);
 
-    // Home base
     const homeIcon = L.divIcon({
       className: 'home-marker',
       html: '★',
@@ -944,16 +934,15 @@
     L.marker(wallace, { icon: homeIcon }).addTo(map)
       .bindPopup('<strong>The Wallace</strong>Home base<br>242 W 76th St');
 
-    // Numbered stops
     const stops = [
-      { coords: dailyProv,       num: '1', name: "Daily Provisions",      addr: '375 Amsterdam Ave · ~8:30 AM' },
-      { coords: strawberryFlds,  num: '2', name: 'Strawberry Fields',     addr: '72nd St & CPW · ~9:15 AM' },
-      { coords: theMall,         num: '3', name: 'The Mall',              addr: 'central spine of the park' },
-      { coords: bethesda,        num: '4', name: 'Bethesda Fountain',     addr: 'heart of Central Park' },
-      { coords: bowBridge,       num: '5', name: 'Bow Bridge',            addr: 'across the Lake' },
-      { coords: theMet,          num: '6', name: 'The Met',               addr: '1000 5th Avenue · 10:30 AM' },
-      { coords: centralParkZoo,  num: '7', name: 'Central Park Zoo (optional)', addr: '5th Ave at 64th St · ~2:45 PM' },
-      { coords: cote,            num: '8', name: 'Cote',                  addr: '16 W 22nd St · 5:00 PM' }
+      { coords: carbone,      num: '1', name: 'Carbone',                addr: '181 Thompson St · 12:00 PM' },
+      { coords: wsp,          num: '2', name: 'Washington Square Park', addr: '5th Ave at Waverly · ~2:45 PM' },
+      { coords: sanctum,      num: '3', name: 'Sanctum Sanctorum',      addr: '177A Bleecker St' },
+      { coords: generation,   num: '4', name: 'Generation Records',     addr: '210 Thompson St' },
+      { coords: joes,         num: '5', name: "Joe's Pizza",            addr: '7 Carmine St' },
+      { coords: magnolia,     num: '6', name: 'Magnolia Bakery',        addr: '401 Bleecker St' },
+      { coords: ninetyBed,    num: '7', name: '90 Bedford · Friends',   addr: 'Bedford &amp; Grove' },
+      { coords: topOfTheRock, num: '8', name: 'Top of the Rock',        addr: '30 Rockefeller Plaza · 7:00 PM' }
     ];
     stops.forEach(s => {
       const icon = L.divIcon({
@@ -966,7 +955,6 @@
         .bindPopup('<strong>' + s.name + '</strong>Stop ' + s.num + '<br>' + s.addr);
     });
 
-    // Frame all points
     const bounds = L.latLngBounds(route);
     map.fitBounds(bounds, { padding: [40, 40] });
   });
