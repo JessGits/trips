@@ -674,6 +674,27 @@
 
     <div class="transit-card">
       <div class="transit-card-icon">🚶</div>
+      <div><strong>Next door &mdash; 20 feet south on Thompson.</strong></div>
+    </div>
+
+    <!-- The Uncommons -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~3:00 PM</span>
+        <span class="stop-name">The Uncommons</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">230 Thompson St · Manhattan's first board game café · since 2013</div>
+        <p>One of the biggest <strong>Magic: The Gathering</strong> venues in NYC. They sell cards, booster packs, and accessories, and host Friday Night Magic, Commander, and various tournaments through the week.</p>
+        <p><strong>Hidden gem:</strong> the back wall is a floor-to-ceiling library of playable games. On a Saturday afternoon there's usually casual play happening &mdash; worth a peek even if you don't sit down.</p>
+        <a class="maps-button" href="maps://?q=The+Uncommons+230+Thompson+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
       <div><strong>Two blocks north to Washington Square Park.</strong> ~3 minutes up Thompson, past NYU.</div>
     </div>
 
@@ -868,7 +889,7 @@
     <div id="day-map" class="map-container"></div>
     <div class="map-legend">
       <div class="legend-item"><div class="legend-dot home"></div>The Wallace</div>
-      <div class="legend-item"><div class="legend-dot stop"></div>Stops 1&ndash;7</div>
+      <div class="legend-item"><div class="legend-dot stop"></div>Stops 1&ndash;8</div>
       <div class="legend-item"><div class="legend-line"></div>The day's path</div>
     </div>
   </div>
@@ -897,6 +918,7 @@
     const carbone      = [40.7280, -74.0002];
     const wsp          = [40.7308, -73.9974];
     const generation   = [40.7288, -73.9991];
+    const uncommons    = [40.7294, -73.9987];
     const joes         = [40.7307, -74.0022];
     const magnolia     = [40.7359, -74.0049];
     const ninetyBed    = [40.7324, -74.0053];
@@ -915,8 +937,8 @@
       maxZoom: 19
     }).addTo(map);
 
-    // Route line — Wallace down to Carbone, walking arc through Village (Generation → WSP → Joe's → 90 Bedford → Magnolia), back to Wallace, up to Top of the Rock
-    const route = [wallace, carbone, generation, wsp, joes, ninetyBed, magnolia, wallace, topOfTheRock];
+    // Route line — Wallace down to Carbone, walking arc through Village (Generation → Uncommons → WSP → Joe's → 90 Bedford → Magnolia), back to Wallace, up to Top of the Rock
+    const route = [wallace, carbone, generation, uncommons, wsp, joes, ninetyBed, magnolia, wallace, topOfTheRock];
     L.polyline(route, {
       color: '#C9A84C',
       weight: 4,
@@ -937,11 +959,12 @@
     const stops = [
       { coords: carbone,      num: '1', name: 'Carbone',                addr: '181 Thompson St · 12:00 PM' },
       { coords: generation,   num: '2', name: 'Generation Records',     addr: '210 Thompson St · ~2:45 PM' },
-      { coords: wsp,          num: '3', name: 'Washington Square Park', addr: '5th Ave at Waverly' },
-      { coords: joes,         num: '4', name: "Joe's Pizza",            addr: '7 Carmine St' },
-      { coords: ninetyBed,    num: '5', name: '90 Bedford · Friends',   addr: 'Bedford &amp; Grove · optional' },
-      { coords: magnolia,     num: '6', name: 'Magnolia Bakery',        addr: '401 Bleecker St · optional' },
-      { coords: topOfTheRock, num: '7', name: 'Top of the Rock',        addr: '30 Rockefeller Plaza · 7:00 PM' }
+      { coords: uncommons,    num: '3', name: 'The Uncommons',          addr: '230 Thompson St · board game café' },
+      { coords: wsp,          num: '4', name: 'Washington Square Park', addr: '5th Ave at Waverly' },
+      { coords: joes,         num: '5', name: "Joe's Pizza",            addr: '7 Carmine St' },
+      { coords: ninetyBed,    num: '6', name: '90 Bedford · Friends',   addr: 'Bedford &amp; Grove · optional' },
+      { coords: magnolia,     num: '7', name: 'Magnolia Bakery',        addr: '401 Bleecker St · optional' },
+      { coords: topOfTheRock, num: '8', name: 'Top of the Rock',        addr: '30 Rockefeller Plaza · 7:00 PM' }
     ];
     stops.forEach(s => {
       const icon = L.divIcon({
