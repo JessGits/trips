@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Day 5 · A Free Sunday · NYC 2026</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Day 5">
+<meta name="theme-color" content="#1B3A5C">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  :root {
+    --navy: #1B3A5C;
+    --navy-mid: #2C4E72;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-pale: #FDF6E3;
+    --cream: #FAF7F2;
+    --white: #FFFFFF;
+    --slate: #4A5568;
+    --light-slate: #718096;
+    --border: #E2D9CC;
+    --red: #C0392B;
+    --green: #1E6B3C;
+    --blue: #2C5282;
+    --blue-bg: #EEF2F7;
+    --blue-border: #C3D4F0;
+    --film-bg: #EEF4FF;
+    --film-border: #5B8DEF;
+    --film-text: #2C5282;
+    --bourdain-bg: #F5F0E8;
+    --bourdain-border: #B8966B;
+    --bourdain-text: #6B4F2B;
+    --track1-tint: #F0F6FF;
+    --track1-border: #C3D4F0;
+    --track1-accent: #2C5282;
+    --track2-tint: #FBF3E8;
+    --track2-border: #E8D5A3;
+    --track2-accent: #8B6914;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--cream);
+    color: #2D3748;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* STICKY NAV */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--navy);
+    color: white;
+    padding: 10px 16px;
+    padding-top: max(10px, env(safe-area-inset-top, 10px));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+  }
+  .sticky-nav a {
+    color: var(--gold);
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+  }
+  .sticky-nav a:hover { background: rgba(201,168,76,0.15); }
+  .sticky-nav .day-marker { color: rgba(255,255,255,0.7); }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    padding: 40px 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 260px; height: 260px; border-radius: 50%; background: rgba(201,168,76,0.07); pointer-events: none; }
+  .hero-inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 900; color: #fff; line-height: 1.05; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 13.5px; color: rgba(255,255,255,0.65); font-weight: 300; margin-bottom: 22px; line-height: 1.5; }
+  .glance-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: rgba(255,255,255,0.9);
+    padding: 7px 12px;
+    border-radius: 100px;
+    font-size: 11.5px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pill span { font-size: 13px; }
+
+  /* MAIN */
+  .main { padding: 28px 20px 40px; max-width: 1100px; margin: 0 auto; }
+
+  /* DAY BANNER */
+  .day-banner {
+    background: white;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(27,58,92,0.04);
+  }
+  .day-banner-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .day-banner p {
+    font-size: 14.5px;
+    color: var(--slate);
+    line-height: 1.65;
+  }
+  .day-banner strong { color: var(--navy); }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: center; gap: 12px; margin: 32px 0 18px; }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+    letter-spacing: -0.3px;
+  }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
+
+  /* TRACK CARD WRAPPER */
+  .track-wrap {
+    border-radius: 12px;
+    padding: 22px 22px 8px;
+    margin-bottom: 28px;
+    border: 1px solid;
+  }
+  .track-1 { background: var(--track1-tint); border-color: var(--track1-border); }
+  .track-2 { background: var(--track2-tint); border-color: var(--track2-border); }
+  .track-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .track-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+  .track-1 .track-label { background: var(--track1-accent); color: white; }
+  .track-2 .track-label { background: var(--track2-accent); color: white; }
+  .track-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    flex: 1;
+  }
+  .track-1 .track-name { color: var(--track1-accent); }
+  .track-2 .track-name { color: var(--track2-accent); }
+  .track-intro {
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.65;
+    margin-bottom: 18px;
+  }
+  .track-intro strong { color: var(--navy); }
+
+  /* TIMELINE / STOPS */
+  .timeline { position: relative; }
+
+  .stop-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(27,58,92,0.03);
+  }
+  .stop-header {
+    background: var(--navy);
+    padding: 11px 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .stop-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .stop-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.2px;
+  }
+  .stop-body { padding: 15px 18px 16px; }
+  .stop-address {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: var(--light-slate);
+    margin-bottom: 10px;
+    letter-spacing: 0.2px;
+  }
+  .stop-body p {
+    font-size: 13.5px;
+    color: var(--slate);
+    line-height: 1.65;
+    margin-bottom: 10px;
+  }
+  .stop-body p:last-of-type { margin-bottom: 12px; }
+  .stop-body strong { color: var(--navy); font-weight: 600; }
+  .stop-body em { font-style: italic; }
+
+  .maps-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--cream);
+    color: var(--navy);
+    text-decoration: none;
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    transition: background 0.15s ease;
+  }
+  .maps-button:hover { background: var(--gold-pale); }
+  .maps-button-icon { font-size: 13px; }
+
+  /* TRANSIT CARD */
+  .transit-card {
+    background: var(--blue-bg);
+    border: 1px solid var(--blue-border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 0 0 12px;
+    font-size: 12.5px;
+    color: var(--slate);
+    line-height: 1.55;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .transit-card-icon { font-size: 16px; flex: 0 0 20px; }
+  .transit-card strong { color: var(--blue); }
+
+  /* FILM CALLOUT */
+  .film-callout {
+    background: var(--film-bg);
+    border: 1px solid var(--film-border);
+    border-left: 4px solid var(--film-border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 12px 0 6px;
+  }
+  .film-callout .film-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--film-text);
+    background: rgba(91,141,239,0.16);
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 8px;
+  }
+  .film-callout p {
+    font-size: 12.5px;
+    color: var(--film-text);
+    line-height: 1.55;
+    margin-bottom: 6px;
+  }
+  .film-callout p:last-child { margin-bottom: 0; }
+  .film-callout p strong { color: var(--film-text); font-weight: 700; }
+
+  /* HIDDEN GEM CALLOUT (gold) */
+  .gem-callout {
+    background: var(--gold-pale);
+    border: 1px solid var(--gold-light);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 12px 0 6px;
+  }
+  .gem-callout .gem-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #8B6914;
+    background: rgba(201,168,76,0.2);
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 8px;
+  }
+  .gem-callout p {
+    font-size: 12.5px;
+    color: #6B4F18;
+    line-height: 1.55;
+    margin-bottom: 0;
+  }
+  .gem-callout strong { color: #6B4F18; font-weight: 700; }
+
+  /* MAP */
+  .map-section { margin: 32px 0; }
+  .map-wrap {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(27,58,92,0.04);
+  }
+  #day-map { width: 100%; height: 420px; }
+  .map-legend {
+    background: white;
+    padding: 12px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 11.5px;
+    color: var(--slate);
+    border-top: 1px solid var(--border);
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .legend-dot.home { background: var(--gold); border: 2px solid var(--navy); }
+  .legend-dot.track1 { background: var(--track1-accent); }
+  .legend-dot.track2 { background: var(--track2-accent); }
+  .home-marker {
+    background: var(--gold);
+    color: var(--navy);
+    border: 2px solid var(--navy);
+    border-radius: 50%;
+    font-weight: 700;
+    text-align: center;
+    line-height: 24px;
+    font-size: 16px;
+  }
+  .track1-marker {
+    background: var(--track1-accent);
+    color: white;
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px var(--track1-accent);
+    border-radius: 50%;
+    font-weight: 700;
+    text-align: center;
+    line-height: 22px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+  }
+  .track2-marker {
+    background: var(--track2-accent);
+    color: white;
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px var(--track2-accent);
+    border-radius: 50%;
+    font-weight: 700;
+    text-align: center;
+    line-height: 22px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+  }
+  .leaflet-popup-content { font-family: 'DM Sans', sans-serif; font-size: 12.5px; }
+  .leaflet-popup-content strong { color: var(--navy); display: block; margin-bottom: 2px; }
+
+  /* BEFORE BED */
+  .before-bed {
+    background: var(--navy);
+    color: white;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-top: 32px;
+  }
+  .before-bed-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .before-bed p {
+    color: rgba(255,255,255,0.85);
+    font-size: 13.5px;
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+  .before-bed p:last-child { margin-bottom: 0; }
+  .before-bed strong { color: white; font-weight: 600; }
+
+  /* MOBILE */
+  @media (max-width: 720px) {
+    .hero { padding: 32px 18px 22px; }
+    .hero h1 { font-size: 30px; }
+    .hero-sub { font-size: 12.5px; }
+    .main { padding: 22px 14px 32px; }
+    .section-header h2 { font-size: 19px; }
+    .stop-name { font-size: 15px; }
+    .track-name { font-size: 19px; }
+    .track-wrap { padding: 18px 16px 6px; }
+    #day-map { height: 320px; }
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: white; font-size: 11px; color: #000; }
+    .sticky-nav { display: none; }
+    .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 18px 24px; }
+    .main { padding: 14px 24px; }
+    .stop-header, .day-banner, .before-bed { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .film-callout, .gem-callout, .track-wrap { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .stop-card, .map-wrap { page-break-inside: avoid; }
+    .maps-button { display: none; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<div class="sticky-nav">
+  <a href="../">&larr; NYC 2026</a>
+  <span class="day-marker">Day 5 of 9</span>
+  <a href="../june-8-brooklyn-cellar/">Day 6 &rarr;</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Day 5 &nbsp;&middot;&nbsp; Sunday, June 7, 2026</div>
+    <h1>A <em>Free</em> Sunday</h1>
+    <div class="hero-sub">No bookings &middot; no anchors &middot; two ways to spend it</div>
+    <div class="glance-row">
+      <div class="pill"><span>🎁</span>Anthony's gift day</div>
+      <div class="pill"><span>🛍️</span>Track 1 · The SoHo Wander</div>
+      <div class="pill"><span>🗽</span>Track 2 · 5th Avenue</div>
+      <div class="pill"><span>🚶</span>Mix or match</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- DAY BANNER -->
+  <div class="day-banner">
+    <div class="day-banner-label">🎁 The Day</div>
+    <p>The shopping day is Anthony's <strong>21st birthday gift</strong> from Jess and Michele. No reservations. No timed entries. Two distinct ways to spend the day &mdash; <strong>The SoHo Wander</strong> (downtown, streetwear, the boutique heart) or <strong>5th Avenue Iconic</strong> (uptown, the Plaza, the flagship windows). Pick one, or mix. The map at the bottom shows both arcs.</p>
+  </div>
+
+  <!-- TRACK 1 -->
+  <div class="section-header">
+    <h2>The Two Tracks</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="track-wrap track-1">
+    <div class="track-header">
+      <span class="track-label">Track 1</span>
+      <div class="track-name">The SoHo Wander</div>
+    </div>
+    <p class="track-intro">Cobblestone streets, cast-iron facades, and one of the densest shopping strips in the country. SoHo is where streetwear culture (Kith, Aimé Leon Dore, Supreme) sits beside designer flagships (Prada, Chanel, Bottega) and indie boutiques. Walk it slow. End with the natural exit north to <strong>Forbidden Planet</strong> and <strong>Strand</strong> at Union Square.</p>
+
+    <!-- Transit down -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚇</div>
+      <div><strong>1 train from 72nd to Houston St.</strong> ~25 min, no transfers. Or stay on to Canal St if you want to start further south.</div>
+    </div>
+
+    <!-- The Lay of the Land -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Orientation</span>
+        <span class="stop-name">The Lay of the Land</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Roughly: Houston St (north) &middot; Canal St (south) &middot; Lafayette (east) &middot; West Broadway (west)</div>
+        <p>SoHo is six by six blocks. The big-name flagships line <strong>Broadway</strong> and <strong>Spring Street</strong>. The boutique-dense, less-crowded streets are <strong>Mercer, Greene, Wooster, Crosby,</strong> and <strong>Prince</strong> &mdash; the cobblestone heart of the neighborhood. Walk in a loop, not a line.</p>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Hidden gem</div>
+          <p><strong>Look up.</strong> SoHo has the largest concentration of cast-iron architecture in the world &mdash; 1860s industrial loft buildings with ornate facades that look like stone but are painted iron. Greene Street between Spring and Broome is the best stretch. The buildings are as much the show as the stores.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kith -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Anchor stop</span>
+        <span class="stop-name">Kith</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">337 Lafayette St &middot; three floors, since 2011</div>
+        <p>One of the most influential streetwear and sneaker stores in the world. Founder Ronnie Fieg's curated mix of Kith's own collections plus collabs with Adidas, New Balance, Nike, Comme des Garçons, BMW, and others. The interior is its own attraction &mdash; three floors of polished concrete and architectural display.</p>
+        <a class="maps-button" href="maps://?q=Kith+337+Lafayette+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Hidden gem</div>
+          <p><strong>Kith Treats</strong> &mdash; the cereal-and-soft-serve bar inside the store. Custom soft-serve creations layered with cereal (Cinnamon Toast Crunch, Fruity Pebbles, etc.) and toppings. A SoHo cult thing. Worth a stop even if you're not buying anything else.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aimé Leon Dore -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Anchor stop</span>
+        <span class="stop-name">Aimé Leon Dore (ALD)</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">214 Mulberry St &middot; technically Nolita, 3 blocks east of Kith</div>
+        <p>NYC's most distinctive contemporary brand — "urban preppy" with deep '90s NYC roots. Founded in Queens, now globally watched. The Mulberry flagship is a destination in itself: leather couches, vintage Jordans on the shelves, basketball-court flooring. Expect a line on weekends; the staff manages it well.</p>
+        <a class="maps-button" href="maps://?q=Aime+Leon+Dore+214+Mulberry+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Hidden gem</div>
+          <p><strong>Café Leon Dore</strong> next door (also 214 Mulberry) — Greek-inspired coffee shop attached to the store. The Freddo cappuccino is the signature. Even if you skip the store, the café is a strong coffee stop. Outdoor seating only.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Streetwear / Sneaker pocket -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">For the sneakerheads</span>
+        <span class="stop-name">Streetwear &amp; Sneaker Pocket</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Howard St, Broadway, surrounding blocks</div>
+        <p>If anyone's chasing sneakers or streetwear specifically:</p>
+        <p>&middot; <strong>Stadium Goods</strong> (47 Howard St) &mdash; the sneaker resale mecca. Rare Jordans, limited-edition Yeezys, vintage Air Maxes &mdash; market prices, not retail.<br>
+        &middot; <strong>Nike SoHo</strong> (611 Broadway) &mdash; five-floor flagship with a basketball court on the top floor and a treadmill to test running shoes.<br>
+        &middot; <strong>Supreme</strong> (190 Bowery) &mdash; the OG. East of SoHo proper, about 8 blocks. Lines depend on what's dropped that week.<br>
+        &middot; <strong>Bape (A Bathing Ape)</strong> (91 Greene St) &mdash; iconic Japanese streetwear, shark hoodies, camo patterns.</p>
+      </div>
+    </div>
+
+    <!-- The Flagships -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">If the day calls for it</span>
+        <span class="stop-name">The Broadway Flagships</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Mostly along Broadway between Houston and Canal</div>
+        <p>For the accessible/mainstream flagship walk:</p>
+        <p>&middot; <strong>Apple SoHo</strong> (103 Prince St) &mdash; set in a former post office, the original glass-staircase store.<br>
+        &middot; <strong>Prada Broadway</strong> (575 Broadway) &mdash; the Rem Koolhaas-designed flagship, more architecture exhibit than store.<br>
+        &middot; <strong>Uniqlo Global Flagship</strong> (546 Broadway) &mdash; massive, multi-floor, the most efficient stop for actual closet replenishment.<br>
+        &middot; <strong>Adidas Flagship</strong> (115 Spring) and <strong>Converse</strong> (560 Broadway) for sneaker classics.</p>
+      </div>
+    </div>
+
+    <!-- Vintage (optional) -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">If vintage calls</span>
+        <span class="stop-name">What Goes Around Comes Around</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">351 W Broadway &middot; high-end vintage and luxury resale</div>
+        <p>The vintage authority &mdash; authenticated Chanel, vintage Levi's, archival Versace, classic band tees. Pricey, but the curation is the point. Worth a walk-through even if not buying.</p>
+        <a class="maps-button" href="maps://?q=What+Goes+Around+Comes+Around+351+W+Broadway+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- Lunch in SoHo -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">When hungry</span>
+        <span class="stop-name">Lunch in SoHo</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">No reservations &middot; walk in wherever calls</div>
+        <p>SoHo has more restaurants than blocks. A few honest options:</p>
+        <p>&middot; <strong>Balthazar</strong> (80 Spring) &mdash; the French brasserie that defined SoHo dining. The bar is walk-in-friendly even when the dining room is booked.<br>
+        &middot; <strong>Emilio's Ballato</strong> (55 E Houston) &mdash; old-school red-sauce Italian, longtime celebrity hangout, Bourdain favorite.<br>
+        &middot; <strong>Lombardi's</strong> (32 Spring) &mdash; America's first pizzeria (1905), coal-fired oven, a few blocks east.<br>
+        &middot; <strong>Jack's Wife Freda</strong> (224 Lafayette) &mdash; brunch staple, lighter fare.<br>
+        &middot; <strong>Café Leon Dore</strong> (214 Mulberry) &mdash; coffee and a Mediterranean sandwich, attached to ALD.</p>
+      </div>
+    </div>
+
+    <!-- Transit north -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Walk north on Broadway to 12th St.</strong> ~20 min, all on Broadway, technically out of SoHo and into the East Village / Union Square zone. Or grab the 6 train from Spring St to 14th St-Union Sq (~5 min).</div>
+    </div>
+
+    <!-- Forbidden Planet -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Afternoon</span>
+        <span class="stop-name">Forbidden Planet</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">832 Broadway at 12th St &middot; comics, collectibles, games</div>
+        <p>One of the biggest comic and sci-fi shops in NYC. Comics (current issues, back issues, graphic novels), Funko Pops, anime figures, board games, Magic: The Gathering cards, Pokémon, Dungeons &amp; Dragons.</p>
+        <a class="maps-button" href="maps://?q=Forbidden+Planet+832+Broadway+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- Strand -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Strand is 4 doors south.</strong> 828 Broadway, same side of the street.</div>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Afternoon</span>
+        <span class="stop-name">Strand Bookstore</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">828 Broadway at 12th St &middot; since 1927</div>
+        <p>"18 miles of books." Three floors of new, used, and rare titles. The red awning, the dollar carts out front, the Strand tote bag &mdash; it's a NYC institution that has somehow survived every wave that swept the bookstores away.</p>
+        <a class="maps-button" href="maps://?q=Strand+Bookstore+828+Broadway+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Hidden gem</div>
+          <p><strong>The Rare Book Room</strong> on the 3rd floor &mdash; first editions, signed copies, antiquarian finds. Often quieter than the main floors. Worth a peek even if you're not buying.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subway home -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚇</div>
+      <div><strong>Subway home from Union Square.</strong> Walk 1 block north to 14th St-Union Sq. The 4/5/6/N/Q/R/W/L all stop there &mdash; easiest route is the N/Q/R/W to Times Square, transfer to the 1 uptown to 72nd. Or rideshare ~$25.</div>
+    </div>
+
+  </div>
+
+  <!-- TRACK 2 -->
+  <div class="track-wrap track-2">
+    <div class="track-header">
+      <span class="track-label">Track 2</span>
+      <div class="track-name">5th Avenue Iconic</div>
+    </div>
+    <p class="track-intro">The classic NYC stretch. <strong>Central Park Zoo</strong>, <strong>Gapstow Bridge</strong>, the <strong>Plaza Hotel</strong>, <strong>Apple Cube</strong>, <strong>FAO Schwarz</strong>, and the flagship windows of 5th Avenue down to <strong>Rockefeller Center</strong>. A walking day, not a shopping day &mdash; though there's plenty of both.</p>
+
+    <!-- Transit to Zoo -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Walk south through Central Park.</strong> From The Wallace, enter at 72nd &amp; CPW, walk south along the east side ~25 min. Or grab the 1 to 59th-Columbus Circle and walk east through the park's southern end.</div>
+    </div>
+
+    <!-- Central Park Zoo -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">10:00 AM opening</span>
+        <span class="stop-name">Central Park Zoo</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">East side of Central Park at 64th St &middot; opens 10 AM</div>
+        <p>A small, walkable zoo &mdash; sea lions, snow leopards, grizzly bears, red pandas, penguins, and the Tropic Zone rainforest. Tickets at the gate.</p>
+        <a class="maps-button" href="maps://?q=Central+Park+Zoo+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Madagascar (2005)</strong> &mdash; this is the zoo Alex the lion, Marty the zebra, Gloria the hippo, and Melman the giraffe escape from.</p>
+          <p><strong>The Catcher in the Rye</strong> &mdash; Holden Caulfield visits with Phoebe.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transit -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Two minutes south to The Pond and Gapstow.</strong> Exit the Zoo and follow the path south along The Pond.</div>
+    </div>
+
+    <!-- Gapstow Bridge -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~late morning</span>
+        <span class="stop-name">Gapstow Bridge</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">South end of The Pond &middot; the Plaza Hotel in the background</div>
+        <p>One of the most photographed spots in Central Park. A small stone arch bridge over The Pond, with the Plaza Hotel and 5th Avenue skyline rising directly behind it.</p>
+        <a class="maps-button" href="maps://?q=Gapstow+Bridge+Central+Park+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Home Alone 2: Lost in New York (1992)</strong> &mdash; the Pigeon Lady scenes were filmed here. Kevin feeds the pigeons by The Pond.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transit -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Exit the park at 59th &amp; 5th.</strong> The Plaza is directly across the street.</div>
+    </div>
+
+    <!-- Plaza Hotel -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~midday</span>
+        <span class="stop-name">The Plaza Hotel</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">768 5th Ave at 59th &middot; the lobby is open to the public</div>
+        <p>One of the most famous hotels in the world &mdash; the Plaza has been the backdrop for everything from <em>The Great Gatsby</em> to <em>The Way We Were</em> to nearly every NYC-set holiday movie. Walk in. The lobby and lower-level shops are open to non-guests.</p>
+        <a class="maps-button" href="maps://?q=The+Plaza+Hotel+5th+Avenue+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Home Alone 2: Lost in New York (1992)</strong> &mdash; Kevin checks into the Plaza with his dad's credit card. The Plaza has a permanent <strong>Home Alone gift shop</strong> in the lower level &mdash; props replicas, themed merch, the credit card line on a t-shirt.</p>
+          <p>Also: <em>Crocodile Dundee, North by Northwest, Bride Wars, Scent of a Woman</em>, and many others.</p>
+        </div>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Hidden gem</div>
+          <p><strong>The Eloise shop</strong> &mdash; same lower level. The 1955 children's book "Eloise at the Plaza" is set here, and the shop sells the books, merch, and even has a mailbox where kids write letters to Eloise.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transit -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>One block south on 5th.</strong> Apple Cube is at 5th &amp; 58th, glass cube rising out of the sidewalk.</div>
+    </div>
+
+    <!-- Apple Cube -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Any time</span>
+        <span class="stop-name">Apple Fifth Avenue (The Cube)</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">767 5th Ave &middot; 32-foot glass cube &middot; store is underground</div>
+        <p>One of the most photographed Apple Stores in the world. The cube is the entrance; the store is below it.</p>
+        <a class="maps-button" href="maps://?q=Apple+Fifth+Avenue+767+5th+Ave+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Hidden gem</div>
+          <p>The store is <strong>open 24 hours, 7 days a week</strong> &mdash; one of very few in the world. If midday is crowded, you can come back any time, even at 3 AM.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transit -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Walk south on 5th.</strong> Tiffany's is at 57th, FAO Schwarz is at 49th in Rockefeller Plaza. About 10 blocks of flagship windows in between.</div>
+    </div>
+
+    <!-- Tiffany -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Afternoon</span>
+        <span class="stop-name">Tiffany &amp; Co. — The Landmark</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">727 5th Ave at 57th &middot; the flagship since 1940</div>
+        <p>Recently renovated to its 10-floor glory. Walk in &mdash; the ground floor is open to anyone, and the Blue Box Café upstairs serves a proper Breakfast at Tiffany's tea (reservation only, usually weeks out, so don't plan on it day-of).</p>
+        <a class="maps-button" href="maps://?q=Tiffany+Co+727+5th+Ave+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Breakfast at Tiffany's (1961)</strong> &mdash; Holly Golightly's pre-dawn croissant window-gazing was filmed at the corner of 5th &amp; 57th, right here.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transit -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Continue south on 5th.</strong> Saks at 50th, St. Patrick's Cathedral across from Saks, Rockefeller Plaza one block west.</div>
+    </div>
+
+    <!-- FAO Schwarz -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Afternoon</span>
+        <span class="stop-name">FAO Schwarz</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">30 Rockefeller Plaza &middot; one block west of 5th Avenue</div>
+        <p>The toy store. Even if you're "too old" for a toy store, walk in. Magicians on the floor, a Jellycat diner, life-size stuffed animals, and the famous oversized floor piano.</p>
+        <a class="maps-button" href="maps://?q=FAO+Schwarz+30+Rockefeller+Plaza+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Big (1988)</strong> &mdash; Tom Hanks and Robert Loggia tap-dancing on the giant floor piano. The piano is still there, and yes &mdash; you can play it. Different store interior (the original FAO was at 5th &amp; 58th, this location opened in 2018 in Rockefeller), but the floor piano lives on.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saks + Rockefeller note -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Wherever the day ends</span>
+        <span class="stop-name">Saks &amp; Rockefeller Plaza</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Saks at 49th &amp; 5th &middot; Rockefeller Plaza one block west</div>
+        <p>Saks Fifth Avenue is the department store flagship &mdash; 10 floors, the windows are events of their own. Rockefeller Plaza is right next door if anyone wants to see it in daylight (different than from Top of the Rock at night).</p>
+        <p>St. Patrick's Cathedral sits directly across 5th from Saks, free to walk into, neo-Gothic spires, quiet inside.</p>
+      </div>
+    </div>
+
+    <!-- Subway home -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚇</div>
+      <div><strong>Subway home from 50th St.</strong> B/D/F/M at Rockefeller Center, then transfer to A/C/E to 72nd. Or walk to the 1 train at 50th &amp; Broadway, direct to 72nd. ~20 min total.</div>
+    </div>
+
+  </div>
+
+  <!-- MAP -->
+  <div class="section-header">
+    <h2>The Map</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="map-wrap">
+    <div id="day-map"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot home"></div>The Wallace</div>
+      <div class="legend-item"><div class="legend-dot track1"></div>Track 1 &middot; The SoHo Wander</div>
+      <div class="legend-item"><div class="legend-dot track2"></div>Track 2 &middot; 5th Avenue</div>
+    </div>
+  </div>
+
+  <!-- BEFORE BED -->
+  <div class="before-bed">
+    <div class="before-bed-title">One thing before sleep</div>
+    <p>Tomorrow is <strong>Brooklyn day</strong> &mdash; an early-ish start. We'll walk the Brooklyn Bridge, eat at Juliana's, climb at VITAL, and end at the Comedy Cellar.</p>
+    <p>Comfortable shoes. Layers (Brooklyn Bridge gets windy). <strong>Photo IDs</strong> for everyone &mdash; the Cellar checks at the door.</p>
+  </div>
+
+</div>
+
+<!-- MAP JS -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const wallace      = [40.7820, -73.9818];
+
+    // Track 1 — SoHo & Strand
+    const apple_soho   = [40.7251, -73.9990];
+    const prada_soho   = [40.7246, -73.9975];
+    const kith         = [40.7260, -73.9943];
+    const ald          = [40.7222, -73.9961];
+    const stadium      = [40.7200, -74.0020];
+    const nike_soho    = [40.7259, -73.9968];
+    const forbidden    = [40.7334, -73.9908];
+    const strand       = [40.7333, -73.9910];
+
+    // Track 2 — 5th Avenue
+    const cp_zoo       = [40.7677, -73.9720];
+    const gapstow      = [40.7669, -73.9738];
+    const plaza        = [40.7646, -73.9743];
+    const apple_cube   = [40.7638, -73.9730];
+    const tiffany      = [40.7625, -73.9739];
+    const fao          = [40.7588, -73.9793];
+    const saks         = [40.7585, -73.9764];
+
+    const map = L.map('day-map', {
+      zoom: 13,
+      zoomControl: true,
+      scrollWheelZoom: false,
+      attributionControl: true
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Track 1 route (blue, dashed)
+    const track1_route = [wallace, stadium, prada_soho, apple_soho, nike_soho, kith, ald, forbidden, strand];
+    L.polyline(track1_route, {
+      color: '#2C5282',
+      weight: 4,
+      opacity: 0.7,
+      dashArray: '8, 6',
+      lineCap: 'round'
+    }).addTo(map);
+
+    // Track 2 route (gold, dashed)
+    const track2_route = [wallace, cp_zoo, gapstow, plaza, apple_cube, tiffany, fao, saks];
+    L.polyline(track2_route, {
+      color: '#8B6914',
+      weight: 4,
+      opacity: 0.7,
+      dashArray: '8, 6',
+      lineCap: 'round'
+    }).addTo(map);
+
+    // Home base
+    const homeIcon = L.divIcon({
+      className: 'home-marker',
+      html: '★',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14]
+    });
+    L.marker(wallace, { icon: homeIcon }).addTo(map)
+      .bindPopup('<strong>The Wallace</strong>Home base<br>242 W 76th St');
+
+    // Track 1 stops
+    const track1_stops = [
+      { coords: stadium,    num: '1', name: 'Stadium Goods',    addr: '47 Howard St' },
+      { coords: prada_soho, num: '2', name: 'Prada Broadway',   addr: '575 Broadway' },
+      { coords: apple_soho, num: '3', name: 'Apple SoHo',       addr: '103 Prince St' },
+      { coords: nike_soho,  num: '4', name: 'Nike SoHo',        addr: '611 Broadway' },
+      { coords: kith,       num: '5', name: 'Kith',             addr: '337 Lafayette St' },
+      { coords: ald,        num: '6', name: 'Aimé Leon Dore',   addr: '214 Mulberry St' },
+      { coords: forbidden,  num: '7', name: 'Forbidden Planet', addr: '832 Broadway' },
+      { coords: strand,     num: '8', name: 'Strand Bookstore', addr: '828 Broadway' }
+    ];
+    track1_stops.forEach(s => {
+      const icon = L.divIcon({
+        className: 'track1-marker',
+        html: s.num,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+      });
+      L.marker(s.coords, { icon: icon }).addTo(map)
+        .bindPopup('<strong>' + s.name + '</strong>Track 1 &middot; ' + s.addr);
+    });
+
+    // Track 2 stops
+    const track2_stops = [
+      { coords: cp_zoo,     num: '1', name: 'Central Park Zoo',   addr: 'East side, 64th St' },
+      { coords: gapstow,    num: '2', name: 'Gapstow Bridge',     addr: 'South end of The Pond' },
+      { coords: plaza,      num: '3', name: 'The Plaza Hotel',    addr: '768 5th Ave' },
+      { coords: apple_cube, num: '4', name: 'Apple Cube',         addr: '767 5th Ave' },
+      { coords: tiffany,    num: '5', name: 'Tiffany &amp; Co.',  addr: '727 5th Ave' },
+      { coords: fao,        num: '6', name: 'FAO Schwarz',        addr: '30 Rockefeller Plaza' },
+      { coords: saks,       num: '7', name: 'Saks Fifth Avenue',  addr: '611 5th Ave' }
+    ];
+    track2_stops.forEach(s => {
+      const icon = L.divIcon({
+        className: 'track2-marker',
+        html: s.num,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+      });
+      L.marker(s.coords, { icon: icon }).addTo(map)
+        .bindPopup('<strong>' + s.name + '</strong>Track 2 &middot; ' + s.addr);
+    });
+
+    // Frame everything
+    const bounds = L.latLngBounds([...track1_route, ...track2_route]);
+    map.fitBounds(bounds, { padding: [40, 40] });
+  });
+</script>
+
+</body>
+</html>
