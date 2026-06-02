@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Day 7 · On the Water · NYC 2026</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Day 7">
+<meta name="theme-color" content="#1B3A5C">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  :root {
+    --navy: #1B3A5C;
+    --navy-mid: #2C4E72;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-pale: #FDF6E3;
+    --cream: #FAF7F2;
+    --white: #FFFFFF;
+    --slate: #4A5568;
+    --light-slate: #718096;
+    --border: #E2D9CC;
+    --red: #C0392B;
+    --green: #1E6B3C;
+    --blue: #2C5282;
+    --blue-bg: #EEF2F7;
+    --blue-border: #C3D4F0;
+    --film-bg: #EEF4FF;
+    --film-border: #5B8DEF;
+    --film-text: #2C5282;
+    --bourdain-bg: #F5F0E8;
+    --bourdain-border: #B8966B;
+    --bourdain-text: #6B4F2B;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--cream); color: #2D3748; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  /* STICKY NAV */
+  .sticky-nav { position: sticky; top: 0; z-index: 100; background: var(--navy); color: white; padding: 10px 16px; padding-top: max(10px, env(safe-area-inset-top, 10px)); display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; font-family: 'DM Mono', monospace; letter-spacing: 0.5px; border-bottom: 1px solid rgba(201,168,76,0.3); }
+  .sticky-nav a { color: var(--gold); text-decoration: none; padding: 4px 8px; border-radius: 4px; transition: background 0.15s ease; }
+  .sticky-nav a:hover { background: rgba(201,168,76,0.15); }
+  .sticky-nav .day-marker { color: rgba(255,255,255,0.7); }
+
+  /* HERO */
+  .hero { background: var(--navy); padding: 40px 24px 28px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 260px; height: 260px; border-radius: 50%; background: rgba(201,168,76,0.07); pointer-events: none; }
+  .hero-inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 900; color: #fff; line-height: 1.05; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 13.5px; color: rgba(255,255,255,0.65); font-weight: 300; margin-bottom: 22px; line-height: 1.5; }
+  .glance-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill { background: rgba(255,255,255,0.08); border: 1px solid rgba(201,168,76,0.25); color: rgba(255,255,255,0.9); padding: 7px 12px; border-radius: 100px; font-size: 11.5px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+  .pill span { font-size: 13px; }
+
+  /* MAIN */
+  .main { padding: 28px 20px 40px; max-width: 1100px; margin: 0 auto; }
+
+  /* DAY BANNER */
+  .day-banner { background: white; border: 1px solid var(--border); border-left: 4px solid var(--gold); border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(27,58,92,0.04); }
+  .day-banner-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .day-banner p { font-size: 14.5px; color: var(--slate); line-height: 1.65; }
+  .day-banner strong { color: var(--navy); }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: center; gap: 12px; margin: 32px 0 18px; }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--navy); white-space: nowrap; letter-spacing: -0.3px; }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
+
+  /* STOPS */
+  .timeline { position: relative; }
+  .stop-card { background: white; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(27,58,92,0.03); }
+  .stop-header { background: var(--navy); padding: 11px 16px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .stop-time { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: var(--gold); letter-spacing: 0.5px; text-transform: uppercase; }
+  .stop-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: white; letter-spacing: -0.2px; }
+  .stop-body { padding: 15px 18px 16px; }
+  .stop-address { font-family: 'DM Mono', monospace; font-size: 11.5px; color: var(--light-slate); margin-bottom: 10px; letter-spacing: 0.2px; }
+  .stop-body p { font-size: 13.5px; color: var(--slate); line-height: 1.65; margin-bottom: 10px; }
+  .stop-body p:last-of-type { margin-bottom: 12px; }
+  .stop-body strong { color: var(--navy); font-weight: 600; }
+  .stop-body em { font-style: italic; }
+
+  .maps-button { display: inline-flex; align-items: center; gap: 6px; background: var(--cream); color: var(--navy); text-decoration: none; padding: 7px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid var(--border); transition: background 0.15s ease; }
+  .maps-button:hover { background: var(--gold-pale); }
+  .maps-button-icon { font-size: 13px; }
+
+  /* TRANSIT CARD */
+  .transit-card { background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: 8px; padding: 10px 14px; margin: 0 0 12px; font-size: 12.5px; color: var(--slate); line-height: 1.55; display: flex; align-items: flex-start; gap: 10px; }
+  .transit-card-icon { font-size: 16px; flex: 0 0 20px; }
+  .transit-card strong { color: var(--blue); }
+
+  /* FILM CALLOUT */
+  .film-callout { background: var(--film-bg); border: 1px solid var(--film-border); border-left: 4px solid var(--film-border); border-radius: 8px; padding: 12px 14px; margin: 12px 0 6px; }
+  .film-callout .film-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--film-text); background: rgba(91,141,239,0.16); padding: 3px 8px; border-radius: 3px; margin-bottom: 8px; }
+  .film-callout p { font-size: 12.5px; color: var(--film-text); line-height: 1.55; margin-bottom: 6px; }
+  .film-callout p:last-child { margin-bottom: 0; }
+  .film-callout p strong { color: var(--film-text); font-weight: 700; }
+
+  /* HIDDEN GEM CALLOUT */
+  .gem-callout { background: var(--gold-pale); border: 1px solid var(--gold-light); border-left: 4px solid var(--gold); border-radius: 8px; padding: 12px 14px; margin: 12px 0 6px; }
+  .gem-callout .gem-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #8B6914; background: rgba(201,168,76,0.2); padding: 3px 8px; border-radius: 3px; margin-bottom: 8px; }
+  .gem-callout p { font-size: 12.5px; color: #6B4F18; line-height: 1.55; margin-bottom: 0; }
+  .gem-callout strong { color: #6B4F18; font-weight: 700; }
+
+  /* MAP */
+  .map-section { margin: 32px 0; }
+  .map-wrap { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(27,58,92,0.04); }
+  #day-map { width: 100%; height: 420px; }
+  .map-legend { background: white; padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 14px; font-size: 11.5px; color: var(--slate); border-top: 1px solid var(--border); }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .legend-dot.home { background: var(--gold); border: 2px solid var(--navy); }
+  .legend-dot.stop { background: var(--navy); }
+  .home-marker { background: var(--gold); color: var(--navy); border: 2px solid var(--navy); border-radius: 50%; font-weight: 700; text-align: center; line-height: 24px; font-size: 16px; }
+  .stop-marker { background: var(--navy); color: white; border: 2px solid white; box-shadow: 0 0 0 1px var(--navy); border-radius: 50%; font-weight: 700; text-align: center; line-height: 22px; font-size: 12px; font-family: 'DM Mono', monospace; }
+  .leaflet-popup-content { font-family: 'DM Sans', sans-serif; font-size: 12.5px; }
+  .leaflet-popup-content strong { color: var(--navy); display: block; margin-bottom: 2px; }
+
+  /* BEFORE BED */
+  .before-bed { background: var(--navy); color: white; border-radius: 10px; padding: 20px 22px; margin-top: 32px; }
+  .before-bed-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .before-bed p { color: rgba(255,255,255,0.85); font-size: 13.5px; line-height: 1.65; margin-bottom: 8px; }
+  .before-bed p:last-child { margin-bottom: 0; }
+  .before-bed strong { color: white; font-weight: 600; }
+
+  /* MOBILE */
+  @media (max-width: 720px) {
+    .hero { padding: 32px 18px 22px; }
+    .hero h1 { font-size: 30px; }
+    .hero-sub { font-size: 12.5px; }
+    .main { padding: 22px 14px 32px; }
+    .section-header h2 { font-size: 19px; }
+    .stop-name { font-size: 15px; }
+    #day-map { height: 320px; }
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: white; font-size: 11px; color: #000; }
+    .sticky-nav { display: none; }
+    .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 18px 24px; }
+    .main { padding: 14px 24px; }
+    .stop-header, .day-banner, .before-bed { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .film-callout, .gem-callout { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .stop-card, .map-wrap { page-break-inside: avoid; }
+    .maps-button { display: none; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<div class="sticky-nav">
+  <a href="../">&larr; NYC 2026</a>
+  <span class="day-marker">Day 7 of 9</span>
+  <a href="../june-10-911/">Day 8 &rarr;</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Day 7 &nbsp;&middot;&nbsp; Tuesday, June 9, 2026</div>
+    <h1>On the <em>Water</em></h1>
+    <div class="hero-sub">Circle Line at 10 &middot; lunch by the piers &middot; the Intrepid in the afternoon &middot; easy evening</div>
+    <div class="glance-row">
+      <div class="pill"><span>⛴️</span>Circle Line · 10 AM</div>
+      <div class="pill"><span>🍴</span>Lunch by the river</div>
+      <div class="pill"><span>✈️</span>The Intrepid</div>
+      <div class="pill"><span>🌙</span>Recovery evening</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- DAY BANNER -->
+  <div class="day-banner">
+    <div class="day-banner-label">The Tone for Today</div>
+    <p>The easier day &mdash; recovery after Brooklyn and the late Cellar show. <strong>Circle Line at 10 AM</strong> — 2.5 hours all the way around Manhattan with the Statue of Liberty close-up. Lunch near the piers. <strong>The Intrepid</strong> three blocks north in the afternoon &mdash; aircraft carrier, Space Shuttle Enterprise, submarine. Home by mid-afternoon, casual dinner uptown.</p>
+  </div>
+
+  <!-- MORNING -->
+  <div class="section-header">
+    <h2>The Morning · Circle Line</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- Wallace breakfast -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">8:30 AM</span>
+        <span class="stop-name">Coffee &amp; out the door</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">The Wallace · light breakfast · no rush</div>
+        <p>The boat leaves at 10:00 AM sharp. Plan to be at Pier 83 by 9:30 to find seats &mdash; the upper deck fills first.</p>
+        <p><strong>Sunscreen, layers, sunglasses.</strong> The harbor wind is colder than it looks. Even on a warm June day, the upper deck gets chilly.</p>
+      </div>
+    </div>
+
+    <!-- Transit to Pier 83 -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚇</div>
+      <div><strong>1 train from 72nd to 42nd-Times Square, walk west.</strong> ~20 min. Or rideshare ~$20 directly to Pier 83. Pier 83 is at the very end of W 43rd St at 12th Ave/the Hudson River.</div>
+    </div>
+
+    <!-- Circle Line -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">10:00 AM &mdash; 12:30 PM</span>
+        <span class="stop-name">Circle Line · Best of New York</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Pier 83 &middot; W 43rd St &amp; 12th Ave &middot; 2.5 hours · fully around Manhattan</div>
+        <p>The classic harbor cruise &mdash; first runs in 1945, still one of the best ways to see the city. The full loop goes south along the Hudson, around the Statue of Liberty for the closest legal view, past the World Trade Center and the financial district, up the East River under all the bridges (Brooklyn, Manhattan, Williamsburg), and back down via the Harlem River and the Hudson.</p>
+        <p>Live narration on board — usually a New Yorker who knows the city inside out. Bar and snack counter downstairs.</p>
+        <a class="maps-button" href="maps://?q=Circle+Line+Pier+83+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Hidden gem</div>
+          <p><strong>Sit on the right side (starboard) heading out.</strong> The Statue of Liberty appears on the right as the boat rounds the Battery, and the views of lower Manhattan and the financial district are best from that side. Coming back up the Hudson, swap to the left for the West Side / midtown skyline.</p>
+        </div>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Hidden gem</div>
+          <p>The boat passes very close to <strong>"The Little Red Lighthouse"</strong> under the George Washington Bridge &mdash; subject of the famous 1942 children's book. Look for the small red lighthouse dwarfed by the massive grey bridge above. Most riders miss it.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AFTERNOON -->
+  <div class="section-header">
+    <h2>The Afternoon · Lunch &amp; Intrepid</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- Lunch -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~12:45 PM</span>
+        <span class="stop-name">Lunch near the Piers</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Hell's Kitchen &middot; walking distance from Pier 83</div>
+        <p>Walk east on 43rd or 46th into <strong>Hell's Kitchen</strong> — 9th and 10th Avenues between 42nd and 54th have one of the densest restaurant strips in Manhattan. A few solid options:</p>
+        <p>&middot; <strong>Empanada Mama</strong> (763 9th Ave) &mdash; family-run, dozens of empanadas, quick and casual.<br>
+        &middot; <strong>Totto Ramen</strong> (366 W 52nd) &mdash; cash-only, no reservations, one of the most-loved ramen shops in NYC. Usually a short line at lunch.<br>
+        &middot; <strong>Los Tacos No. 1</strong> &mdash; there's a location at the Intrepid Museum itself if you want to combine lunch and the next stop. Authentic LA-style tacos, cash and card.<br>
+        &middot; <strong>Sullivan Street Bakery</strong> (533 W 47th) &mdash; pizza al taglio (by the slice), Roman style, perfect for grab-and-go.</p>
+        <p>Keep it light &mdash; the Intrepid is on your feet.</p>
+      </div>
+    </div>
+
+    <!-- Transit to Intrepid -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Walk to the Intrepid.</strong> Pier 86 is 3 blocks north of Pier 83 (W 46th &amp; 12th Ave). ~5 min walk along the river.</div>
+    </div>
+
+    <!-- Intrepid -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~2:00 PM</span>
+        <span class="stop-name">Intrepid Sea, Air &amp; Space Museum</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Pier 86 &middot; W 46th St at the Hudson &middot; closes 5 PM</div>
+        <p>An actual aircraft carrier turned museum &mdash; the <strong>USS Intrepid</strong> served in WWII, the Vietnam War, and as a recovery vessel for Mercury and Gemini space missions. Now permanently docked at Pier 86 with three other vessels and an indoor exhibit hall.</p>
+        <p><strong>The three main attractions:</strong></p>
+        <p>&middot; <strong>The flight deck</strong> &mdash; 28 aircraft including the Lockheed A-12 Blackbird (the predecessor to the SR-71, top speed Mach 3.3) and the F-14 Tomcat made famous by <em>Top Gun</em>.<br>
+        &middot; <strong>The Space Shuttle Pavilion</strong> &mdash; home to the <strong>Space Shuttle Enterprise</strong>, the prototype that paved the way for all the operational shuttles. NASA's first.<br>
+        &middot; <strong>USS Growler</strong> &mdash; a Cold War-era submarine docked alongside. Climb in. The interior is tight &mdash; if anyone's claustrophobic, the flight deck and Space Shuttle pavilion are the priorities.</p>
+        <p>Plan ~2.5 hours minimum. Tickets should be booked in advance to skip the line.</p>
+        <a class="maps-button" href="maps://?q=Intrepid+Museum+Pier+86+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Hidden gem</div>
+          <p>The <strong>Concorde</strong> sits outside on the pier &mdash; British Airways' supersonic passenger jet, retired in 2003. New York-Paris in 3.5 hours. You can walk around it but can't go inside without a separate timed ticket (worth it for aviation enthusiasts).</p>
+        </div>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p>The Intrepid has appeared in <strong>Transformers: Dark of the Moon (2011)</strong>, <strong>The Avengers (2012)</strong> background shots, and <strong>National Treasure 2 (2007)</strong>.</p>
+          <p>The neighborhood (Hell's Kitchen / Pier 83-86 area) is also where the climactic Hudson River sequence of <strong>Sully (2016)</strong> was filmed &mdash; the actual Miracle on the Hudson landing happened a few hundred yards south of here in January 2009.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EVENING -->
+  <div class="section-header">
+    <h2>The Evening · Home &amp; Easy</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- Transit home -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚇</div>
+      <div><strong>Back to The Wallace.</strong> Walk east on 46th to the 1 train at 50th St-7th Ave, then north to 72nd. ~25 min total. Or rideshare ~$20 directly.</div>
+    </div>
+
+    <!-- Evening -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Evening</span>
+        <span class="stop-name">Casual UWS Dinner</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Within 10 minutes of The Wallace &middot; no reservations needed</div>
+        <p>Recovery night. No big plan. A few good casual UWS options within walking distance:</p>
+        <p>&middot; <strong>Jacob's Pickles</strong> (509 Amsterdam at 84th) &mdash; Southern comfort, biscuits, fried chicken. Loud, fun, walk-in.<br>
+        &middot; <strong>Calle Dão</strong> (459 Columbus at 82nd) &mdash; Cuban-Chinese fusion, great for sharing. Reservations recommended.<br>
+        &middot; <strong>Tessa</strong> (349 Amsterdam at 77th) &mdash; Mediterranean, neighborhood favorite. Walk-in for the bar.<br>
+        &middot; <strong>Bodrum Mediterranean</strong> (584 Amsterdam at 88th) &mdash; quiet, reliable, walk-in.<br>
+        &middot; <strong>Or just grab takeout</strong> from any of the dozens of options on Broadway and eat at the hotel.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MAP -->
+  <div class="section-header">
+    <h2>The Map</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="map-wrap">
+    <div id="day-map"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot home"></div>The Wallace</div>
+      <div class="legend-item"><div class="legend-dot stop"></div>Stops 1&ndash;3</div>
+    </div>
+  </div>
+
+  <!-- BEFORE BED -->
+  <div class="before-bed">
+    <div class="before-bed-title">One thing before sleep</div>
+    <p>Tomorrow is the <strong>9/11 Memorial &amp; Museum</strong> &mdash; a quieter, slower day with real weight. Museum entry is at 9 AM. Bags will be checked at security &mdash; minimize what you bring.</p>
+    <p>Comfortable shoes. Sunlight downtown is harsh in June &mdash; the Memorial pools are outdoors.</p>
+  </div>
+
+</div>
+
+<!-- MAP JS -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const wallace      = [40.7820, -73.9818];
+    const circle_line  = [40.7629, -74.0015];
+    const intrepid     = [40.7649, -74.0008];
+
+    const map = L.map('day-map', {
+      zoom: 13,
+      zoomControl: true,
+      scrollWheelZoom: false,
+      attributionControl: true
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Route line — Wallace down to Pier 83, north to Intrepid, back to Wallace
+    const route = [wallace, circle_line, intrepid, wallace];
+    L.polyline(route, {
+      color: '#C9A84C',
+      weight: 4,
+      opacity: 0.85,
+      dashArray: '8, 6',
+      lineCap: 'round'
+    }).addTo(map);
+
+    // Home base
+    const homeIcon = L.divIcon({
+      className: 'home-marker',
+      html: '★',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14]
+    });
+    L.marker(wallace, { icon: homeIcon }).addTo(map)
+      .bindPopup('<strong>The Wallace</strong>Home base<br>242 W 76th St');
+
+    const stops = [
+      { coords: circle_line, num: '1', name: 'Circle Line',  addr: 'Pier 83 · 10:00 AM' },
+      { coords: intrepid,    num: '2', name: 'Intrepid',     addr: 'Pier 86 · ~2:00 PM' }
+    ];
+    stops.forEach(s => {
+      const icon = L.divIcon({
+        className: 'stop-marker',
+        html: s.num,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+      });
+      L.marker(s.coords, { icon: icon }).addTo(map)
+        .bindPopup('<strong>' + s.name + '</strong>Stop ' + s.num + '<br>' + s.addr);
+    });
+
+    const bounds = L.latLngBounds(route);
+    map.fitBounds(bounds, { padding: [40, 40] });
+  });
+</script>
+
+</body>
+</html>
