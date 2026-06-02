@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Day 8 · 9/11 Memorial · NYC 2026</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Day 8">
+<meta name="theme-color" content="#1B3A5C">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  :root {
+    --navy: #1B3A5C;
+    --navy-mid: #2C4E72;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-pale: #FDF6E3;
+    --cream: #FAF7F2;
+    --white: #FFFFFF;
+    --slate: #4A5568;
+    --light-slate: #718096;
+    --border: #E2D9CC;
+    --red: #C0392B;
+    --green: #1E6B3C;
+    --blue: #2C5282;
+    --blue-bg: #EEF2F7;
+    --blue-border: #C3D4F0;
+    --film-bg: #EEF4FF;
+    --film-border: #5B8DEF;
+    --film-text: #2C5282;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--cream); color: #2D3748; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  /* STICKY NAV */
+  .sticky-nav { position: sticky; top: 0; z-index: 100; background: var(--navy); color: white; padding: 10px 16px; padding-top: max(10px, env(safe-area-inset-top, 10px)); display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; font-family: 'DM Mono', monospace; letter-spacing: 0.5px; border-bottom: 1px solid rgba(201,168,76,0.3); }
+  .sticky-nav a { color: var(--gold); text-decoration: none; padding: 4px 8px; border-radius: 4px; transition: background 0.15s ease; }
+  .sticky-nav a:hover { background: rgba(201,168,76,0.15); }
+  .sticky-nav .day-marker { color: rgba(255,255,255,0.7); }
+
+  /* HERO */
+  .hero { background: var(--navy); padding: 40px 24px 28px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 260px; height: 260px; border-radius: 50%; background: rgba(201,168,76,0.07); pointer-events: none; }
+  .hero-inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 900; color: #fff; line-height: 1.05; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 13.5px; color: rgba(255,255,255,0.65); font-weight: 300; margin-bottom: 22px; line-height: 1.5; }
+  .glance-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill { background: rgba(255,255,255,0.08); border: 1px solid rgba(201,168,76,0.25); color: rgba(255,255,255,0.9); padding: 7px 12px; border-radius: 100px; font-size: 11.5px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+  .pill span { font-size: 13px; }
+
+  /* MAIN */
+  .main { padding: 28px 20px 40px; max-width: 1100px; margin: 0 auto; }
+
+  /* DAY BANNER */
+  .day-banner { background: white; border: 1px solid var(--border); border-left: 4px solid var(--gold); border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(27,58,92,0.04); }
+  .day-banner-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .day-banner p { font-size: 14.5px; color: var(--slate); line-height: 1.65; }
+  .day-banner strong { color: var(--navy); }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: center; gap: 12px; margin: 32px 0 18px; }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--navy); white-space: nowrap; letter-spacing: -0.3px; }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
+
+  /* STOPS */
+  .timeline { position: relative; }
+  .stop-card { background: white; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(27,58,92,0.03); }
+  .stop-header { background: var(--navy); padding: 11px 16px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .stop-time { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: var(--gold); letter-spacing: 0.5px; text-transform: uppercase; }
+  .stop-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: white; letter-spacing: -0.2px; }
+  .stop-body { padding: 15px 18px 16px; }
+  .stop-address { font-family: 'DM Mono', monospace; font-size: 11.5px; color: var(--light-slate); margin-bottom: 10px; letter-spacing: 0.2px; }
+  .stop-body p { font-size: 13.5px; color: var(--slate); line-height: 1.65; margin-bottom: 10px; }
+  .stop-body p:last-of-type { margin-bottom: 12px; }
+  .stop-body strong { color: var(--navy); font-weight: 600; }
+  .stop-body em { font-style: italic; }
+
+  .maps-button { display: inline-flex; align-items: center; gap: 6px; background: var(--cream); color: var(--navy); text-decoration: none; padding: 7px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid var(--border); transition: background 0.15s ease; }
+  .maps-button:hover { background: var(--gold-pale); }
+  .maps-button-icon { font-size: 13px; }
+
+  /* TRANSIT CARD */
+  .transit-card { background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: 8px; padding: 10px 14px; margin: 0 0 12px; font-size: 12.5px; color: var(--slate); line-height: 1.55; display: flex; align-items: flex-start; gap: 10px; }
+  .transit-card-icon { font-size: 16px; flex: 0 0 20px; }
+  .transit-card strong { color: var(--blue); }
+
+  /* FILM CALLOUT */
+  .film-callout { background: var(--film-bg); border: 1px solid var(--film-border); border-left: 4px solid var(--film-border); border-radius: 8px; padding: 12px 14px; margin: 12px 0 6px; }
+  .film-callout .film-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--film-text); background: rgba(91,141,239,0.16); padding: 3px 8px; border-radius: 3px; margin-bottom: 8px; }
+  .film-callout p { font-size: 12.5px; color: var(--film-text); line-height: 1.55; margin-bottom: 6px; }
+  .film-callout p:last-child { margin-bottom: 0; }
+  .film-callout p strong { color: var(--film-text); font-weight: 700; }
+
+  /* HIDDEN GEM CALLOUT */
+  .gem-callout { background: var(--gold-pale); border: 1px solid var(--gold-light); border-left: 4px solid var(--gold); border-radius: 8px; padding: 12px 14px; margin: 12px 0 6px; }
+  .gem-callout .gem-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #8B6914; background: rgba(201,168,76,0.2); padding: 3px 8px; border-radius: 3px; margin-bottom: 8px; }
+  .gem-callout p { font-size: 12.5px; color: #6B4F18; line-height: 1.55; margin-bottom: 0; }
+  .gem-callout strong { color: #6B4F18; font-weight: 700; }
+
+  /* QUIET NOTE (for reflective content) */
+  .quiet-note { background: #F4F2EE; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin: 12px 0 6px; }
+  .quiet-note p { font-size: 13px; color: var(--slate); line-height: 1.7; margin-bottom: 0; font-style: italic; }
+
+  /* MAP */
+  .map-section { margin: 32px 0; }
+  .map-wrap { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(27,58,92,0.04); }
+  #day-map { width: 100%; height: 420px; }
+  .map-legend { background: white; padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 14px; font-size: 11.5px; color: var(--slate); border-top: 1px solid var(--border); }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .legend-dot.home { background: var(--gold); border: 2px solid var(--navy); }
+  .legend-dot.stop { background: var(--navy); }
+  .home-marker { background: var(--gold); color: var(--navy); border: 2px solid var(--navy); border-radius: 50%; font-weight: 700; text-align: center; line-height: 24px; font-size: 16px; }
+  .stop-marker { background: var(--navy); color: white; border: 2px solid white; box-shadow: 0 0 0 1px var(--navy); border-radius: 50%; font-weight: 700; text-align: center; line-height: 22px; font-size: 12px; font-family: 'DM Mono', monospace; }
+  .leaflet-popup-content { font-family: 'DM Sans', sans-serif; font-size: 12.5px; }
+  .leaflet-popup-content strong { color: var(--navy); display: block; margin-bottom: 2px; }
+
+  /* BEFORE BED */
+  .before-bed { background: var(--navy); color: white; border-radius: 10px; padding: 20px 22px; margin-top: 32px; }
+  .before-bed-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .before-bed p { color: rgba(255,255,255,0.85); font-size: 13.5px; line-height: 1.65; margin-bottom: 8px; }
+  .before-bed p:last-child { margin-bottom: 0; }
+  .before-bed strong { color: white; font-weight: 600; }
+
+  /* MOBILE */
+  @media (max-width: 720px) {
+    .hero { padding: 32px 18px 22px; }
+    .hero h1 { font-size: 30px; }
+    .hero-sub { font-size: 12.5px; }
+    .main { padding: 22px 14px 32px; }
+    .section-header h2 { font-size: 19px; }
+    .stop-name { font-size: 15px; }
+    #day-map { height: 320px; }
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: white; font-size: 11px; color: #000; }
+    .sticky-nav { display: none; }
+    .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 18px 24px; }
+    .main { padding: 14px 24px; }
+    .stop-header, .day-banner, .before-bed { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .film-callout, .gem-callout, .quiet-note { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .stop-card, .map-wrap { page-break-inside: avoid; }
+    .maps-button { display: none; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<div class="sticky-nav">
+  <a href="../">&larr; NYC 2026</a>
+  <span class="day-marker">Day 8 of 9</span>
+  <a href="../june-11-amnh-depart/">Day 9 &rarr;</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Day 8 &nbsp;&middot;&nbsp; Wednesday, June 10, 2026</div>
+    <h1>The <em>9/11</em> Memorial</h1>
+    <div class="hero-sub">The Museum at 9 &middot; the Memorial pools &middot; a walk through the Financial District &middot; dinner uptown</div>
+    <div class="glance-row">
+      <div class="pill"><span>🕊️</span>9/11 Museum · 9 AM</div>
+      <div class="pill"><span>🏛️</span>Financial District</div>
+      <div class="pill"><span>🐂</span>Charging Bull</div>
+      <div class="pill"><span>🍗</span>Charles · uptown</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- DAY BANNER -->
+  <div class="day-banner">
+    <div class="day-banner-label">The Tone for Today</div>
+    <p>A quieter day with real weight. <strong>The 9/11 Museum opens at 9 AM</strong> &mdash; we go early, before the crowds, with fresh attention. The Memorial pools are outside. Afterward, a slow walk up through the Financial District &mdash; the Oculus, Wall Street, the Charging Bull. Train home for dinner at <strong>Charles Pan-Fried Chicken</strong>.</p>
+  </div>
+
+  <!-- MORNING -->
+  <div class="section-header">
+    <h2>The Morning · Remembrance</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- Transit down -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚇</div>
+      <div><strong>2/3 from 72nd to Park Place, or 1 to WTC Cortlandt.</strong> ~25 min. Leave the Wallace by 8:15 to make the 9 AM entry. Bags are screened at the door &mdash; bring as little as possible.</div>
+    </div>
+
+    <!-- 9/11 Museum -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">9:00 AM</span>
+        <span class="stop-name">9/11 Memorial &amp; Museum</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">180 Greenwich St &middot; entry at 9 AM · 4 tickets · self-guided</div>
+        <p>The museum sits seven stories underground, on the original foundations of the Twin Towers. The exhibits trace the morning of September 11, 2001, and the days that followed, through artifacts, recordings, photographs, and personal stories.</p>
+        <p>It is a self-guided visit &mdash; move at your own pace, take the time you need, step out when you want to. <strong>Plan two to three hours.</strong> There is no wrong amount of time to spend.</p>
+        <a class="maps-button" href="maps://?q=9%2F11+Memorial+Museum+180+Greenwich+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="quiet-note">
+          <p>The museum is emotionally heavy by design. Some galleries &mdash; particularly the historical exhibition &mdash; hold difficult images and recordings. It's completely fine to pass through any section quickly, or to wait in the larger memorial spaces while others continue. There are quiet benches throughout.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Memorial Pools -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">After the museum</span>
+        <span class="stop-name">The Memorial Pools</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Outdoors at street level &middot; the footprints of the North and South Towers</div>
+        <p>Two reflecting pools sit in the exact footprints of the fallen towers, each nearly an acre, with water cascading down all four sides into a center void. The names of every person killed in the 2001 and 1993 attacks are inscribed in bronze around the edges.</p>
+        <p>The pools are free and open to the public &mdash; a calm, open space after the museum below.</p>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Worth knowing</div>
+          <p>Look for the <strong>white roses</strong> placed in carved names &mdash; the Memorial staff place a rose at each person's name on their birthday. If you see one, it's someone's birthday today. A small, ongoing act of remembrance.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- St Paul's -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Optional, 2 blocks east</span>
+        <span class="stop-name">St. Paul's Chapel</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">209 Broadway &middot; across from the WTC site &middot; open till 6 PM, free</div>
+        <p>The oldest church building in Manhattan in continuous use (1766). It stood directly across from the Twin Towers and survived September 11 without a single broken window. In the months after, it became a round-the-clock relief center for recovery workers &mdash; volunteers served meals, and cots filled the pews.</p>
+        <p>Inside, a quiet exhibit preserves that chapter. Worth the two-block walk if anyone wants it.</p>
+        <a class="maps-button" href="maps://?q=St+Paul%27s+Chapel+209+Broadway+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AFTERNOON -->
+  <div class="section-header">
+    <h2>The Afternoon · Financial District</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- Oculus -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~12:30 PM</span>
+        <span class="stop-name">The Oculus</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">World Trade Center Transportation Hub &middot; Santiago Calatrava, 2016</div>
+        <p>A transit hub and shopping center that looks like nothing else in the city &mdash; a vast white ribbed structure meant to evoke a dove released from a child's hands. The main hall (the Oculus itself) is a soaring white cathedral of a space, all marble and light.</p>
+        <p>There's food in the lower level if anyone wants a quick lunch &mdash; Eataly is upstairs, and the food court has plenty of fast options.</p>
+        <a class="maps-button" href="maps://?q=Oculus+World+Trade+Center+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Worth knowing</div>
+          <p>Every September 11, the Oculus skylight is opened to the sky &mdash; the structure is aligned so that on that morning, a beam of light falls along the main hall between 8:46 and 10:28 AM, the span of time between the first plane and the second tower's fall.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transit -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>A loop through the Financial District.</strong> The next few stops are walking distance &mdash; the whole area is compact, cobblestone in parts, dense with history. ~15 min of total walking, more if you linger.</div>
+    </div>
+
+    <!-- Federal Hall -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~1:30 PM</span>
+        <span class="stop-name">Wall Street &amp; Federal Hall</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">26 Wall St &middot; the NYSE is across the street &middot; free, open till 4 PM</div>
+        <p>The <strong>New York Stock Exchange</strong> sits at the corner of Wall and Broad &mdash; you can't go in, but the famous columned facade with the giant flag is right there. Across the street, <strong>Federal Hall</strong> is where George Washington took the oath as the first president in 1789, and where the Bill of Rights was passed. The bronze statue of Washington on the steps marks the spot.</p>
+        <a class="maps-button" href="maps://?q=Federal+Hall+26+Wall+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- Charging Bull -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~2:00 PM</span>
+        <span class="stop-name">Charging Bull</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Bowling Green &middot; south end of Broadway</div>
+        <p>The 7,000-pound bronze bull was installed without permission in 1989 &mdash; the artist, Arturo Di Modica, dropped it in front of the Stock Exchange overnight as guerrilla art after the 1987 crash, a symbol of resilience. The city tried to remove it; public outcry kept it. It now lives a couple blocks south at Bowling Green.</p>
+        <p>Expect a line for the photo &mdash; both ends of the bull are popular.</p>
+        <a class="maps-button" href="maps://?q=Charging+Bull+Bowling+Green+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- Ghostbusters detour note -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">If anyone wants it</span>
+        <span class="stop-name">Ghostbusters Firehouse</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">14 N Moore St, Tribeca &middot; ~12 min north of the WTC site</div>
+        <p>For anyone who wants it, the <strong>Hook &amp; Ladder 8</strong> firehouse &mdash; the Ghostbusters headquarters &mdash; is a short walk north into Tribeca. It's a real, working FDNY station, immediately recognizable. A quick sidewalk photo; don't block the bay doors.</p>
+        <p>It's slightly off the direct path home, so it fits best as a detour for the film fans rather than a group stop.</p>
+        <a class="maps-button" href="maps://?q=Ghostbusters+Firehouse+14+N+Moore+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Ghostbusters (1984), Ghostbusters II (1989), Ghostbusters: Afterlife / Frozen Empire</strong> &mdash; the firehouse exterior across the franchise.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EVENING -->
+  <div class="section-header">
+    <h2>The Evening · Dinner Uptown</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- Transit home -->
+    <div class="transit-card">
+      <div class="transit-card-icon">🚇</div>
+      <div><strong>Back uptown.</strong> The 2/3 from Wall St or Fulton St runs express to 72nd St &mdash; ~25 min, one ride. Charles is a 2-block walk from the 72nd St station.</div>
+    </div>
+
+    <!-- Charles -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Dinner</span>
+        <span class="stop-name">Charles Pan-Fried Chicken</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">146 W 72nd St &middot; 2 blocks from the Wallace &middot; walk-in</div>
+        <p>Charles Gabriel pan-fries his chicken to order in a cast-iron skillet &mdash; the old way, one batch at a time, the way he learned growing up in North Carolina. After decades of running the operation out of Harlem (and a food truck), this is his sit-down spot. The chicken is the order; the sides &mdash; mac and cheese, collard greens, candied yams, cornbread &mdash; are the supporting cast.</p>
+        <p>Casual, counter-service-leaning, walk-in. The right kind of comfort food to land on after a heavy day.</p>
+        <a class="maps-button" href="maps://?q=Charles+Pan-Fried+Chicken+146+W+72nd+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Worth knowing</div>
+          <p>Charles Gabriel won a James Beard Award and his pan-fried chicken has been called the best in the city by critics who've been chasing it for years. The <strong>catfish</strong> is a Sunday/Tuesday special &mdash; if it's on, regulars say it rivals the chicken.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MAP -->
+  <div class="section-header">
+    <h2>The Map</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="map-wrap">
+    <div id="day-map"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot home"></div>The Wallace</div>
+      <div class="legend-item"><div class="legend-dot stop"></div>The day's stops</div>
+    </div>
+  </div>
+
+  <!-- BEFORE BED -->
+  <div class="before-bed">
+    <div class="before-bed-title">One thing before sleep</div>
+    <p>Last full day tomorrow. The <strong>Natural History Museum</strong> &mdash; a five-block walk from the Wallace &mdash; then home. Bags can stay with the front desk after checkout.</p>
+    <p>Set out anything you don't want to pack in the morning. We fly out tomorrow evening.</p>
+  </div>
+
+</div>
+
+<!-- MAP JS -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const wallace      = [40.7820, -73.9818];
+    const museum       = [40.7116, -74.0133];
+    const stpauls      = [40.7113, -74.0092];
+    const oculus       = [40.7121, -74.0101];
+    const federal      = [40.7074, -74.0102];
+    const bull         = [40.7056, -74.0134];
+    const ghostbusters = [40.7197, -74.0066];
+
+    const map = L.map('day-map', {
+      zoom: 13,
+      zoomControl: true,
+      scrollWheelZoom: false,
+      attributionControl: true
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Route line — Wallace down, walking loop, back to Wallace
+    const route = [wallace, museum, stpauls, oculus, federal, bull, ghostbusters, wallace];
+    L.polyline(route, {
+      color: '#C9A84C',
+      weight: 4,
+      opacity: 0.85,
+      dashArray: '8, 6',
+      lineCap: 'round'
+    }).addTo(map);
+
+    const homeIcon = L.divIcon({
+      className: 'home-marker',
+      html: '★',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14]
+    });
+    L.marker(wallace, { icon: homeIcon }).addTo(map)
+      .bindPopup('<strong>The Wallace</strong>Home base<br>242 W 76th St');
+
+    const stops = [
+      { coords: museum,       num: '1', name: '9/11 Museum',        addr: '180 Greenwich St · 9:00 AM' },
+      { coords: stpauls,      num: '2', name: "St. Paul's Chapel",  addr: '209 Broadway · optional' },
+      { coords: oculus,       num: '3', name: 'The Oculus',         addr: 'WTC Transit Hub' },
+      { coords: federal,      num: '4', name: 'Federal Hall / NYSE',addr: '26 Wall St' },
+      { coords: bull,         num: '5', name: 'Charging Bull',      addr: 'Bowling Green' },
+      { coords: ghostbusters, num: '6', name: 'Ghostbusters Firehouse', addr: '14 N Moore St · detour' }
+    ];
+    stops.forEach(s => {
+      const icon = L.divIcon({
+        className: 'stop-marker',
+        html: s.num,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+      });
+      L.marker(s.coords, { icon: icon }).addTo(map)
+        .bindPopup('<strong>' + s.name + '</strong>Stop ' + s.num + '<br>' + s.addr);
+    });
+
+    const bounds = L.latLngBounds(route);
+    map.fitBounds(bounds, { padding: [40, 40] });
+  });
+</script>
+
+</body>
+</html>
