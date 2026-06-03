@@ -315,10 +315,83 @@
 
   <div class="timeline">
 
-    <!-- Transit home -->
+    <!-- Optional Midtown walk home -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~4:30 PM · optional</span>
+        <span class="stop-name">The Walk Home Through Midtown</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">Pier 86 → 42nd St → NYPL → Grand Central → 4/5/6 uptown · ~55 min total</div>
+        <p>If the group has energy, the walk home crosses the full width of Midtown in a straight line &mdash; Times Square, the NYPL stone lions, Grand Central. Head south on 12th Ave to 42nd, then walk east.</p>
+        <p><strong>Or go straight home:</strong> walk east on 46th to the 1 train at 50th &amp; 7th, north to 72nd. ~25 min. No obligation.</p>
+      </div>
+    </div>
+
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Walk south to 42nd, then east.</strong> Times Square is at 7th Ave &mdash; about 10 min from the pier. Walk through; keep moving.
+        <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(91,141,239,0.14);color:#2C5282;font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-left:6px;vertical-align:1px;">🎬 On Screen</span>
+        <em>Captain America: The First Avenger, I Am Legend, Vanilla Sky, Avengers</em> Battle of New York.
+      </div>
+    </div>
+
+    <!-- NYPL -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~5:00 PM</span>
+        <span class="stop-name">New York Public Library</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">5th Ave &amp; 42nd St · open until 8 PM Tuesdays · free</div>
+        <p>Patience and Fortitude &mdash; the marble lions on the 5th Avenue steps. Walk in through Astor Hall and up to the Rose Main Reading Room on the third floor: 78-foot ceilings, original chandeliers, 297 feet long. One of the great rooms in New York.</p>
+        <a class="maps-button" href="maps://?q=New+York+Public+Library+5th+Ave+42nd+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>Ghostbusters (1984)</strong> &mdash; the opening scene. The librarian ghost is in the stacks.</p>
+          <p><strong>The Day After Tomorrow (2004)</strong> &mdash; survivors shelter inside during the storm.</p>
+          <p><strong>Sex and the City</strong> &mdash; Carrie's ill-fated wedding venue.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="transit-card">
+      <div class="transit-card-icon">🚶</div>
+      <div><strong>Three blocks east to Grand Central.</strong> ~5 minutes.</div>
+    </div>
+
+    <!-- Grand Central -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~5:20 PM</span>
+        <span class="stop-name">Grand Central Terminal</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">89 E 42nd St at Park Ave · open until 2 AM · free</div>
+        <p>Walk into the Main Concourse. The celestial ceiling &mdash; 2,500 gold-leaf stars on cerulean blue, 125 feet overhead &mdash; is one of the great interior spaces in America.</p>
+        <a class="maps-button" href="maps://?q=Grand+Central+Terminal+89+E+42nd+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+
+        <div class="gem-callout">
+          <div class="gem-tag">✨ Hidden gem</div>
+          <p><strong>The Whispering Gallery</strong> &mdash; the vaulted archway outside the Oyster Bar on the lower level. Stand in one corner facing the wall; have someone stand in the diagonally opposite corner. Speak quietly. You can hear each other perfectly across the room. Two minutes, works every time.</p>
+        </div>
+
+        <div class="film-callout">
+          <div class="film-tag">🎬 On screen</div>
+          <p><strong>The Avengers (2012)</strong> &mdash; aerial shots of the Battle of New York over the Grand Central viaduct on Park Ave. Also <em>Madagascar, Men in Black, I Am Legend.</em></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transit home from GCT -->
     <div class="transit-card">
       <div class="transit-card-icon">🚇</div>
-      <div><strong>Back to The Wallace.</strong> Walk east on 46th to the 1 train at 50th St-7th Ave, then north to 72nd. ~25 min total. Or rideshare ~$20 directly.</div>
+      <div><strong>4/5/6 from Grand Central to 86th St, walk back to The Wallace.</strong> ~10 min on the train. Total time from Intrepid to Wallace on this route: ~55 min.</div>
     </div>
 
     <!-- Evening -->
@@ -349,7 +422,7 @@
     <div id="day-map"></div>
     <div class="map-legend">
       <div class="legend-item"><div class="legend-dot home"></div>The Wallace</div>
-      <div class="legend-item"><div class="legend-dot stop"></div>Stops 1&ndash;3</div>
+      <div class="legend-item"><div class="legend-dot stop"></div>Stops 1&ndash;5</div>
     </div>
   </div>
 
@@ -368,6 +441,9 @@
     const wallace      = [40.7820, -73.9818];
     const circle_line  = [40.7629, -74.0015];
     const intrepid     = [40.7649, -74.0008];
+    const times_sq     = [40.7580, -73.9855];
+    const nypl         = [40.7532, -73.9822];
+    const gct          = [40.7527, -73.9772];
 
     const map = L.map('day-map', {
       zoom: 13,
@@ -383,7 +459,7 @@
     }).addTo(map);
 
     // Route line — Wallace down to Pier 83, north to Intrepid, back to Wallace
-    const route = [wallace, circle_line, intrepid, wallace];
+    const route = [wallace, circle_line, intrepid, times_sq, nypl, gct, wallace];
     L.polyline(route, {
       color: '#C9A84C',
       weight: 4,
@@ -403,8 +479,11 @@
       .bindPopup('<strong>The Wallace</strong>Home base<br>242 W 76th St');
 
     const stops = [
-      { coords: circle_line, num: '1', name: 'Circle Line',  addr: 'Pier 83 · 10:00 AM' },
-      { coords: intrepid,    num: '2', name: 'Intrepid',     addr: 'Pier 86 · ~2:00 PM' }
+      { coords: circle_line, num: '1', name: 'Circle Line',          addr: 'Pier 83 · 10:00 AM' },
+      { coords: intrepid,    num: '2', name: 'Intrepid',             addr: 'Pier 86 · ~2:00 PM' },
+      { coords: times_sq,    num: '3', name: 'Times Square',         addr: 'Optional walk home' },
+      { coords: nypl,        num: '4', name: 'New York Public Library', addr: '5th Ave &amp; 42nd · open till 8 PM' },
+      { coords: gct,         num: '5', name: 'Grand Central',        addr: '42nd &amp; Park Ave' }
     ];
     stops.forEach(s => {
       const icon = L.divIcon({
