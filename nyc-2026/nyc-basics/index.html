@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Locals' Briefing · NYC 2026</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NYC Basics">
+<meta name="theme-color" content="#1B3A5C">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navy: #1B3A5C;
+    --navy-mid: #2C4E72;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-pale: #FDF6E3;
+    --cream: #FAF7F2;
+    --slate: #4A5568;
+    --light-slate: #718096;
+    --border: #E2D9CC;
+    --blue: #2C5282;
+    --blue-bg: #EEF2F7;
+    --blue-border: #C3D4F0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--cream); color: #2D3748; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  .sticky-nav { position: sticky; top: 0; z-index: 100; background: var(--navy); color: white; padding: 10px 16px; padding-top: max(10px, env(safe-area-inset-top, 10px)); display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; font-family: 'DM Mono', monospace; letter-spacing: 0.5px; border-bottom: 1px solid rgba(201,168,76,0.3); }
+  .sticky-nav a { color: var(--gold); text-decoration: none; padding: 4px 8px; border-radius: 4px; transition: background 0.15s ease; }
+  .sticky-nav a:hover { background: rgba(201,168,76,0.15); }
+
+  .hero { background: var(--navy); padding: 40px 24px 28px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 260px; height: 260px; border-radius: 50%; background: rgba(201,168,76,0.07); pointer-events: none; }
+  .hero-inner { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; color: #fff; line-height: 1.05; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 13.5px; color: rgba(255,255,255,0.65); font-weight: 300; line-height: 1.6; max-width: 560px; }
+
+  .main { padding: 28px 20px 48px; max-width: 800px; margin: 0 auto; }
+
+  .section-header { display: flex; align-items: center; gap: 12px; margin: 36px 0 18px; }
+  .section-header:first-child { margin-top: 0; }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--navy); white-space: nowrap; letter-spacing: -0.3px; }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
+
+  .card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; margin-bottom: 14px; box-shadow: 0 1px 2px rgba(27,58,92,0.03); }
+  .card h3 { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .card p { font-size: 13.5px; color: var(--slate); line-height: 1.7; margin-bottom: 10px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card strong { color: var(--navy); font-weight: 600; }
+  .card em { font-style: italic; }
+
+  .tip-row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F0EBE3; font-size: 13.5px; line-height: 1.6; color: var(--slate); }
+  .tip-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .tip-row:first-child { padding-top: 0; }
+  .tip-icon { flex: 0 0 24px; font-size: 16px; }
+  .tip-body strong { color: var(--navy); font-weight: 600; display: block; margin-bottom: 2px; }
+  .tip-body .sub { font-size: 12px; color: var(--light-slate); margin-top: 2px; line-height: 1.5; display: block; }
+
+  .gold-note { background: var(--gold-pale); border: 1px solid var(--gold-light); border-left: 4px solid var(--gold); border-radius: 8px; padding: 13px 16px; margin: 14px 0; }
+  .gold-note p { font-size: 13px; color: #6B4F18; line-height: 1.65; margin-bottom: 0; }
+  .gold-note strong { color: #6B4F18; font-weight: 700; }
+
+  .footer { margin-top: 48px; padding: 20px 24px; border-top: 1px solid var(--border); text-align: center; font-size: 11px; color: var(--light-slate); font-style: italic; line-height: 1.8; padding-bottom: max(20px, env(safe-area-inset-bottom)); }
+  .footer strong { color: var(--navy); font-style: normal; font-weight: 600; }
+
+  @media (max-width: 720px) {
+    .hero { padding: 32px 18px 24px; }
+    .hero h1 { font-size: 28px; }
+    .main { padding: 22px 14px 36px; }
+    .card { padding: 16px 18px; }
+  }
+
+  @media print {
+    body { background: white; font-size: 11px; }
+    .sticky-nav { display: none; }
+    .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .gold-note { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sticky-nav">
+  <a href="../">&larr; NYC 2026</a>
+  <span style="color:rgba(255,255,255,0.55);font-family:'DM Mono',monospace;font-size:11px;">The Locals' Briefing</span>
+  <span style="width:80px"></span>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">First Time in NYC</div>
+    <h1>The <em>Locals'</em> Briefing</h1>
+    <div class="hero-sub">Read this on the plane. Everything you need to move through the city the way New Yorkers do &mdash; no tourist fumbles, no surprises.</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- THE SUBWAY -->
+  <div class="section-header">
+    <h2>The Subway</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="tip-row">
+      <div class="tip-icon">📱</div>
+      <div class="tip-body">
+        <strong>OMNY tap-to-pay</strong>
+        Tap your iPhone or Apple Watch at the turnstile. No MetroCard, no app, no setup. It just works. $2.90 a ride. The system charges fairly if you tap in and out consistently.
+        <span class="sub">Android works too. Google Pay, Samsung Pay, any contactless card.</span>
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🗺️</div>
+      <div class="tip-body">
+        <strong>Uptown = north, Downtown = south</strong>
+        That's how New Yorkers give directions. "Take the 1 downtown to 72nd" means take the 1 train heading south and get off at 72nd Street. If you're not sure which direction to board, check the platform sign for the end-of-line destination.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">1️⃣</div>
+      <div class="tip-body">
+        <strong>The 1 train is your line</strong>
+        The 1 stops at 72nd & Broadway (5-min walk from The Wallace) and runs straight downtown with no transfers. It gets you everywhere you need to go on this trip.
+        <span class="sub">The 2 and 3 run on the same track but skip some local stops. At 72nd, all three stop.</span>
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🚇</div>
+      <div class="tip-body">
+        <strong>The subway runs 24 hours</strong>
+        It does not shut down. Service is less frequent late at night but it always runs. After the Comedy Cellar, you can take the 1 home from Christopher St at 1 AM and it will come.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">📶</div>
+      <div class="tip-body">
+        <strong>Download Apple Maps offline before you go</strong>
+        On iOS: open Apple Maps → search NYC → tap the download button on the city overview. You'll have full maps without signal. The subway has no cell service underground.
+      </div>
+    </div>
+  </div>
+
+  <!-- GETTING AROUND -->
+  <div class="section-header">
+    <h2>Getting Around Above Ground</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="tip-row">
+      <div class="tip-icon">🚕</div>
+      <div class="tip-body">
+        <strong>Yellow cabs are often faster than Uber in Manhattan</strong>
+        Uber has to navigate to you first. A yellow cab is already there. Hail one on any major avenue &mdash; if the rooftop number is lit, it's available. Pay by card or cash; card readers are in every cab.
+        <span class="sub">Uber still wins for LGA airport runs and any trip to Brooklyn &mdash; there you want a confirmed price.</span>
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🧱</div>
+      <div class="tip-body">
+        <strong>Block math: short blocks vs. long blocks</strong>
+        Streets run east-west and are short &mdash; about a minute to walk a block. Avenues run north-south and are long &mdash; about 3-4 minutes per block. "Three blocks" means something very different depending on which direction you're walking.
+        <span class="sub">A good rule: 10 north-south blocks = about 1 mile = about 20 minutes walking.</span>
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🚶</div>
+      <div class="tip-body">
+        <strong>Walk on the right, pass on the left</strong>
+        Same rule as driving. Stopping in the middle of the sidewalk to look at your phone is the one thing that genuinely annoys New Yorkers. Step to the side.
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPPING -->
+  <div class="section-header">
+    <h2>Tipping</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="tip-row">
+      <div class="tip-icon">🍽️</div>
+      <div class="tip-body">
+        <strong>Restaurants: 20% is standard, 18% is the floor</strong>
+        The easiest math: double the tax line on your receipt (NYC tax is 8.875%) and that's close to 18%. Add a bit more for 20%.
+        <span class="sub">Tip on the pre-tax total, not the full bill. The card machine will suggest inflated amounts — you can enter a custom tip.</span>
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">☕</div>
+      <div class="tip-body">
+        <strong>Coffee / counter service: $1–2 per order</strong>
+        The tip screen will show 18-20-25% options. For a $5 coffee, $1 is fine. You don't have to tip at all for counter service but most people leave something.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🚕</div>
+      <div class="tip-body">
+        <strong>Cabs and rideshare: 15–20%</strong>
+        The app or screen will calculate it. 15% is acceptable, 20% for good service or heavy traffic.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🛎️</div>
+      <div class="tip-body">
+        <strong>Hotel housekeeping: $3–5/day</strong>
+        Leave it on the pillow or nightstand each morning. Cash only. Not required but appreciated.
+      </div>
+    </div>
+  </div>
+
+  <!-- RESTROOMS -->
+  <div class="section-header">
+    <h2>Restrooms</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <p>Public restrooms in NYC are genuinely hard to find. There are almost none in subway stations. The ones that exist are often closed or not worth using. The system locals use:</p>
+    <div class="tip-row">
+      <div class="tip-icon">☕</div>
+      <div class="tip-body">
+        <strong>Starbucks</strong>
+        Scan the app to unlock the bathroom door. Works in every Starbucks. There's one on nearly every other block.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🏨</div>
+      <div class="tip-body">
+        <strong>Hotel lobbies</strong>
+        Walk in confidently, find the lobby restroom. Works every time. Midtown hotels are the most reliable &mdash; The Plaza, Marriott, Hilton lobbies are all fair game.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🏛️</div>
+      <div class="tip-body">
+        <strong>Museum cafés</strong>
+        Any museum we're visiting has good restrooms inside. Use them on the way in and out.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🛍️</div>
+      <div class="tip-body">
+        <strong>The Oculus / Brookfield Place</strong>
+        The WTC transportation hub has clean, easy-to-find restrooms on the lower level.
+      </div>
+    </div>
+
+    <div class="gold-note">
+      <p><strong>The move on a full day:</strong> hit a Starbucks or museum before a long stretch of walking. You'll thank yourself on the Brooklyn Bridge.</p>
+    </div>
+  </div>
+
+  <!-- CASH AND CARDS -->
+  <div class="section-header">
+    <h2>Cash &amp; Cards</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="tip-row">
+      <div class="tip-icon">💳</div>
+      <div class="tip-body">
+        <strong>NYC is almost entirely card-friendly</strong>
+        You can go days without touching cash. Tap-to-pay works on the subway, in cabs, at most restaurants and shops.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">💵</div>
+      <div class="tip-body">
+        <strong>Cash-only spots to know</strong>
+        A few places on this trip specifically need cash: <strong>Joe's Pizza</strong> (June 6), <strong>Katz's Deli</strong> tip (the tour covers the food, but tip in cash), and a few market vendors. $60 in small bills covers it comfortably.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🏧</div>
+      <div class="tip-body">
+        <strong>ATMs are everywhere, fees are annoying</strong>
+        Use your bank's app to find in-network ATMs. Chase, Citi, and TD ATMs are on almost every block in Manhattan. The bodegas have ATMs but the fees are high.
+      </div>
+    </div>
+  </div>
+
+  <!-- SCAMS AND SKIPS -->
+  <div class="section-header">
+    <h2>Scams &amp; Skips</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <p>Most of these are around Times Square, which isn't on our itinerary. But you'll pass through the area a few times.</p>
+    <div class="tip-row">
+      <div class="tip-icon">💿</div>
+      <div class="tip-body">
+        <strong>The CD guys</strong>
+        Someone hands you a "free" CD or mixtape, then demands money. Don't take it. Decline politely and keep walking.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🎭</div>
+      <div class="tip-body">
+        <strong>Free comedy show flyers</strong>
+        Someone on the street near Times Square offers you a "free" ticket to a comedy show. The show exists. The drink minimum is not free. Skip it &mdash; we have Comedy Cellar.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">📸</div>
+      <div class="tip-body">
+        <strong>Costumed characters in Times Square</strong>
+        Elmo, Spider-Man, Minnie Mouse &mdash; they will take a photo with you and then demand a tip. It's not a scam exactly, just aggressive. If you take the photo, tip a few dollars. If you don't want the photo, don't make eye contact.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🏀</div>
+      <div class="tip-body">
+        <strong>The shell game and three-card monte</strong>
+        Street gambling, usually with a small crowd. The crowd is in on it. Don't play.
+      </div>
+    </div>
+  </div>
+
+  <!-- WEATHER & PACKING -->
+  <div class="section-header">
+    <h2>June Weather</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="tip-row">
+      <div class="tip-icon">🌡️</div>
+      <div class="tip-body">
+        <strong>Highs in the low-to-mid 70s, humid</strong>
+        Comfortable for walking but the humidity is real. Morning is the best time to be outside; afternoons get sticky.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">⛈️</div>
+      <div class="tip-body">
+        <strong>Afternoon thunderstorms are possible</strong>
+        June in NYC gets pop-up storms that last 30–45 minutes and then clear. Keep a compact umbrella or light rain jacket in a bag. Don't cancel anything &mdash; they pass fast.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">❄️</div>
+      <div class="tip-body">
+        <strong>AC is aggressive indoors</strong>
+        Restaurants, museums, and shops are often cold enough to need a layer. The Met, the Intrepid, and the Cellar all run heavy AC. One light layer in a bag covers it.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">💨</div>
+      <div class="tip-body">
+        <strong>Top of the Rock is windy</strong>
+        Even on a warm evening, the open-air observation deck at Rockefeller Center gets a real wind. Bring something to put on at the top.
+      </div>
+    </div>
+  </div>
+
+  <!-- NYC RHYTHMS -->
+  <div class="section-header">
+    <h2>How New York Works</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="tip-row">
+      <div class="tip-icon">🕐</div>
+      <div class="tip-body">
+        <strong>Everything is open later than you think</strong>
+        Bars serve until 4 AM. Restaurants take reservations until 10 PM. Delis and bodegas never close. The subway runs all night.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🗣️</div>
+      <div class="tip-body">
+        <strong>New Yorkers are direct, not rude</strong>
+        If you ask someone for directions, you'll get a fast, accurate, no-nonsense answer. That's not coldness &mdash; that's how people who live in a dense city with a lot to do communicate. Ask away.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🐾</div>
+      <div class="tip-body">
+        <strong>New York has a lot of dogs</strong>
+        The Upper West Side especially. Big dogs, small dogs, dogs in strollers. Normal.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🥯</div>
+      <div class="tip-body">
+        <strong>A New York bagel is a different thing</strong>
+        The water, the boiling process, the texture &mdash; it genuinely doesn't taste the same anywhere else. Have at least one. Toasted, cream cheese, lox if you're feeling it.
+      </div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🌆</div>
+      <div class="tip-body">
+        <strong>The city sounds different at different hours</strong>
+        Early morning UWS is quiet and lovely. Midday downtown is loud and fast. Late night in the Village is its own thing entirely. Same city, completely different places depending on when you're there.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>NYC 2026</strong> &middot; Anthony's 21st Birthday &middot; June 3&ndash;11<br>
+  <a href="../" style="color:var(--light-slate);">&larr; Back to the full itinerary</a>
+</div>
+
+</body>
+</html>
