@@ -372,6 +372,23 @@
 
   <div class="timeline">
 
+    <!-- Dead Rabbit -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">~2:30 PM</span>
+        <span class="stop-name">The Dead Rabbit</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">30 Water St &middot; 3 blocks south of Charging Bull &middot; open until 2 AM</div>
+        <p>A Manhattan in Manhattan. <em>Paul said this is a must.</em></p>
+        <p><strong>Twice named the World's Best Bar</strong> by the World's 50 Best Bars &mdash; founded by two men from Belfast who set out to build something fiercely Irish with an American accent. Two floors: a lively ground-floor Taproom with pints and pub food, and an upstairs <strong>Parlor</strong> cocktail bar for serious drinking. The Parlor is 21+ only.</p>
+        <p>The bar takes its name from the Dead Rabbits &mdash; the Irish gang that ran these same streets in the 1840s and 50s, the same crew that inspired <em>Gangs of New York</em>.</p>
+        <a class="maps-button" href="maps://?q=The+Dead+Rabbit+30+Water+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+      </div>
+    </div>
+
     <!-- Transit home -->
     <div class="transit-card">
       <div class="transit-card-icon">🚇</div>
@@ -434,6 +451,7 @@
     const federal      = [40.7074, -74.0102];
     const bull         = [40.7056, -74.0134];
     const ghostbusters = [40.7197, -74.0066];
+    const deadrabbit   = [40.7034, -74.0115];
 
     const map = L.map('day-map', {
       zoom: 13,
@@ -449,7 +467,7 @@
     }).addTo(map);
 
     // Route line — Wallace down, walking loop, back to Wallace
-    const route = [wallace, museum, stpauls, oculus, federal, bull, ghostbusters, wallace];
+    const route = [wallace, museum, stpauls, oculus, federal, bull, deadrabbit, ghostbusters, wallace];
     L.polyline(route, {
       color: '#C9A84C',
       weight: 4,
@@ -472,8 +490,9 @@
       { coords: stpauls,      num: '2', name: "St. Paul's Chapel",  addr: '209 Broadway · optional' },
       { coords: oculus,       num: '3', name: 'The Oculus',         addr: 'WTC Transit Hub' },
       { coords: federal,      num: '4', name: 'Federal Hall / NYSE',addr: '26 Wall St' },
-      { coords: bull,         num: '5', name: 'Charging Bull',      addr: 'Bowling Green' },
-      { coords: ghostbusters, num: '6', name: 'Ghostbusters Firehouse', addr: '14 N Moore St · detour' }
+      { coords: bull,         num: '5', name: 'Charging Bull',       addr: 'Bowling Green' },
+      { coords: deadrabbit,   num: '6', name: 'The Dead Rabbit',     addr: '30 Water St' },
+      { coords: ghostbusters, num: '7', name: 'Ghostbusters Firehouse', addr: '14 N Moore St · detour' }
     ];
     stops.forEach(s => {
       const icon = L.divIcon({
