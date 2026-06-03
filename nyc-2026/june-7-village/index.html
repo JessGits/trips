@@ -341,6 +341,23 @@
   }
   .gem-callout strong { color: #6B4F18; font-weight: 700; }
 
+  /* NYTurk inline tag */
+  .turk-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #F3EFFB;
+    color: #5B3F99;
+    border: 1px solid #C9B8E8;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .turk-tag::before { content: '★ '; }
+
   /* MAP */
   .map-section { margin: 32px 0; }
   .map-wrap {
@@ -620,10 +637,30 @@
         <div class="stop-address">No reservations &middot; walk in wherever calls</div>
         <p>SoHo has more restaurants than blocks. A few honest options:</p>
         <p>&middot; <strong>Balthazar</strong> (80 Spring) &mdash; the French brasserie that defined SoHo dining. The bar is walk-in-friendly even when the dining room is booked.<br>
-        &middot; <strong>Emilio's Ballato</strong> (55 E Houston) &mdash; old-school red-sauce Italian, longtime celebrity hangout, Bourdain favorite.<br>
         &middot; <strong>Lombardi's</strong> (32 Spring) &mdash; America's first pizzeria (1905), coal-fired oven, a few blocks east.<br>
         &middot; <strong>Jack's Wife Freda</strong> (224 Lafayette) &mdash; brunch staple, lighter fare.<br>
         &middot; <strong>Café Leon Dore</strong> (214 Mulberry) &mdash; coffee and a Mediterranean sandwich, attached to ALD.</p>
+      </div>
+    </div>
+
+    <!-- Emilio's Ballato -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <span class="stop-time">Lunch option · SoHo</span>
+        <span class="stop-name">Emilio's Ballato</span>
+      </div>
+      <div class="stop-body">
+        <div class="stop-address">55 E Houston St · cash preferred · no reservations</div>
+        <p>Old-school Italian-American red sauce, open since 1956. The kind of place that doesn't advertise itself &mdash; just operates quietly and keeps regulars for decades. Meatballs, pasta, chicken parm. The room is small and unchanged.</p>
+        <a class="maps-button" href="maps://?q=Emilio%27s+Ballato+55+E+Houston+St+New+York+NY">
+          <span class="maps-button-icon">📍</span>Open in Maps
+        </a>
+        <div style="margin-top:10px;"><span class="turk-tag">@NewYorkTurk approved</span></div>
+
+        <div class="bourdain-callout">
+          <div class="bourdain-tag">🍴 Bourdain</div>
+          <p>A Bourdain regular &mdash; he called it one of his favorite neighborhood Italian spots in the city. The kind of place he brought people to when he wanted to show them what real New York Italian looked like, not the version made for tourists.</p>
+        </div>
       </div>
     </div>
 
