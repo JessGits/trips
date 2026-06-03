@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>If You Have Time · NYC 2026</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Nearby">
+<meta name="theme-color" content="#1B3A5C">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navy: #1B3A5C;
+    --navy-mid: #2C4E72;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-pale: #FDF6E3;
+    --cream: #FAF7F2;
+    --slate: #4A5568;
+    --light-slate: #718096;
+    --border: #E2D9CC;
+    --blue: #2C5282;
+    --blue-bg: #EEF2F7;
+    --blue-border: #C3D4F0;
+    --film-bg: #EEF4FF;
+    --film-border: #5B8DEF;
+    --film-text: #2C5282;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--cream); color: #2D3748; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  .sticky-nav { position: sticky; top: 0; z-index: 100; background: var(--navy); color: white; padding: 10px 16px; padding-top: max(10px, env(safe-area-inset-top, 10px)); display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; font-family: 'DM Mono', monospace; letter-spacing: 0.5px; border-bottom: 1px solid rgba(201,168,76,0.3); }
+  .sticky-nav a { color: var(--gold); text-decoration: none; padding: 4px 8px; border-radius: 4px; }
+  .sticky-nav a:hover { background: rgba(201,168,76,0.15); }
+
+  .hero { background: var(--navy); padding: 40px 24px 28px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 260px; height: 260px; border-radius: 50%; background: rgba(201,168,76,0.07); pointer-events: none; }
+  .hero-inner { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; color: #fff; line-height: 1.05; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 13.5px; color: rgba(255,255,255,0.65); font-weight: 300; line-height: 1.6; max-width: 580px; }
+
+  .main { padding: 28px 20px 48px; max-width: 900px; margin: 0 auto; }
+
+  .section-header { display: flex; align-items: center; gap: 12px; margin: 36px 0 18px; }
+  .section-header:first-child { margin-top: 0; }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--navy); white-space: nowrap; letter-spacing: -0.3px; }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
+  .section-note { font-size: 12.5px; color: var(--light-slate); margin: -10px 0 16px; font-style: italic; }
+
+  .stop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .stop-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; box-shadow: 0 1px 2px rgba(27,58,92,0.03); }
+  .stop-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .stop-card-name { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+  .stop-card-address { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--light-slate); margin-bottom: 8px; }
+  .stop-card-desc { font-size: 13px; color: var(--slate); line-height: 1.6; margin-bottom: 10px; }
+  .stop-card-desc strong { color: var(--navy); font-weight: 600; }
+
+  .maps-btn { display: inline-flex; align-items: center; gap: 5px; background: var(--cream); color: var(--navy); text-decoration: none; padding: 5px 10px; border-radius: 5px; font-size: 11.5px; font-weight: 600; border: 1px solid var(--border); }
+  .maps-btn:hover { background: var(--gold-pale); }
+
+  .film-chip { display: inline-flex; align-items: center; gap: 4px; background: var(--film-bg); color: var(--film-text); font-size: 10.5px; font-weight: 600; padding: 3px 7px; border-radius: 3px; border: 1px solid rgba(91,141,239,0.25); margin-bottom: 8px; letter-spacing: 0.3px; }
+
+  .tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; margin-right: 4px; }
+  .tag-free { background: #EBF8EE; color: #2D6A4F; border: 1px solid #B7DFC4; }
+  .tag-food { background: #FFF5E6; color: #92400E; border: 1px solid #F6D5A8; }
+  .tag-uws { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .tag-film { background: var(--film-bg); color: var(--film-text); border: 1px solid rgba(91,141,239,0.3); }
+
+  .footer { margin-top: 48px; padding: 20px 24px; border-top: 1px solid var(--border); text-align: center; font-size: 11px; color: var(--light-slate); font-style: italic; line-height: 1.8; padding-bottom: max(20px, env(safe-area-inset-bottom)); }
+  .footer strong { color: var(--navy); font-style: normal; font-weight: 600; }
+
+  @media (max-width: 720px) {
+    .hero { padding: 32px 18px 24px; }
+    .hero h1 { font-size: 28px; }
+    .main { padding: 22px 14px 36px; }
+    .stop-grid { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: white; }
+    .sticky-nav { display: none; }
+    .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sticky-nav">
+  <a href="../">&larr; NYC 2026</a>
+  <span style="color:rgba(255,255,255,0.55);font-family:'DM Mono',monospace;font-size:11px;">If You Have Time</span>
+  <span style="width:80px"></span>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Optional Stops</div>
+    <h1>If You Have <em>Time</em></h1>
+    <div class="hero-sub">Everything that didn't make the day pages but is worth knowing about. Pull this up when you find yourselves with an hour in a neighborhood and want to know what's nearby.</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- UPPER WEST SIDE -->
+  <div class="section-header">
+    <h2>Upper West Side</h2>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-note">Home base. Any morning with a slow start, or whenever energy allows.</p>
+
+  <div class="stop-grid">
+
+    <div class="stop-card">
+      <div class="stop-card-name">Barney Greengrass</div>
+      <div class="stop-card-address">541 Amsterdam Ave at 86th</div>
+      <span class="tag tag-food">Food</span>
+      <div class="stop-card-desc">The Sturgeon King &mdash; NYC's most legendary appetizing shop. Smoked salmon, sable, whitefish, eggs. Bourdain's actual Sunday morning spot when he was home. The full spread is the move.</div>
+      <a class="maps-btn" href="maps://?q=Barney+Greengrass+541+Amsterdam+Ave+New+York+NY">📍 Maps</a>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-card-name">Zabar's</div>
+      <div class="stop-card-address">2245 Broadway at 80th</div>
+      <span class="tag tag-food">Food</span>
+      <div class="stop-card-desc">Open since 1934. The definitive NYC appetizing and specialty grocery. Smoked fish counter, babka, coffee, kitchen gadgets upstairs. A Zabar's tote bag is a genuine New York souvenir.</div>
+      <a class="maps-btn" href="maps://?q=Zabar%27s+2245+Broadway+New+York+NY">📍 Maps</a>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-card-name">Levain Bakery</div>
+      <div class="stop-card-address">167 W 74th at Amsterdam</div>
+      <span class="tag tag-food">Food</span>
+      <div class="stop-card-desc">The cookies that made the internet lose its mind. Enormous, dense, crispy outside and doughy inside. The chocolate chip walnut is the one. Two blocks from The Wallace.</div>
+      <a class="maps-btn" href="maps://?q=Levain+Bakery+167+W+74th+New+York+NY">📍 Maps</a>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-card-name">Café Lalo</div>
+      <div class="stop-card-address">201 W 83rd St at Amsterdam</div>
+      <span class="tag tag-food">Food</span><span class="tag tag-film">Film</span>
+      <div class="stop-card-desc">Beloved West Side café, over 100 desserts, the kind of place you spend two hours in without noticing. The setting for the café scenes in <em>You've Got Mail</em> (1998) — the table by the window.</div>
+      <a class="maps-btn" href="maps://?q=Cafe+Lalo+201+W+83rd+St+New+York+NY">📍 Maps</a>
+    </div>
+
+  </div>
+
+  <!-- MIDTOWN -->
+  <div class="section-header">
+    <h2>Midtown</h2>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-note">Times Square, Grand Central, and the NYPL are on the <a href="../june-9-circleline-intrepid/" style="color:var(--navy);font-weight:600;border-bottom:1px solid var(--gold);">June 9 day page</a> as an optional end-of-day walk. One thing that didn't make it there:</p>
+
+  <div class="stop-grid">
+
+    <div class="stop-card">
+      <div class="stop-card-name">Madison Square Garden</div>
+      <div class="stop-card-address">4 Penn Plaza at 33rd</div>
+      <div class="stop-card-desc">The exterior. You can't go in without an event ticket but the building is unmistakable. Worth a walk-by if passing through Penn Station or Midtown on the way somewhere else.</div>
+      <a class="maps-btn" href="maps://?q=Madison+Square+Garden+4+Penn+Plaza+New+York+NY">📍 Maps</a>
+    </div>
+
+  </div>
+
+  <!-- MIDTOWN WEST / HIGH LINE -->
+  <div class="section-header">
+    <h2>Midtown West &amp; the High Line</h2>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-note">June 9 post-Intrepid, if the group has energy. Pier 86 → Chelsea Market → High Line is a natural southward drift.</p>
+
+  <div class="stop-grid">
+
+    <div class="stop-card">
+      <div class="stop-card-name">Chelsea Market</div>
+      <div class="stop-card-address">75 9th Ave at 15th St</div>
+      <span class="tag tag-food">Food</span>
+      <div class="stop-card-desc">A former Nabisco factory (Oreos were invented here) turned indoor food hall. Long building, all vendors, easy to graze. <strong>Lobster Place</strong> (raw bar, best in the building), <strong>Doughnuttery</strong>, <strong>Ninth Street Espresso</strong>. No need to sit down &mdash; it's a walk-through.</div>
+      <a class="maps-btn" href="maps://?q=Chelsea+Market+75+9th+Ave+New+York+NY">📍 Maps</a>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-card-name">The High Line</div>
+      <div class="stop-card-address">Starts at Gansevoort St · ends at 34th St</div>
+      <span class="tag tag-free">Free</span>
+      <div class="stop-card-desc">An elevated freight rail line converted into a 1.45-mile park running through the West Side. Art installations, city views, plantings that change with the season. Enter at Gansevoort (south end) after Chelsea Market and walk north. No ticket, no booking.</div>
+      <a class="maps-btn" href="maps://?q=High+Line+Park+New+York+NY">📍 Maps</a>
+    </div>
+
+  </div>
+
+  <!-- CENTRAL PARK EXTRAS -->
+  <div class="section-header">
+    <h2>Central Park</h2>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-note">Beyond what's already on the June 4 and June 7 day pages. Any afternoon with time to spare.</p>
+
+  <div class="stop-grid">
+
+    <div class="stop-card">
+      <div class="stop-card-name">The Boathouse</div>
+      <div class="stop-card-address">Central Park at 72nd St &amp; East Drive</div>
+      <span class="tag tag-food">Food</span>
+      <div class="stop-card-desc">Rowboat rentals on the Lake &mdash; $20/hour, cash. One of the more quintessentially New York things you can do. The café has good coffee and outdoor seating facing the water. Open daily, no reservation, just show up.</div>
+      <a class="maps-btn" href="maps://?q=Central+Park+Boathouse+New+York+NY">📍 Maps</a>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-card-name">Gapstow Bridge</div>
+      <div class="stop-card-address">South end of The Pond · near 59th &amp; 5th</div>
+      <span class="tag tag-film">Film</span>
+      <div class="stop-card-desc">Stone arch over The Pond, with the Plaza Hotel and 5th Avenue skyline behind it. One of the most photographed spots in the park. <strong>Home Alone 2</strong> Pigeon Lady scenes filmed here. On the natural path from 5th Ave into the park on June 7 Track 2.</div>
+      <a class="maps-btn" href="maps://?q=Gapstow+Bridge+Central+Park+New+York+NY">📍 Maps</a>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-card-name">Wollman Rink (Summer)</div>
+      <div class="stop-card-address">Central Park at 62nd St</div>
+      <div class="stop-card-desc">In summer the ice rink converts to <strong>Victorian Gardens</strong> &mdash; a small amusement park with rides, open June through September. Low-key, families, a genuinely pleasant hour in the park. Walk-in only.</div>
+      <a class="maps-btn" href="maps://?q=Wollman+Rink+Central+Park+New+York+NY">📍 Maps</a>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-card-name">Washington Mews</div>
+      <div class="stop-card-address">Between 5th Ave &amp; University Pl · just north of WSP</div>
+      <div class="stop-card-desc">A private cobblestone alley running one block behind the north side of Washington Square Park. Original 19th-century carriage houses converted to residences and NYU studios. Quiet, completely off the tourist radar, and beautiful. Walk in from 5th Ave or University Place.</div>
+      <a class="maps-btn" href="maps://?q=Washington+Mews+New+York+NY">📍 Maps</a>
+    </div>
+
+  </div>
+
+  <!-- VILLAGE EXTRAS -->
+  <div class="section-header">
+    <h2>Greenwich Village &amp; West Village</h2>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-note">Extras near the June 6 Village Wander and June 8 Comedy Cellar evening.</p>
+
+  <div class="stop-grid">
+
+    <div class="stop-card">
+      <div class="stop-card-name">Caffe Reggio</div>
+      <div class="stop-card-address">119 MacDougal St · next door to Comedy Cellar</div>
+      <span class="tag tag-film">Film</span>
+      <div class="stop-card-desc">Open since 1927. The world's first American espresso machine lives here. Coffee, dessert, dark wood booths, framed art. Open until 3 AM. The natural before-or-after Cellar spot.
+        <br><br>
+        <span class="film-chip">🎬 On screen</span> <em>The Godfather Part II</em> (Corleone assassination scenes filmed here).
+      </div>
+      <a class="maps-btn" href="maps://?q=Caffe+Reggio+119+MacDougal+St+New+York+NY">📍 Maps</a>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-card-name">Mamoun's Falafel</div>
+      <div class="stop-card-address">119 MacDougal St (multiple locations)</div>
+      <span class="tag tag-food">Food</span>
+      <div class="stop-card-desc">Open since 1971, one of the oldest Middle Eastern restaurants in NYC. Falafel sandwich under $5. The original MacDougal location is a few doors from the Comedy Cellar. Cash preferred.</div>
+      <a class="maps-btn" href="maps://?q=Mamoun%27s+Falafel+119+MacDougal+St+New+York+NY">📍 Maps</a>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-card-name">Peanut Butter &amp; Co.</div>
+      <div class="stop-card-address">240 Sullivan St near Washington Square</div>
+      <span class="tag tag-food">Food</span>
+      <div class="stop-card-desc">Everything is peanut butter. Sandwiches, shakes, combinations that shouldn't work but do. A Village institution, beloved by NYU students for 25 years. Worth it if anyone has a sweet tooth after WSP.</div>
+      <a class="maps-btn" href="maps://?q=Peanut+Butter+Co+240+Sullivan+St+New+York+NY">📍 Maps</a>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-card-name">The Carriage House (Central Park)</div>
+      <div class="stop-card-address">59th St &amp; Central Park South</div>
+      <div class="stop-card-desc">Horse-drawn carriage rides through Central Park. Walk-up, no booking. About $100-125 for 20 minutes for the whole group. Touristy, yes &mdash; also genuinely lovely on a warm evening, especially on June 6 after Top of the Rock if energy allows.</div>
+      <a class="maps-btn" href="maps://?q=Central+Park+Carriage+Rides+New+York+NY">📍 Maps</a>
+    </div>
+
+  </div>
+
+  <!-- BROOKLYN EXTRAS -->
+  <div class="section-header">
+    <h2>Brooklyn</h2>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-note">June 8 extras near DUMBO and the bridge, in case the day runs long or short.</p>
+
+  <div class="stop-grid">
+
+    <div class="stop-card">
+      <div class="stop-card-name">Pebble Beach</div>
+      <div class="stop-card-address">Brooklyn Bridge Park · under the bridge</div>
+      <div class="stop-card-desc">A small pebble beach directly under the Brooklyn Bridge on the Brooklyn side. The closest thing to a beach in central Brooklyn. The Manhattan skyline view from the water's edge is the best in the city. No facilities, just the view.</div>
+      <a class="maps-btn" href="maps://?q=Pebble+Beach+Brooklyn+Bridge+Park+New+York">📍 Maps</a>
+    </div>
+
+    <div class="stop-card">
+      <div class="stop-card-name">Time Out Market Brooklyn</div>
+      <div class="stop-card-address">55 Water St · Empire Stores building · DUMBO</div>
+      <span class="tag tag-food">Food</span>
+      <div class="stop-card-desc">Multi-vendor food hall on the DUMBO waterfront. Good fallback for lunch if Juliana's has a wait, or for a snack between the bridge and the ferry. Rooftop with good bridge views.</div>
+      <a class="maps-btn" href="maps://?q=Time+Out+Market+Brooklyn+55+Water+St+Brooklyn+NY">📍 Maps</a>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>NYC 2026</strong> &middot; Anthony's 21st Birthday &middot; June 3&ndash;11<br>
+  <a href="../" style="color:var(--light-slate);">&larr; Back to the full itinerary</a>
+</div>
+
+</body>
+</html>
